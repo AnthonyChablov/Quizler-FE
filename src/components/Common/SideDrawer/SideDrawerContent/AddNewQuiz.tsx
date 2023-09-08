@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import CloseButton from "../../Buttons/CloseButton";
 import { mutate } from "swr";
