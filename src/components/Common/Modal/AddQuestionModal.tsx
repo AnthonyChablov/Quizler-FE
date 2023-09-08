@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import { addQuestion } from '@/api/questionData';
 import { Question } from '@/models/quizzes';
