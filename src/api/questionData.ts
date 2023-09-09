@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Question } from "@/models/quizzes";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { API_BASE_URL } from "./baseApiUrl";
 
 async function handleRequest<T>(
   request: Promise<AxiosResponse<T>>
