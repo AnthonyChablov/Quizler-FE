@@ -19,6 +19,9 @@ import QuizIntro from "./QuizIntro/QuizIntro";
 import { countCorrectQuestions } from "@/utils/countCorrectQuestions";
 
 const SingleQuizLayout = () => {
+  /* Optimistic updates using swr */
+  const { mutate } = useSWRConfig();
+
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
@@ -111,7 +114,6 @@ const SingleQuizLayout = () => {
         }
       }
     };
-
     updateResults();
   }, [isEndOfQuiz]);
 
@@ -136,7 +138,7 @@ const SingleQuizLayout = () => {
             <InformationDisplay />
             <div className="mt-8">
               {!displayQuiz ? (
-                <QuizIntro />
+                <QuizIntro quizId={quizId} />
               ) : (
                 <>
                   {currentQuestion && (

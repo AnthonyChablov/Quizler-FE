@@ -1,11 +1,15 @@
 import { useParams } from "next/navigation";
 import { useQuizStore } from "@/store/useQuizStore";
 import { restartQuiz } from "@/api/quizData";
+import { useSWRConfig } from "swr";
 
-const QuizIntro: React.FC = () => {
+const QuizIntro = () => {
   /* Next Router */
   const params = useParams();
   const quizId = params.quiz.toString();
+
+  /* Optimistic updates using swr */
+  const { mutate } = useSWRConfig();
 
   /* State */
   const { setDisplayQuiz } = useQuizStore();
@@ -14,8 +18,17 @@ const QuizIntro: React.FC = () => {
     setDisplayQuiz(true);
   }
 
-  function handleRestartProgress() {
-    restartQuiz(quizId);
+  async function handleRestartProgress() {
+    try {
+      await restartQuiz(quizId);
+      mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+    } catch (error) {
+      console.error("Error restarting progress:", error);
+      // Handle the error or show a user-friendly message here
+      alert(
+        "An error occurred while restarting progress. Please try again later."
+      );
+    }
   }
 
   return (
