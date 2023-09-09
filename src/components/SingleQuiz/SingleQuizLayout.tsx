@@ -5,7 +5,7 @@ import Container from "../Common/Container";
 import LoadingLayout from "../Loading/LoadingLayout";
 import InformationDisplay from "./InformationDisplay/InformationDisplay";
 import { fetchData, updateStudyResults } from "@/api/quizData";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import PrimaryCard from "../Common/Cards/PrimaryCard";
 import AnswerButton from "../Common/Buttons/AnswerButton";
 import { QuizData, Answer, Question } from "@/models/quizzes";
@@ -17,11 +17,12 @@ import { useQuizStore } from "@/store/useQuizStore";
 import QuizIntro from "./QuizIntro/QuizIntro";
 import { countCorrectQuestions } from "@/utils/countCorrectQuestions";
 
-const SingleQuizLayout: React.FC = () => {
+const SingleQuizLayout = () => {
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
-
+  /* optimistic update swr */
+  const { mutate } = useSWRConfig();
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
     `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,

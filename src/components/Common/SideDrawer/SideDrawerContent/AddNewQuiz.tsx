@@ -1,8 +1,7 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import CloseButton from "../../Buttons/CloseButton";
-import { mutate } from "swr";
-import { useParams } from "next/navigation";
+import { useSWRConfig } from "swr";
 import Container from "../../Container";
 import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import { QuizData, Question } from "@/models/quizzes";
@@ -11,10 +10,8 @@ import { ButtonGroup } from "@mui/material";
 import Button from "@mui/material/Button";
 
 const AddNewQuiz = () => {
-  /* Extract URL Params */
-  /* const params = useParams();
-  const quizId = params.quiz.toString();
- */
+  const { mutate } = useSWRConfig();
+
   const [quizTitle, setQuizTitle] = useState("");
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -52,18 +49,12 @@ const AddNewQuiz = () => {
       numberOfQuestions: numberOfQuestions,
     };
 
-    // Optimistic update: Update the local data as if the quiz has been added successfully
-    /*  mutate(
-      `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
-      { ...newQuiz },
-      false // Do not revalidate immediately
-    ); */
-
     try {
       await addQuiz(newQuiz);
       setQuizTitle("");
       setQuestions([]);
       toggleAddQuizSideDrawer(false);
+      mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
     } catch (error) {
       console.error("An error occurred during manual quiz submission:", error);
       // You can handle the error in the UI, e.g., show an error message
@@ -83,18 +74,12 @@ const AddNewQuiz = () => {
       numberOfQuestions: numQuestions,
     };
 
-    // Optimistic update: Update the local data as if the quiz has been added successfully
-    /* mutate(
-      `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
-      { ...newQuiz },
-      false // Do not revalidate immediately
-    ); */
-
     try {
       await addQuizWithAI(quizTitle, numQuestions); // await the function call
       toggleAddQuizSideDrawer(false);
       setQuizTitle("");
       setNumQuestions(1); // Reset the number of questions input
+      mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
     } catch (error) {
       console.error("An error occurred:", error);
     }
