@@ -1,20 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { editQuestion } from '@/api/questionData';
-import { Question } from '@/models/quizzes';
-import Modal from './Modal';
-import CloseButton from '../Buttons/CloseButton';
-import { useQuestionStore } from '@/store/useQuestionStore';
+import React, { useState, useEffect } from "react";
+import { editQuestion } from "@/api/questionData";
+import { useSWRConfig } from "swr";
+import { Question } from "@/models/quizzes";
+import Modal from "./Modal";
+import CloseButton from "../Buttons/CloseButton";
+import { useQuestionStore } from "@/store/useQuestionStore";
 
 interface EditQuestionModalProps {
   questionId: string;
   questionData: Question | undefined; // Existing question data to edit
   isOpen: boolean;
+  quizId: string;
   onClose: () => void;
 }
 
-const EditQuestionModal = ({ questionId, questionData, isOpen, onClose }: EditQuestionModalProps) => {
+const EditQuestionModal = ({
+  questionId,
+  questionData,
+  isOpen,
+  quizId,
+  onClose,
+}: EditQuestionModalProps) => {
+  /* State */
   const { editQuestionData, setEditQuestionData } = useQuestionStore();
-  const [newQuestionData, setNewQuestionData] = useState<Question | null>(editQuestionData);
+  const [newQuestionData, setNewQuestionData] = useState<Question | null>(
+    editQuestionData
+  );
+
+  /* Optimistic updates using swr */
+  const { mutate } = useSWRConfig();
 
   useEffect(() => {
     setNewQuestionData(editQuestionData);
@@ -37,10 +51,11 @@ const EditQuestionModal = ({ questionId, questionData, isOpen, onClose }: EditQu
     try {
       if (newQuestionData) {
         await editQuestion(questionId, newQuestionData); // Update the question
+        mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
         onClose();
       }
     } catch (error) {
-      console.error('Error updating question:', error);
+      console.error("Error updating question:", error);
     }
   };
 
@@ -55,11 +70,11 @@ const EditQuestionModal = ({ questionId, questionData, isOpen, onClose }: EditQu
         <input
           type="text"
           placeholder="Question Title"
-          value={newQuestionData?.questionTitle || ''}
-          onChange={(e) => handleInputChange('questionTitle', e.target.value)}
+          value={newQuestionData?.questionTitle || ""}
+          onChange={(e) => handleInputChange("questionTitle", e.target.value)}
           className="mb-2 p-2 border rounded-lg w-full"
         />
-        
+
         {/* Incorrect Answers */}
         {Array.isArray(newQuestionData?.incorrect_answers) &&
           newQuestionData?.incorrect_answers.map((answer, index) => (
@@ -69,25 +84,27 @@ const EditQuestionModal = ({ questionId, questionData, isOpen, onClose }: EditQu
               placeholder={`Answer ${index + 1}`}
               value={answer}
               onChange={(e) => {
-                const newIncorrectAnswers = [...(newQuestionData?.incorrect_answers || [])];
+                const newIncorrectAnswers = [
+                  ...(newQuestionData?.incorrect_answers || []),
+                ];
                 newIncorrectAnswers[index] = e.target.value;
                 // @ts-ignore
-                setNewQuestionData(prevData => ({
+                setNewQuestionData((prevData) => ({
                   ...prevData,
                   incorrect_answers: newIncorrectAnswers,
                 }));
               }}
               className="mb-2 p-2 border rounded-lg w-full"
             />
-        ))}
+          ))}
         {/* Correct Answer */}
         <input
           type="text"
           placeholder="Correct Answer"
-          value={newQuestionData?.correct_answer || ''}
-          onChange={(e) => handleInputChange('correct_answer', e.target.value)}
+          value={newQuestionData?.correct_answer || ""}
+          onChange={(e) => handleInputChange("correct_answer", e.target.value)}
           className="mb-2 p-2 border rounded-lg w-full "
-          disabled={newQuestionData?.correct_answer === 'True'}
+          disabled={newQuestionData?.correct_answer === "True"}
         />
         <button
           type="submit"

@@ -96,6 +96,7 @@ const EditQuizLayout = () => {
               (question) => question._id === editQuestionId
             )} /* Find the specific question */
             questionId={String(editQuestionId)}
+            quizId={String(quizId)}
             isOpen={isEditQuestionModalOpen}
             onClose={() => toggleEditQuestionModal(false)}
           />
