@@ -21,8 +21,7 @@ const SingleQuizLayout = () => {
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
-  /* optimistic update swr */
-  const { mutate } = useSWRConfig();
+
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
     `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
@@ -50,9 +49,9 @@ const SingleQuizLayout = () => {
 
   /* Variables */
   const currentQuestion = quizQuestions[currentQuestionIndex];
+  const isEndOfQuiz = currentQuestionIndex === quizQuestions.length;
   const finalScore = score.correct - score.incorrect;
   const questions = useFormattedQuestions(currentQuestion || null);
-  const isEndOfQuiz = currentQuestionIndex === quizQuestions.length;
   const numberOfCorrectQuestions = countCorrectQuestions(data);
   const totalQuestions = data?.questions?.length || 0;
   const percentage = ((numberOfCorrectQuestions ?? 0) / totalQuestions) * 100;
@@ -66,7 +65,6 @@ const SingleQuizLayout = () => {
       setScore((prevScore) => ({
         ...prevScore,
         correct: isCorrect ? prevScore.correct + 1 : prevScore.correct,
-        // incorrect: isCorrect ? prevScore.incorrect : prevScore.incorrect + 1,
       }));
 
       if (isCorrect) {
@@ -103,16 +101,18 @@ const SingleQuizLayout = () => {
   }, [data]);
 
   useEffect(() => {
-    if (isEndOfQuiz) {
-      updateStudyResults(quizId, correctQuestionIDs)
-        .then((response) => {
+    const updateResults = async () => {
+      if (isEndOfQuiz) {
+        try {
+          const response = await updateStudyResults(quizId, correctQuestionIDs);
           console.log("Study results updated successfully:", response);
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Error updating study results:", error);
-        });
-    }
-    //@ts-ignore
+        }
+      }
+    };
+
+    updateResults();
   }, [isEndOfQuiz]);
 
   /* Loading Isvalidating State */
@@ -171,6 +171,7 @@ const SingleQuizLayout = () => {
                       score={finalScore}
                       onTryAgain={() => setCurrentQuestionIndex(0)}
                       percentage={percentage}
+                      quizId={`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`}
                     />
                   )}
                 </>

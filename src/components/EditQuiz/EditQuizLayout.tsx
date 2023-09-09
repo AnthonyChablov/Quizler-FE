@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { fetchData } from "@/api/quizData";
 import { useParams } from "next/navigation";
 import Container from "../Common/Container";
@@ -17,11 +17,13 @@ import AddQuestionModal from "../Common/Modal/AddQuestionModal";
 import EditQuestionModal from "../Common/Modal/EditQuestionModal";
 import { useQuestionStore } from "@/store/useQuestionStore";
 
-
 const EditQuizLayout = () => {
   /* Next Router */
   const params = useParams();
   const quizId = params.quiz;
+
+  /* Optimistic updates using swr */
+  const { mutate } = useSWRConfig();
 
   /* State */
   const {
@@ -34,7 +36,7 @@ const EditQuizLayout = () => {
     toggleDeleteModal,
     toggleRenameModal,
     toggleAddQuizModal,
-    toggleEditQuestionModal
+    toggleEditQuestionModal,
   } = useModalStore();
 
   const { editQuestionId } = useQuestionStore();
@@ -49,16 +51,16 @@ const EditQuizLayout = () => {
     }
   );
 
-  useEffect(()=>{
-    console.log(data)
-  },[data])
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   /* Variables */
-  const quizHeader = data?.quizTitle ?? 'Loading...';
+  const quizHeader = data?.quizTitle ?? "Loading...";
   const questions = data?.questions; // Extract the questions from the fetched data
 
   if (isValidating || isLoading) {
-    return <LoadingLayout/>;
+    return <LoadingLayout />;
   }
   if (error) {
     return <div>Error fetching data</div>;
@@ -69,14 +71,14 @@ const EditQuizLayout = () => {
         {/* Modals */}
         {isDeleteModalOpen && (
           <DeleteQuizModal
-            quizId = {String(quizId)}
+            quizId={String(quizId)}
             isOpen={isDeleteModalOpen}
             onClose={() => toggleDeleteModal(false)}
           />
         )}
         {isRenameModalOpen && (
           <RenameQuizModal
-            quizId = {String(quizId)}
+            quizId={String(quizId)}
             isOpen={isRenameModalOpen}
             onClose={() => toggleRenameModal(false)}
           />
@@ -90,7 +92,9 @@ const EditQuizLayout = () => {
         )}
         {isEditQuestionModalOpen && editQuestionId && questions && (
           <EditQuestionModal
-            questionData={questions.find(question => question._id === editQuestionId)} /* Find the specific question */
+            questionData={questions.find(
+              (question) => question._id === editQuestionId
+            )} /* Find the specific question */
             questionId={String(editQuestionId)}
             isOpen={isEditQuestionModalOpen}
             onClose={() => toggleEditQuestionModal(false)}
@@ -104,16 +108,17 @@ const EditQuizLayout = () => {
               id={question?._id}
               questionTitle={question?.questionTitle}
               questionAnswers={[
-                ...question?.incorrect_answers, question?.correct_answer,
+                ...question?.incorrect_answers,
+                question?.correct_answer,
               ]}
               questionData={question}
             />
           ))}
         </div>
         <div className="w-full flex justify-center mt-6">
-          <AddButton onClick={()=>toggleAddQuizModal(true)}/>
+          <AddButton onClick={() => toggleAddQuizModal(true)} />
         </div>
-        <SpeedDialButton/>
+        <SpeedDialButton />
       </Container>
     </div>
   );
