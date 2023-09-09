@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -25,7 +26,6 @@ const SingleQuizLayout = () => {
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
     `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
-    // `http://localhost:8080/api/quizzes/${quizId}`,
     fetchData,
     {
       revalidateOnFocus: false,
