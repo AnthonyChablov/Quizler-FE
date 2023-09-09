@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import { addQuestion } from "@/api/questionData";
-import { SWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import { Question } from "@/models/quizzes";
 import Modal from "./Modal";
 import Icons from "../Icons";
