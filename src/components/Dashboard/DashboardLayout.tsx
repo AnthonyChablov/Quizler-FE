@@ -10,12 +10,12 @@ import { fetchData } from "@/api/quizData";
 import SideDrawer from "../Common/SideDrawer/SideDrawer";
 import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import ScrollToTop from "../Common/Buttons/ScrollToTop";
+import LoadingLayout from "../Loading/LoadingLayout";
 
 const DashboardLayout = () => {
   // Fetch quiz data from the API using useSWR
   const { data, error, isLoading } = useSWR(
     "https://quizzlerreactapp.onrender.com/api/quizzes",
-    //  "http://localhost:8080/api/quizzes",
     fetchData,
     {
       revalidateOnFocus: false,
@@ -35,7 +35,7 @@ const DashboardLayout = () => {
     return <p>Error: {error.message}</p>;
   }
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingLayout useCircularProgress={false} />;
   }
   return (
     <div className="h-full min-h-screen bg-slate-200 ">

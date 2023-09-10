@@ -59,7 +59,7 @@ const EditQuizLayout = () => {
   const questions = data?.questions; // Extract the questions from the fetched data
 
   if (isValidating || isLoading) {
-    return <LoadingLayout />;
+    return <LoadingLayout useCircularProgress={true} />;
   }
   if (error) {
     return <div>Error fetching data</div>;

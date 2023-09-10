@@ -120,7 +120,7 @@ const StudyingQuizLayout = () => {
 
   /* Loading Isvalidating State */
   if (isValidating || isLoading) {
-    return <LoadingLayout />;
+    return <LoadingLayout useCircularProgress={true} />;
   }
   /* Error State */
   if (error) {

@@ -32,89 +32,17 @@ const IntroQuizLayout = () => {
   );
 
   /* State */
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(
-    null
-  );
-  const [correctQuestionIDs, setCorrectQuestionIDs] = useState<string[]>([]);
   const [score, setScore] = useState<{ correct: number; incorrect: number }>({
     correct: 0,
     incorrect: 0,
   });
-  const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
-  const [buttonClicked, setButtonClicked] = useState<boolean>(false);
-  const { displayQuiz, setDisplayQuiz } = useQuizStore();
 
   /* Variables */
-  const currentQuestion = quizQuestions[currentQuestionIndex];
-  const isEndOfQuiz = currentQuestionIndex === quizQuestions.length;
   const finalScore = score.correct - score.incorrect;
-  const questions = useFormattedQuestions(currentQuestion || null);
-  const numberOfCorrectQuestions = countCorrectQuestions(data);
-  const totalQuestions = data?.questions?.length || 0;
-  const percentage = ((numberOfCorrectQuestions ?? 0) / totalQuestions) * 100;
-
-  const throttledHandleAnswerClick = throttle(
-    function handleAnswerClick(isCorrect: boolean, answerIndex: number) {
-      if (buttonClicked) {
-        return;
-      }
-      setSelectedAnswerIndex(answerIndex);
-      setScore((prevScore) => ({
-        ...prevScore,
-        correct: isCorrect ? prevScore.correct + 1 : prevScore.correct,
-      }));
-
-      if (isCorrect) {
-        // Access the _id property from the current question
-        const questionId = currentQuestion?._id;
-        if (questionId) {
-          setCorrectQuestionIDs((prevIds) => [...prevIds, questionId]);
-        }
-      }
-
-      setButtonClicked(true);
-      setTimeout(() => {
-        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-        setSelectedAnswerIndex(null);
-        setButtonClicked(false);
-      }, 1000);
-    },
-    400,
-    { trailing: false }
-  );
-
-  useEffect(() => {
-    setDisplayQuiz(false);
-  }, []);
-
-  useEffect(() => {
-    if (data) {
-      const filteredQuestions = data.questions.filter(
-        (question) => question.isCorrect === false
-      );
-      setQuizQuestions(filteredQuestions);
-    }
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    const updateResults = async () => {
-      if (isEndOfQuiz) {
-        try {
-          const response = await updateStudyResults(quizId, correctQuestionIDs);
-          console.log("Study results updated successfully:", response);
-        } catch (error) {
-          console.error("Error updating study results:", error);
-        }
-      }
-    };
-    updateResults();
-  }, [isEndOfQuiz]);
 
   /* Loading Isvalidating State */
   if (isValidating || isLoading) {
-    return <LoadingLayout />;
+    return <LoadingLayout useCircularProgress={true} />;
   }
   /* Error State */
   if (error) {
