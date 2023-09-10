@@ -35,7 +35,7 @@ const DashboardLayout = () => {
     return <p>Error: {error.message}</p>;
   }
   if (isLoading) {
-    return <LoadingLayout useCircularProgress={false} />;
+    return <LoadingLayout />;
   }
   return (
     <div className="h-full min-h-screen bg-slate-200 ">
@@ -48,7 +48,7 @@ const DashboardLayout = () => {
           className="space-x-1 space-y-6 pb-28 md:space-x-0 md:space-y-0 
           md:grid md:grid-cols-2 gap-6 lg:grid-cols-3 3xl:grid-cols-4 xl:gap-7"
         >
-          {data ? (
+          {data &&
             data?.map((quiz: QuizData, index: number) => (
               <QuizCard
                 key={index}
@@ -57,10 +57,7 @@ const DashboardLayout = () => {
                 numCorrectQuestions={quiz?.numberOfCorrectQuestions}
                 linkTo={`/dashboard/quiz/${quiz?._id}`}
               />
-            ))
-          ) : (
-            <p>Loading...</p>
-          )}
+            ))}
         </div>
         <div className="">
           <SubHeader text="My Quizzes" size="small" />

@@ -42,7 +42,7 @@ const IntroQuizLayout = () => {
 
   /* Loading Isvalidating State */
   if (isValidating || isLoading) {
-    return <LoadingLayout useCircularProgress={true} />;
+    return <LoadingLayout />;
   }
   /* Error State */
   if (error) {

@@ -4,7 +4,7 @@ import LoadingLayout from "@/components/Loading/LoadingLayout";
 const loading = () => {
   return (
     <div>
-      <LoadingLayout useCircularProgress={true} />
+      <LoadingLayout />
     </div>
   );
 };

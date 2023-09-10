@@ -1,19 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Container from "@/components/Common/Container";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR, { mutate, useSWRConfig } from "swr";
 import { throttle } from "lodash";
 import { QuizData } from "@/models/quizzes";
 import { Question } from "@/models/quizzes";
 import { Answer } from "@/models/quizzes";
 import { fetchData } from "@/api/quizData";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useQuizStore } from "@/store/useQuizStore";
 import { useFormattedQuestions } from "@/hooks/useFormattedQuestion";
 import { countCorrectQuestions } from "@/utils/countCorrectQuestions";
 import QuizHeader from "@/components/Common/Header/QuizHeader";
 import Score from "../QuizComponents/Score/Score";
-import QuizIntro from "../QuizComponents/QuizIntro/QuizIntro";
+import PrimaryButton from "@/components/Common/Buttons/PrimaryButton";
 import PrimaryCard from "@/components/Common/Cards/PrimaryCard";
 import AnswerButton from "@/components/Common/Buttons/AnswerButton";
 import { updateStudyResults } from "@/api/quizData";
@@ -21,8 +21,7 @@ import LoadingLayout from "@/components/Loading/LoadingLayout";
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */
-  const { mutate } = useSWRConfig();
-
+  const router = useRouter();
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
@@ -38,27 +37,31 @@ const StudyingQuizLayout = () => {
   );
 
   /* State */
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+  // Keeps track of the current question index in the quiz.
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0); // This is what moves on to the next question
+  // Stores the index of the selected answer for the current question or null if none is selected.
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(
     null
   );
+  // Stores an array of question IDs that have been answered correctly.
   const [correctQuestionIDs, setCorrectQuestionIDs] = useState<string[]>([]);
+  // Keeps track of the score in the quiz, including the number of correct and incorrect answers.
   const [score, setScore] = useState<{ correct: number; incorrect: number }>({
     correct: 0,
     incorrect: 0,
   });
+  // Stores an array of quiz questions.
   const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
+  // Tracks whether a button has been clicked (e.g., Next Question button) to prevent rapid clicks.
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
-  const { displayQuiz, setDisplayQuiz } = useQuizStore();
+  // Used to identify the first render of the component and avoid certain effects on the initial render.
+  const [firstRender, setFirstRender] = useState(true);
 
   /* Variables */
   const currentQuestion = quizQuestions[currentQuestionIndex];
   const isEndOfQuiz = currentQuestionIndex === quizQuestions.length;
   const finalScore = score.correct - score.incorrect;
   const questions = useFormattedQuestions(currentQuestion || null);
-  const numberOfCorrectQuestions = countCorrectQuestions(data);
-  const totalQuestions = data?.questions?.length || 0;
-  const percentage = ((numberOfCorrectQuestions ?? 0) / totalQuestions) * 100;
 
   const throttledHandleAnswerClick = throttle(
     function handleAnswerClick(isCorrect: boolean, answerIndex: number) {
@@ -91,10 +94,6 @@ const StudyingQuizLayout = () => {
   );
 
   useEffect(() => {
-    setDisplayQuiz(false);
-  }, []);
-
-  useEffect(() => {
     if (data) {
       const filteredQuestions = data.questions.filter(
         (question) => question.isCorrect === false
@@ -106,21 +105,35 @@ const StudyingQuizLayout = () => {
 
   useEffect(() => {
     const updateResults = async () => {
-      if (isEndOfQuiz) {
-        try {
-          const response = await updateStudyResults(quizId, correctQuestionIDs);
-          console.log("Study results updated successfully:", response);
-        } catch (error) {
-          console.error("Error updating study results:", error);
-        }
+      try {
+        const response = await updateStudyResults(quizId, correctQuestionIDs);
+        mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+        console.log("Study results updated successfully:", response);
+      } catch (error) {
+        console.error("Error updating study results:", error);
       }
     };
-    updateResults();
-  }, [isEndOfQuiz]);
+    if (firstRender) {
+      // Skip the effect on the first render
+      setFirstRender(false);
+      return;
+    }
+    if (isEndOfQuiz) {
+      updateResults();
+      router.push(`/dashboard/quiz/${quizId}/completed`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isEndOfQuiz,
+    quizQuestions,
+    currentQuestionIndex,
+    quizId,
+    correctQuestionIDs,
+  ]);
 
   /* Loading Isvalidating State */
   if (isValidating || isLoading) {
-    return <LoadingLayout useCircularProgress={true} />;
+    return <LoadingLayout />;
   }
   /* Error State */
   if (error) {
@@ -166,14 +179,6 @@ const StudyingQuizLayout = () => {
                         />
                       ))}
                     </div>
-                  )}
-                  {isEndOfQuiz && (
-                    <Score
-                      score={finalScore}
-                      onTryAgain={() => setCurrentQuestionIndex(0)}
-                      percentage={percentage}
-                      /* quizId={`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`} */
-                    />
                   )}
                 </>
               }
