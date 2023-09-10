@@ -1,27 +1,22 @@
-// @ts-nocheck
 "use client";
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import Container from "../Common/Container";
-import LoadingLayout from "../Loading/LoadingLayout";
-import InformationDisplay from "./InformationDisplay/InformationDisplay";
+import Container from "../../Common/Container";
+import LoadingLayout from "../../Loading/LoadingLayout";
 import { fetchData, updateStudyResults } from "@/api/quizData";
 import useSWR, { useSWRConfig } from "swr";
-import PrimaryCard from "../Common/Cards/PrimaryCard";
-import AnswerButton from "../Common/Buttons/AnswerButton";
+import PrimaryCard from "../../Common/Cards/PrimaryCard";
+import AnswerButton from "../../Common/Buttons/AnswerButton";
 import { QuizData, Answer, Question } from "@/models/quizzes";
-import Score from "./Score/Score";
-import QuizHeader from "../Common/Header/QuizHeader";
+import Score from "../QuizComponents/Score/Score";
+import QuizHeader from "../../Common/Header/QuizHeader";
 import { useFormattedQuestions } from "@/hooks/useFormattedQuestion";
 import { throttle } from "lodash";
 import { useQuizStore } from "@/store/useQuizStore";
-import QuizIntro from "./QuizIntro/QuizIntro";
+import QuizIntro from "../QuizComponents/QuizIntro/QuizIntro";
 import { countCorrectQuestions } from "@/utils/countCorrectQuestions";
 
-const SingleQuizLayout = () => {
-  /* Optimistic updates using swr */
-  const { mutate } = useSWRConfig();
-
+const IntroQuizLayout = () => {
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
@@ -135,10 +130,9 @@ const SingleQuizLayout = () => {
               score={finalScore}
               displayScore={true}
             />
-            <InformationDisplay />
             <div className="mt-8">
               {!displayQuiz ? (
-                <QuizIntro quizId={quizId} />
+                <QuizIntro />
               ) : (
                 <>
                   {currentQuestion && (
@@ -173,7 +167,7 @@ const SingleQuizLayout = () => {
                       score={finalScore}
                       onTryAgain={() => setCurrentQuestionIndex(0)}
                       percentage={percentage}
-                      quizId={`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`}
+                      /* quizId={`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`} */
                     />
                   )}
                 </>
@@ -186,4 +180,4 @@ const SingleQuizLayout = () => {
   );
 };
 
-export default SingleQuizLayout;
+export default IntroQuizLayout;
