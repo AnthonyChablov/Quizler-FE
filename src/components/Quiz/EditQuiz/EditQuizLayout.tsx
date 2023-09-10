@@ -100,7 +100,11 @@ const EditQuizLayout = () => {
             onClose={() => toggleEditQuestionModal(false)}
           />
         )}
-        <QuizHeader headerText={quizHeader} displayScore={false} />
+        <QuizHeader
+          headerText={quizHeader}
+          displayScore={false}
+          link="/dashboard"
+        />
         <div className="mt-8 space-y-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0 ">
           {questions?.map((question) => (
             <DisplayCard

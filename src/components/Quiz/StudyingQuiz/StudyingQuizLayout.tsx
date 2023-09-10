@@ -16,11 +16,26 @@ import Score from "../QuizComponents/Score/Score";
 import QuizIntro from "../QuizComponents/QuizIntro/QuizIntro";
 import PrimaryCard from "@/components/Common/Cards/PrimaryCard";
 import AnswerButton from "@/components/Common/Buttons/AnswerButton";
+import { updateStudyResults } from "@/api/quizData";
+import LoadingLayout from "@/components/Loading/LoadingLayout";
 
 const StudyingQuizLayout = () => {
+  /* Optimistic updates using swr */
+  const { mutate } = useSWRConfig();
+
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
+
+  /* Fetch Data */
+  const { data, error, isValidating, isLoading } = useSWR<QuizData>(
+    `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
+    fetchData,
+    {
+      revalidateOnFocus: false,
+      refreshInterval: 300000,
+    }
+  );
 
   /* State */
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -35,16 +50,6 @@ const StudyingQuizLayout = () => {
   const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
   const { displayQuiz, setDisplayQuiz } = useQuizStore();
-
-  /* Fetch Data */
-  const { data, error, isValidating, isLoading } = useSWR<QuizData>(
-    `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
-    fetchData,
-    {
-      revalidateOnFocus: false,
-      refreshInterval: 300000,
-    }
-  );
 
   /* Variables */
   const currentQuestion = quizQuestions[currentQuestionIndex];
@@ -85,6 +90,42 @@ const StudyingQuizLayout = () => {
     { trailing: false }
   );
 
+  useEffect(() => {
+    setDisplayQuiz(false);
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      const filteredQuestions = data.questions.filter(
+        (question) => question.isCorrect === false
+      );
+      setQuizQuestions(filteredQuestions);
+    }
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    const updateResults = async () => {
+      if (isEndOfQuiz) {
+        try {
+          const response = await updateStudyResults(quizId, correctQuestionIDs);
+          console.log("Study results updated successfully:", response);
+        } catch (error) {
+          console.error("Error updating study results:", error);
+        }
+      }
+    };
+    updateResults();
+  }, [isEndOfQuiz]);
+
+  /* Loading Isvalidating State */
+  if (isValidating || isLoading) {
+    return <LoadingLayout />;
+  }
+  /* Error State */
+  if (error) {
+    return <div>Error fetching data</div>;
+  }
   return (
     <div className="bg-slate-200 h-full min-h-screen pb-32">
       <Container>
@@ -94,11 +135,10 @@ const StudyingQuizLayout = () => {
               headerText={data?.quizTitle}
               score={finalScore}
               displayScore={true}
+              link={`/dashboard/quiz/${quizId}`}
             />
             <div className="mt-8">
-              {!displayQuiz ? (
-                <QuizIntro />
-              ) : (
+              {
                 <>
                   {currentQuestion && (
                     <PrimaryCard
@@ -136,7 +176,7 @@ const StudyingQuizLayout = () => {
                     />
                   )}
                 </>
-              )}
+              }
             </div>
           </Container>
         )}

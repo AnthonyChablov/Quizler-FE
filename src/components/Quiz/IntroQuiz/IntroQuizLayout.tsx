@@ -129,49 +129,10 @@ const IntroQuizLayout = () => {
               headerText={data?.quizTitle}
               score={finalScore}
               displayScore={true}
+              link="/dashboard"
             />
             <div className="mt-8">
-              {!displayQuiz ? (
-                <QuizIntro />
-              ) : (
-                <>
-                  {currentQuestion && (
-                    <PrimaryCard
-                      question={`${currentQuestionIndex + 1}. ${
-                        currentQuestion.questionTitle
-                      }`}
-                    />
-                  )}
-                  {currentQuestion && (
-                    <div className="mt-8 flex flex-col space-y-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0">
-                      {questions.map((answer: Answer, index: number) => (
-                        <AnswerButton
-                          key={index}
-                          label={answer.answerText}
-                          onClick={() =>
-                            throttledHandleAnswerClick(answer.isCorrect, index)
-                          }
-                          answerState={
-                            selectedAnswerIndex === index
-                              ? answer.isCorrect
-                                ? "correct"
-                                : "incorrect"
-                              : null
-                          }
-                        />
-                      ))}
-                    </div>
-                  )}
-                  {isEndOfQuiz && (
-                    <Score
-                      score={finalScore}
-                      onTryAgain={() => setCurrentQuestionIndex(0)}
-                      percentage={percentage}
-                      /* quizId={`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`} */
-                    />
-                  )}
-                </>
-              )}
+              <QuizIntro quizTitle={data?.quizTitle} />
             </div>
           </Container>
         )}

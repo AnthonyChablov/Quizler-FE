@@ -4,7 +4,11 @@ import { restartQuiz } from "@/api/quizData";
 import { useSWRConfig } from "swr";
 import CustomButton from "@/components/Common/Buttons/CustomButton";
 
-const QuizIntro = () => {
+interface QuizIntro {
+  quizTitle: string;
+}
+
+const QuizIntro = ({ quizTitle }: QuizIntro) => {
   /* Next Router */
   const router = useRouter();
   const params = useParams();
@@ -17,8 +21,8 @@ const QuizIntro = () => {
   const { setDisplayQuiz } = useQuizStore();
 
   function handleStartQuiz() {
-    router.push(`/dashboard/quiz/${quizId}/start`);
     setDisplayQuiz(true);
+    router.push(`/dashboard/quiz/${quizId}/study`);
   }
 
   async function handleRestartProgress() {
@@ -37,13 +41,13 @@ const QuizIntro = () => {
   return (
     <div
       className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
-    rounded-xl p-8 shadow-md text-center text-white"
+    rounded-xl p-8 text-center text-white shadow-xl"
     >
-      <h1 className="text-3xl font-bold mb-6">Welcome to the Quiz! 🎉</h1>
+      <h1 className="text-3xl font-bold mb-6">{quizTitle}! 🎉</h1>
       <p className="text-md mb-8">
         Test your knowledge by clicking the button below to start the quiz.
       </p>
-      <div className="space-y-4 space-x-2">
+      <div className="space-y-4 space-x-4">
         <CustomButton
           label={"Start Quiz 🚀"}
           onClick={handleStartQuiz}
