@@ -181,8 +181,13 @@ const AddNewQuiz = () => {
                 secondary={true}
                 color="none"
                 textColor="text-black"
+                type="button"
               />
-              <CustomButton label="Add Quiz" textSize="text-sm md:text-md" />
+              <CustomButton
+                label="Add Quiz"
+                textSize="text-sm md:text-md"
+                type="submit"
+              />
             </form>
           )}
           {!isAddQuizManually && (

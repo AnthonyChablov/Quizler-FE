@@ -36,7 +36,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <button
       className={secondary ? `text-gray-800 ${buttonClass}` : buttonClass}
       onClick={onClick}
-      type={type || "submit"} // Use the type prop with a default value
+      type={type} // Use the type prop with a default value
     >
       {label}
     </button>
