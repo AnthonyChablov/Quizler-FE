@@ -41,7 +41,7 @@ const QuizIntro = ({ quizTitle }: QuizIntro) => {
   return (
     <div
       className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
-    rounded-xl p-8 text-center text-white shadow-xl"
+      rounded-t-xl p-8 text-center text-white shadow-xl"
     >
       <h1 className="text-3xl font-bold mb-6">{quizTitle}! 🎉</h1>
       <p className="text-md mb-8">
