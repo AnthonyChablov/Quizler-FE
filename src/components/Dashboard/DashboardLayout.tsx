@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import useSWR from "swr";
+import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion components
 import SubHeader from "@/components/Common/SubHeader/SubHeader";
 import Container from "@/components/Common/Container";
 import QuizCard from "./Cards/QuizCard";
@@ -48,16 +49,26 @@ const DashboardLayout = () => {
           className="space-x-1 space-y-6 pb-28 md:space-x-0 md:space-y-0 
           md:grid md:grid-cols-2 gap-6 lg:grid-cols-3 3xl:grid-cols-4 xl:gap-7"
         >
-          {data &&
-            data?.map((quiz: QuizData, index: number) => (
-              <QuizCard
-                key={index}
-                topic={quiz?.quizTitle}
-                numQuestions={quiz?.numberOfQuestions}
-                numCorrectQuestions={quiz?.numberOfCorrectQuestions}
-                linkTo={`/dashboard/quiz/${quiz?._id}`}
-              />
-            ))}
+          {/* Wrap the QuizCard component with motion.div */}
+          <AnimatePresence>
+            {data &&
+              data?.map((quiz: QuizData, index: number) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0 }} // Initial state (hidden)
+                  animate={{ opacity: 1 }} // Animation state (visible)
+                  transition={{ ease: "easeOut", duration: 0.4 }}
+                  exit={{ opacity: 0 }} // Exit state (hidden)
+                >
+                  <QuizCard
+                    topic={quiz?.quizTitle}
+                    numQuestions={quiz?.numberOfQuestions}
+                    numCorrectQuestions={quiz?.numberOfCorrectQuestions}
+                    linkTo={`/dashboard/quiz/${quiz?._id}`}
+                  />
+                </motion.div>
+              ))}
+          </AnimatePresence>
         </div>
         <div className="">
           <SubHeader text="My Quizzes" size="small" />
