@@ -8,6 +8,7 @@ import { QuizData, Question } from "@/models/quizzes";
 import { addQuiz, addQuizWithAI } from "@/api/quizData";
 import { ButtonGroup } from "@mui/material";
 import Button from "@mui/material/Button";
+import CustomButton from "../../Buttons/CustomButton";
 
 const AddNewQuiz = () => {
   const { mutate } = useSWRConfig();
@@ -84,10 +85,9 @@ const AddNewQuiz = () => {
       console.error("An error occurred:", error);
     }
   };
-
   return (
     <div>
-      <div className="w-screen h-screen py-4 bg-slate-200">
+      <div className="w-full h-screen py-4 bg-slate-200">
         <Container>
           {/* Content for your side drawer */}
           <div className="flex justify-between items-center mb-4">
@@ -130,9 +130,6 @@ const AddNewQuiz = () => {
                   required
                 />
               </label>
-              <button type="button" onClick={handleAddQuestion}>
-                Add Question
-              </button>
 
               {/* Question Fields */}
               {questions.map((question, index) => (
@@ -177,7 +174,15 @@ const AddNewQuiz = () => {
                   ))}
                 </div>
               ))}
-              <button type="submit">Add Quiz</button>
+              <CustomButton
+                onClick={handleAddQuestion}
+                label="Add Question"
+                textSize="text-sm md:text-md"
+                secondary={true}
+                color="none"
+                textColor="text-black"
+              />
+              <CustomButton label="Add Quiz" textSize="text-sm md:text-md" />
             </form>
           )}
           {!isAddQuizManually && (
@@ -208,7 +213,11 @@ const AddNewQuiz = () => {
                   required
                 />
               </label>
-              <button type="submit">Add Quiz</button>
+              <CustomButton
+                label="Add Quiz"
+                textSize="text-sm md:text-md"
+                type="submit"
+              />
             </form>
           )}
         </Container>

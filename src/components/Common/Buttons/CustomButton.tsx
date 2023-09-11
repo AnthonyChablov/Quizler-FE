@@ -7,7 +7,8 @@ interface CustomButtonProps {
   textSize?: string;
   secondary?: boolean;
   underlineOnHover?: boolean;
-  textColor?: string; // Add the textColor prop
+  textColor?: string;
+  type?: "button" | "submit"; // Add the type prop
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -18,6 +19,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   secondary,
   underlineOnHover,
   textColor,
+  type,
 }) => {
   const buttonStyle = {
     background:
@@ -34,6 +36,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <button
       className={secondary ? `text-gray-800 ${buttonClass}` : buttonClass}
       onClick={onClick}
+      type={type || "submit"} // Use the type prop with a default value
     >
       {label}
     </button>

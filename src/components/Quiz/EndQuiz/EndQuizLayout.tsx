@@ -118,7 +118,9 @@ const EndQuizLayout = () => {
                   onTryAgain: () => {
                     router.push(`/dashboard/quiz/${quizId}/`);
                   },
-                  percentage: (score.correct / data?.questions.length) * 100,
+                  percentage: Math.round(
+                    (score.correct / data?.questions.length) * 100
+                  ),
                 }}
               />
               <div className="py-8 px-5 bg-slate-50 p-5 rounded-b-xl shadow-xl">
