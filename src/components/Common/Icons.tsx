@@ -9,6 +9,8 @@ import {
   AiOutlineQuestionCircle,
   AiFillDelete,
   AiOutlineEdit,
+  AiOutlineMinus,
+  AiOutlinePlus,
 } from "react-icons/ai";
 import { FaArrowUp } from "react-icons/fa";
 
@@ -23,6 +25,8 @@ const Icons = ({ type, size, color }: IIcons) => {
     <div className="text-white">
       {
         {
+          plus: <AiOutlinePlus size={size} color={color} />,
+          minus: <AiOutlineMinus size={size} color={color} />,
           up: <FaArrowUp size={size} color={color} />,
           play: <BiPlay size={size} color={color} />,
           add: <IoMdAddCircleOutline size={size} color={color} />,

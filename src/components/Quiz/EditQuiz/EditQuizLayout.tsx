@@ -2,19 +2,18 @@ import React, { useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { fetchData } from "@/api/quizData";
 import { useParams } from "next/navigation";
-import Container from "../Common/Container";
+import Container from "../../Common/Container";
 import { QuizData } from "@/models/quizzes";
-import PrimaryCard from "../Common/Cards/PrimaryCard";
-import { DeleteQuizModal } from "../Common/Modal/DeleteQuizModal";
-import { RenameQuizModal } from "../Common/Modal/RenameQuizModal";
+import { DeleteQuizModal } from "../../Common/Modal/DeleteQuizModal";
+import { RenameQuizModal } from "../../Common/Modal/RenameQuizModal";
 import { useModalStore } from "@/store/useModalStore";
-import DisplayCard from "../Common/Cards/DisplayCard";
-import AddButton from "../Common/Buttons/AddButton";
-import LoadingLayout from "../Loading/LoadingLayout";
-import QuizHeader from "../Common/Header/QuizHeader";
-import SpeedDialButton from "../Common/Buttons/SpeedDialButton";
-import AddQuestionModal from "../Common/Modal/AddQuestionModal";
-import EditQuestionModal from "../Common/Modal/EditQuestionModal";
+import DisplayCard from "../../Common/Cards/DisplayCard";
+import AddButton from "../../Common/Buttons/AddButton";
+import LoadingLayout from "../../Loading/LoadingLayout";
+import QuizHeader from "../../Common/Header/QuizHeader";
+import SpeedDialButton from "../../Common/Buttons/SpeedDialButton";
+import AddQuestionModal from "../../Common/Modal/AddQuestionModal";
+import EditQuestionModal from "../../Common/Modal/EditQuestionModal";
 import { useQuestionStore } from "@/store/useQuestionStore";
 
 const EditQuizLayout = () => {
@@ -101,7 +100,11 @@ const EditQuizLayout = () => {
             onClose={() => toggleEditQuestionModal(false)}
           />
         )}
-        <QuizHeader headerText={quizHeader} displayScore={false} />
+        <QuizHeader
+          headerText={quizHeader}
+          displayScore={false}
+          link="/dashboard"
+        />
         <div className="mt-8 space-y-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0 ">
           {questions?.map((question) => (
             <DisplayCard

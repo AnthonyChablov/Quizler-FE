@@ -11,7 +11,7 @@ const Score: React.FC<ScoreProps> = ({ score, onTryAgain, percentage }) => {
     <div className="text-center">
       <div className="mb-4"></div>
       <div className="mb-4">Your Score: {score}</div>
-      <div className="mb-4">You got : {percentage}% correct.</div>
+      <div className="mb-4">You got : {score}% correct.</div>
       <button
         onClick={onTryAgain}
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
