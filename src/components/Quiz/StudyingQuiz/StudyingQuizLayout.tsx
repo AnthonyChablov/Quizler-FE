@@ -19,6 +19,7 @@ import AnswerButton from "@/components/Common/Buttons/AnswerButton";
 import { updateStudyResults } from "@/api/quizData";
 import LoadingLayout from "@/components/Loading/LoadingLayout";
 import { motion, AnimatePresence } from "framer-motion";
+import { buttonVariants } from "@/variants/variants";
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */
@@ -132,6 +133,14 @@ const StudyingQuizLayout = () => {
     correctQuestionIDs,
   ]);
 
+  // State to control the key for the answers animation
+  const [answersAnimationKey, setAnswersAnimationKey] = useState(0);
+
+  useEffect(() => {
+    // Whenever you want to retrigger the animations (e.g., when moving to the next question), update the key
+    setAnswersAnimationKey((prevKey) => prevKey + 1);
+  }, [currentQuestionIndex]);
+
   /* Loading Isvalidating State */
   if (isValidating || isLoading) {
     return <LoadingLayout />;
@@ -162,7 +171,8 @@ const StudyingQuizLayout = () => {
               transition={{ delay: 0.2 }}
               className="mt-8"
             >
-              <AnimatePresence>
+              {/* Question */}
+              <AnimatePresence mode="wait">
                 {currentQuestion && (
                   <motion.div
                     key={currentQuestion._id}
@@ -179,12 +189,21 @@ const StudyingQuizLayout = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div className="mt-8 flex flex-col space-y-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0 ">
+              {/* Answers */}
+              <motion.div
+                key={answersAnimationKey} // Use the key to re-render the answers with new animations
+                initial="hidden"
+                animate="visible"
+                variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+                className="mt-8 flex flex-col space-y-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0 "
+              >
                 {questions.map((answer: Answer, index: number) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    variants={buttonVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden" // Added exit animation
                     transition={{ delay: 0.2 + index * 0.1 }}
                   >
                     <AnswerButton
@@ -202,7 +221,7 @@ const StudyingQuizLayout = () => {
                     />
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </motion.div>
           </Container>
         )}
