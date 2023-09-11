@@ -1,24 +1,29 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Container from "../../Common/Container";
 import LoadingLayout from "../../Loading/LoadingLayout";
 import { fetchData } from "@/api/quizData";
 import useSWR from "swr";
-import PrimaryCard from "../../Common/Cards/PrimaryCard";
+import { restartQuiz } from "@/api/quizData";
 import { QuizData } from "@/models/quizzes";
 import QuizHeader from "../../Common/Header/QuizHeader";
-import QuizIntro from "../QuizComponents/QuizIntro/QuizIntro";
+import QuizInfoDisplay from "../QuizComponents/QuizInfoDisplay/QuizInfoDisplay";
 import ColorDot from "../QuizComponents/ColorDot/ColorDot";
 import { Question } from "@/models/quizzes";
 import { motion, AnimatePresence } from "framer-motion";
-import PrimaryButton from "@/components/Common/Buttons/PrimaryButton";
+import { mutate } from "swr";
 import Icons from "@/components/Common/Icons";
+import { useQuizStore } from "@/store/useQuizStore";
 
 const IntroQuizLayout = () => {
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
+  const router = useRouter();
+
+  /* State */
+  const { setDisplayQuiz } = useQuizStore();
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
@@ -39,13 +44,27 @@ const IntroQuizLayout = () => {
 
   /* Variables */
   const finalScore = score.correct - score.incorrect;
-  const toggleQuestionsVisibility = () => {
-    setIsQuestionsVisible((prev) => !prev);
-  };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  /* Functions */
+  function toggleQuestionsVisibility() {
+    setIsQuestionsVisible((prev) => !prev);
+  }
+  function handleStartQuiz() {
+    setDisplayQuiz(true);
+    router.push(`/dashboard/quiz/${quizId}/study`);
+  }
+  async function handleRestartProgress() {
+    try {
+      await restartQuiz(quizId);
+      mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+    } catch (error) {
+      console.error("Error restarting progress:", error);
+      // Handle the error or show a user-friendly message here
+      alert(
+        "An error occurred while restarting progress. Please try again later. 😞"
+      );
+    }
+  }
 
   /* Loading Isvalidating State */
   if (isValidating || isLoading) {
@@ -67,7 +86,14 @@ const IntroQuizLayout = () => {
               link="/dashboard"
             />
             <div className="mt-8">
-              <QuizIntro quizTitle={data?.quizTitle} />
+              <QuizInfoDisplay
+                quizTitle={data?.quizTitle}
+                quizText="Test your knowledge by clicking the button below to start the quiz."
+                primaryButtonLabel="Start Quiz 🚀"
+                secondaryButtonLabel="Restart Progress 🔁"
+                onPrimaryButtonClick={handleStartQuiz}
+                onSecondaryButtonClick={handleRestartProgress}
+              />
               <div className="py-8 px-5 bg-slate-50 p-5 rounded-b-xl shadow-xl">
                 <div
                   className={`flex justify-between items-center mb-4 ${
