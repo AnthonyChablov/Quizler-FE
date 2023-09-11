@@ -33,7 +33,7 @@ const QuizInfoDisplay = ({
       rounded-t-xl p-8 text-center text-white shadow-xl mt-12"
     >
       <h1 className="text-3xl font-bold mb-6">{quizTitle}! 🎉</h1>
-      <p className="text-md mb-8">{quizText}</p>
+      <p className="text-md mb-8 max-w-xl mx-auto">{quizText}</p>
       {showScore && <Score {...scoreProps} />}{" "}
       {/* Conditionally render the Score component */}
       <div className="space-y-4 md:space-x-4 mt-4">

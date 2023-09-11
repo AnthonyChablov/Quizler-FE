@@ -17,7 +17,7 @@ const Score: React.FC<ScoreProps> = ({ score, percentage }) => {
   };
 
   return (
-    <div className="text-center bg-slate-50 rounded-md p-4 shadow-md">
+    <div className="text-center bg-slate-50 rounded-md p-4 shadow-md max-w-2xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4 text-black">Quiz Score</h2>
       <div className="mb-2">
         <span className="text-gray-600">Your Score:</span>{" "}
