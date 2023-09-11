@@ -13,6 +13,7 @@ import ColorDot from "../QuizComponents/ColorDot/ColorDot";
 import { Question } from "@/models/quizzes";
 import { motion, AnimatePresence } from "framer-motion";
 import PrimaryButton from "@/components/Common/Buttons/PrimaryButton";
+import Icons from "@/components/Common/Icons";
 
 const IntroQuizLayout = () => {
   /* Extract URL Params */
@@ -67,16 +68,22 @@ const IntroQuizLayout = () => {
             />
             <div className="mt-8">
               <QuizIntro quizTitle={data?.quizTitle} />
-              <div className="py-8 px-8 bg-slate-50 p-5 rounded-b-xl shadow-xl">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold">
+              <div className="py-8 px-5 bg-slate-50 p-5 rounded-b-xl shadow-xl">
+                <div
+                  className={`flex justify-between items-center mb-4 ${
+                    isQuestionsVisible ? "mb-4" : "mb-0"
+                  }`}
+                >
+                  <h2 className="text-lg md:text-xl font-semibold">
                     {isQuestionsVisible ? "Questions" : "Show Questions"}
                   </h2>
-                  <PrimaryButton
-                    label={isQuestionsVisible ? "- Minimize " : " + Maximize "}
-                    onClick={toggleQuestionsVisibility}
-                    textSize="text-sm md:text-md"
-                  />
+                  <button onClick={toggleQuestionsVisibility}>
+                    {isQuestionsVisible ? (
+                      <Icons size={22} type="minus" color="black" />
+                    ) : (
+                      <Icons type="plus" size={22} color="black" />
+                    )}
+                  </button>
                 </div>
                 <AnimatePresence initial={false}>
                   {isQuestionsVisible && (
@@ -88,7 +95,7 @@ const IntroQuizLayout = () => {
                       transition={{ duration: 0.3 }}
                     >
                       {/* Mapping through questions and rendering dots */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  ">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6  ">
                         {data.questions.map(
                           (question: Question, index: number) => (
                             <div
@@ -96,8 +103,8 @@ const IntroQuizLayout = () => {
                               className="flex items-center bg-white p-4 rounded-lg shadow-lg mb-4"
                             >
                               <ColorDot isCorrect={question.isCorrect} />
-                              <div className="flex flex-col ml-4 w-auto truncate">
-                                <p className="text-lg font-semibold">
+                              <div className="flex flex-col ml-4 ">
+                                <p className="text-lg font-semibold w-44 truncate">
                                   {index + 1}. {question?.questionTitle}
                                 </p>
                                 <p className="text-gray-600">

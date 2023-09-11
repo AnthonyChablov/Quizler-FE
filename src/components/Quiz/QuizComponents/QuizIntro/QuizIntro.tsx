@@ -41,13 +41,13 @@ const QuizIntro = ({ quizTitle }: QuizIntro) => {
   return (
     <div
       className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
-      rounded-t-xl p-8 text-center text-white shadow-xl"
+      rounded-t-xl p-8 text-center text-white shadow-xl mt-12"
     >
       <h1 className="text-3xl font-bold mb-6">{quizTitle}! 🎉</h1>
       <p className="text-md mb-8">
         Test your knowledge by clicking the button below to start the quiz.
       </p>
-      <div className="space-y-4 space-x-4">
+      <div className="space-y-4 md:space-x-4">
         <CustomButton
           label={"Start Quiz 🚀"}
           onClick={handleStartQuiz}

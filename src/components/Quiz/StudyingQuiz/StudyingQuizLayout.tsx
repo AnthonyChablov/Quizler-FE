@@ -18,6 +18,7 @@ import PrimaryCard from "@/components/Common/Cards/PrimaryCard";
 import AnswerButton from "@/components/Common/Buttons/AnswerButton";
 import { updateStudyResults } from "@/api/quizData";
 import LoadingLayout from "@/components/Loading/LoadingLayout";
+import { motion, AnimatePresence } from "framer-motion";
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */
@@ -140,7 +141,12 @@ const StudyingQuizLayout = () => {
     return <div>Error fetching data</div>;
   }
   return (
-    <div className="bg-slate-200 h-full min-h-screen pb-32">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      className="bg-slate-200 h-full min-h-screen pb-32"
+    >
       <Container>
         {data && (
           <Container>
@@ -150,43 +156,58 @@ const StudyingQuizLayout = () => {
               displayScore={true}
               link={`/dashboard/quiz/${quizId}`}
             />
-            <div className="mt-8">
-              {
-                <>
-                  {currentQuestion && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="mt-8"
+            >
+              <AnimatePresence>
+                {currentQuestion && (
+                  <motion.div
+                    key={currentQuestion._id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ type: "spring", stiffness: 120, damping: 15 }}
+                  >
                     <PrimaryCard
                       question={`${currentQuestionIndex + 1}. ${
                         currentQuestion.questionTitle
                       }`}
                     />
-                  )}
-                  {currentQuestion && (
-                    <div className="mt-8 flex flex-col space-y-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0">
-                      {questions.map((answer: Answer, index: number) => (
-                        <AnswerButton
-                          key={index}
-                          label={answer.answerText}
-                          onClick={() =>
-                            throttledHandleAnswerClick(answer.isCorrect, index)
-                          }
-                          answerState={
-                            selectedAnswerIndex === index
-                              ? answer.isCorrect
-                                ? "correct"
-                                : "incorrect"
-                              : null
-                          }
-                        />
-                      ))}
-                    </div>
-                  )}
-                </>
-              }
-            </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <div className="mt-8 flex flex-col space-y-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0 ">
+                {questions.map((answer: Answer, index: number) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + index * 0.1 }}
+                  >
+                    <AnswerButton
+                      label={answer.answerText}
+                      onClick={() =>
+                        throttledHandleAnswerClick(answer.isCorrect, index)
+                      }
+                      answerState={
+                        selectedAnswerIndex === index
+                          ? answer.isCorrect
+                            ? "correct"
+                            : "incorrect"
+                          : null
+                      }
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
           </Container>
         )}
       </Container>
-    </div>
+    </motion.div>
   );
 };
 
