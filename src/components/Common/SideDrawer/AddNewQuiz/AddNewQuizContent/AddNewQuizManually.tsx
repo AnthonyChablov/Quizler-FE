@@ -6,6 +6,7 @@ import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import { addQuiz } from "@/api/quizData";
 import Container from "@/components/Common/Container";
 import FormTextInput from "@/components/Common/Form/FormTextInput";
+import Icons from "@/components/Common/Icons";
 
 const AddNewQuizManually = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -70,9 +71,10 @@ const AddNewQuizManually = () => {
 
         {/* Question Fields */}
         {questions.map((question, index) => (
-          <div key={index} className="mb-6">
-            <h3 className="font-bold mb-3">Question {index + 1}</h3>
-
+          <div
+            key={index}
+            className="mb-6 bg-slate-300 p-5 rounded-xl shadow-md"
+          >
             {/* Question Input */}
             <FormTextInput
               quizTitle="QuestionInput"
@@ -85,7 +87,7 @@ const AddNewQuizManually = () => {
               type="text"
               value={question.questionTitle}
               isRequired={true}
-              placeHolder={`Question ${index + 1}`}
+              placeHolder={`Enter Question ${index + 1} Here...`}
             />
 
             {/* Correct Answer Input */}
@@ -100,7 +102,7 @@ const AddNewQuizManually = () => {
               type="text"
               value={question.correct_answer}
               isRequired={true}
-              placeHolder="Correct Answer"
+              placeHolder="Enter Correct Answer..."
             />
 
             {/* Incorrect Answers */}
