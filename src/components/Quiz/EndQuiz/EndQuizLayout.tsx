@@ -20,13 +20,6 @@ const EndQuizLayout = () => {
   const quizId = params.quiz.toString();
   const router = useRouter();
 
-  /* State */
-  const [score, setScore] = useState<{ correct: number; incorrect: number }>({
-    correct: 0,
-    incorrect: 0,
-  });
-  const [isQuestionsVisible, setIsQuestionsVisible] = useState(true);
-
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
     `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
@@ -37,17 +30,32 @@ const EndQuizLayout = () => {
     }
   );
 
-  /* Functions */
-  function toggleQuestionsVisibility() {
-    setIsQuestionsVisible((prev) => !prev);
-  }
+  /* State */
+  const [score, setScore] = useState<{ correct: number; incorrect: number }>({
+    correct: 0,
+    incorrect: 0,
+  });
+  const [isQuestionsVisible, setIsQuestionsVisible] = useState(true);
+  // State to track the visibility of correct answers for each question
+  const [showCorrectAnswers, setShowCorrectAnswers] = useState<boolean[]>(
+    data?.questions.map(() => false) || []
+  );
 
+  /* Functions */
   function onPrimaryButtonClick() {
     router.push(`/dashboard/quiz/${quizId}`);
   }
 
   function onSecondaryButtonClick() {
     router.push(`/dashboard/quiz/${quizId}`);
+  }
+  // Function to toggle the visibility of correct answers for a specific question
+  function toggleCorrectAnswerVisibility(index: number) {
+    setShowCorrectAnswers((prev) => {
+      const newVisibility = [...prev];
+      newVisibility[index] = !newVisibility[index];
+      return newVisibility;
+    });
   }
 
   useEffect(() => {
@@ -130,7 +138,7 @@ const EndQuizLayout = () => {
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {/* Mapping through questions and rendering dots */}
+                  {/* Mapping through questions and rendering dots and question cards  */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6  ">
                     {data.questions.map((question: Question, index: number) => (
                       <motion.div
@@ -138,17 +146,51 @@ const EndQuizLayout = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center bg-white p-4 rounded-lg shadow-lg mb-4"
+                        className="flex items-center bg-white p-4 rounded-lg shadow-lg mb-4 justify-between"
                       >
-                        <ColorDot isCorrect={question.isCorrect} />
-                        <div className="flex flex-col ml-4 ">
-                          <p className="text-lg font-semibold w-44 truncate">
-                            {index + 1}. {question?.questionTitle}
-                          </p>
-                          <p className="text-gray-600">
-                            {question.isCorrect ? "Correct" : "Incorrect"}
-                          </p>
+                        <div className="flex flex-col ml-4 flex-grow">
+                          <div className="flex items-center space-x-3 truncate">
+                            <ColorDot isCorrect={question.isCorrect} />
+                            {/* top */}
+                            <div className="flex flex-col flex-grow ">
+                              <div className="flex-grow w-2 md:w-32">
+                                {/* I want to truncate this div  */}
+                                <div className="flex flex-col ">
+                                  <p className="text-md font-semibold mr-2  ">
+                                    {question?.questionTitle}
+                                  </p>
+                                  <p className="text-gray-600 text-md">
+                                    {question.isCorrect
+                                      ? "Correct"
+                                      : "Incorrect"}
+                                  </p>
+                                </div>
+                              </div>
+                              {/* Display correct answer when visibility is true */}
+                              {showCorrectAnswers[index] && (
+                                <div className="flex flex-col sm:flex-row">
+                                  <p className="text-green-500">Correct : </p>
+                                  <p className="text-green-500">
+                                    {question?.correct_answer}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
+                        {/* Button to toggle visibility of correct answer */}
+                        <button
+                          className={`text-blue-500 mt-2 h-full flex items-start ${
+                            showCorrectAnswers[index] ? "" : "h-10"
+                          }`}
+                          onClick={() => toggleCorrectAnswerVisibility(index)}
+                        >
+                          {showCorrectAnswers[index] ? (
+                            <Icons type="hide" size={30} color="#7861f3" />
+                          ) : (
+                            <Icons type="show" size={30} color="#7861f3" />
+                          )}
+                        </button>
                       </motion.div>
                     ))}
                   </div>

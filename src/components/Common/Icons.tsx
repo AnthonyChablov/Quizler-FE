@@ -3,6 +3,8 @@ import {
   BiSolidCompass,
   BiSolidUserCircle,
   BiPlay,
+  BiShow,
+  BiHide,
 } from "react-icons/bi";
 import { IoMdClose, IoMdArrowBack, IoMdAddCircleOutline } from "react-icons/io";
 import {
@@ -25,6 +27,8 @@ const Icons = ({ type, size, color }: IIcons) => {
     <div className="text-white">
       {
         {
+          show: <BiShow size={size} color={color} />,
+          hide: <BiHide size={size} color={color} />,
           plus: <AiOutlinePlus size={size} color={color} />,
           minus: <AiOutlineMinus size={size} color={color} />,
           up: <FaArrowUp size={size} color={color} />,
