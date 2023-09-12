@@ -1,6 +1,6 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
-import AddNewQuiz from "./SideDrawerContent/AddNewQuiz";
+import AddNewQuiz from "./AddNewQuiz/AddNewQuizLayout";
 import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";

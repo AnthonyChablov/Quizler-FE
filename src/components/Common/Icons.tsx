@@ -5,6 +5,7 @@ import {
   BiPlay,
   BiShow,
   BiHide,
+  BiSolidMagicWand,
 } from "react-icons/bi";
 import { IoMdClose, IoMdArrowBack, IoMdAddCircleOutline } from "react-icons/io";
 import {
@@ -27,6 +28,7 @@ const Icons = ({ type, size, color }: IIcons) => {
     <div className="text-white">
       {
         {
+          magic: <BiSolidMagicWand size={size} color={color} />,
           show: <BiShow size={size} color={color} />,
           hide: <BiHide size={size} color={color} />,
           plus: <AiOutlinePlus size={size} color={color} />,
