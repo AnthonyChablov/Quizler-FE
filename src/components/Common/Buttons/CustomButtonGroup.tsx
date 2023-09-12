@@ -23,7 +23,7 @@ const CustomButtonGroup: React.FC<CustomButtonGroupProps> = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:space-x-4 mt-4">
+    <div className="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 mt-4">
       <button
         onClick={handleAddManuallyClick}
         className={`${
@@ -31,7 +31,7 @@ const CustomButtonGroup: React.FC<CustomButtonGroupProps> = ({
             ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-500 text-white font-bold "
             : "bg-purple-100 text-purple-500 font-regular "
         } px-4 py-2 rounded-lg focus:outline-none flex items-center justify-center font-semibold text-sm sm:text-md 
-        hover:brightness-90 transition-transform transform active:scale-95`}
+        hover:brightness-90 transition-transform transform active:scale-95 `}
       >
         Add Manually
       </button>

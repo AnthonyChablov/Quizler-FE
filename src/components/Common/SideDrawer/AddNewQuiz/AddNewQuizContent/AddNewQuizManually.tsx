@@ -1,16 +1,16 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import CustomButton from "../../../Buttons/CustomButton";
 import { QuizData, Question } from "@/models/quizzes";
 import { mutate } from "swr";
 import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import { addQuiz } from "@/api/quizData";
 import Container from "@/components/Common/Container";
-import FormTextInput from "@/components/Common/Form/FormTextInput";
 import Icons from "@/components/Common/Icons";
+import FormTextInput from "@/components/Common/Form/FormTextInput";
 
 const AddNewQuizManually = () => {
   const [quizTitle, setQuizTitle] = useState("");
-  const [numberOfQuestions, setNumberOfQuestions] = useState(0);
   const [questions, setQuestions] = useState<Question[]>([]);
   const { toggleAddQuizSideDrawer } = useSideDrawerStore();
   const [newQuestionData, setNewQuestionData] = useState<Question>({
@@ -18,7 +18,7 @@ const AddNewQuizManually = () => {
     questionTitle: "",
     correct_answer: "",
     incorrect_answers: ["", "", ""],
-    isCorrect: false, // Add the isCorrect property
+    isCorrect: false,
   });
 
   const handleAddQuestion = () => {
@@ -28,8 +28,14 @@ const AddNewQuizManually = () => {
       questionTitle: "",
       correct_answer: "",
       incorrect_answers: ["", "", ""],
-      isCorrect: false, // Add the isCorrect property
+      isCorrect: false,
     });
+  };
+
+  const handleRemoveQuestion = (indexToRemove: number) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions.splice(indexToRemove, 1);
+    setQuestions(updatedQuestions);
   };
 
   const handleSubmitManually = async (e: React.FormEvent) => {
@@ -41,7 +47,7 @@ const AddNewQuizManually = () => {
       quizTitle: quizTitle,
       questions: questions,
       numberOfCorrectQuestions: 0,
-      numberOfQuestions: numberOfQuestions,
+      numberOfQuestions: questions.length, // Set the number of questions based on the array length
     };
 
     try {
@@ -60,6 +66,7 @@ const AddNewQuizManually = () => {
       <Container>
         {/* Quiz Title Input */}
         <FormTextInput
+          displayLabel={true}
           quizTitle="QuestionTitleInput"
           label="Quiz Title:"
           onChange={(e) => setQuizTitle(e.target.value)}
@@ -71,12 +78,27 @@ const AddNewQuizManually = () => {
 
         {/* Question Fields */}
         {questions.map((question, index) => (
-          <div
+          <motion.div
             key={index}
             className="mb-6 bg-slate-300 p-5 rounded-xl shadow-md"
+            initial={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            {/* Question Input */}
+            <div className="flex justify-between pb-2">
+              <h1 className="font-bold text-gray-700">{`Question ${
+                index + 1
+              }`}</h1>
+              <div className="space-x-4 w">
+                <button onClick={() => handleRemoveQuestion(index)}>
+                  <Icons type="close" size={25} color="#a855f7" />
+                </button>
+              </div>
+            </div>
+            {/* Your question card content */}
             <FormTextInput
+              displayLabel={false}
               quizTitle="QuestionInput"
               label={`Question ${index + 1}`}
               onChange={(e) => {
@@ -89,9 +111,9 @@ const AddNewQuizManually = () => {
               isRequired={true}
               placeHolder={`Enter Question ${index + 1} Here...`}
             />
-
             {/* Correct Answer Input */}
             <FormTextInput
+              displayLabel={true}
               quizTitle="CorrectAnswer"
               label="Correct Answer"
               onChange={(e) => {
@@ -104,10 +126,10 @@ const AddNewQuizManually = () => {
               isRequired={true}
               placeHolder="Enter Correct Answer..."
             />
-
             {/* Incorrect Answers */}
             {question.incorrect_answers.map((answer, answerIndex) => (
               <FormTextInput
+                displayLabel={true}
                 quizTitle="IncorrectAnswer"
                 key={answerIndex}
                 label={`Incorrect Answer ${answerIndex + 1}`}
@@ -123,7 +145,7 @@ const AddNewQuizManually = () => {
                 placeHolder={`Enter Incorrect Answer ${answerIndex + 1}`}
               />
             ))}
-          </div>
+          </motion.div>
         ))}
 
         {/* Buttons */}
