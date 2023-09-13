@@ -1,11 +1,12 @@
-import create from 'zustand';
+import create from "zustand";
 
 type State = {
   isModalOpen: boolean;
   isDeleteModalOpen: boolean;
   isRenameModalOpen: boolean;
   isAddQuizModalOpen: boolean;
-  isEditQuestionModalOpen:boolean;
+  isEditQuestionModalOpen: boolean;
+  isExitStudyModeModalOpen: boolean;
 };
 
 type Actions = {
@@ -13,7 +14,8 @@ type Actions = {
   toggleDeleteModal: (newValue: boolean) => void;
   toggleRenameModal: (newValue: boolean) => void;
   toggleAddQuizModal: (newValue: boolean) => void;
-  toggleEditQuestionModal : (newValue: boolean) => void;
+  toggleEditQuestionModal: (newValue: boolean) => void;
+  toggleExitStudyModeModal: (newValue: boolean) => void;
 };
 
 export const useModalStore = create<State & Actions>((set) => ({
@@ -21,10 +23,14 @@ export const useModalStore = create<State & Actions>((set) => ({
   isDeleteModalOpen: false,
   isRenameModalOpen: false,
   isAddQuizModalOpen: false,
-  isEditQuestionModalOpen:false,
+  isEditQuestionModalOpen: false,
+  isExitStudyModeModalOpen: false,
   toggleModal: (newValue) => set({ isModalOpen: newValue }),
   toggleDeleteModal: (newValue) => set({ isDeleteModalOpen: newValue }),
   toggleRenameModal: (newValue) => set({ isRenameModalOpen: newValue }),
   toggleAddQuizModal: (newValue) => set({ isAddQuizModalOpen: newValue }),
-  toggleEditQuestionModal: (newValue) => set({ isEditQuestionModalOpen: newValue }),
+  toggleEditQuestionModal: (newValue) =>
+    set({ isEditQuestionModalOpen: newValue }),
+  toggleExitStudyModeModal: (newValue) =>
+    set({ isExitStudyModeModalOpen: newValue }),
 }));

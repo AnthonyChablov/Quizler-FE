@@ -1,25 +1,23 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Container from "@/components/Common/Container";
-import useSWR, { mutate, useSWRConfig } from "swr";
+import useSWR, { mutate } from "swr";
 import { throttle } from "lodash";
 import { QuizData } from "@/models/quizzes";
 import { Question } from "@/models/quizzes";
 import { Answer } from "@/models/quizzes";
 import { fetchData } from "@/api/quizData";
 import { useParams, useRouter } from "next/navigation";
-import { useQuizStore } from "@/store/useQuizStore";
+import ExitStudyModal from "@/components/Common/Modal/ExitStudyModal";
 import { useFormattedQuestions } from "@/hooks/useFormattedQuestion";
-import { countCorrectQuestions } from "@/utils/countCorrectQuestions";
 import QuizHeader from "@/components/Common/Header/QuizHeader";
-import Score from "../QuizComponents/Score/Score";
-import PrimaryButton from "@/components/Common/Buttons/PrimaryButton";
 import PrimaryCard from "@/components/Common/Cards/PrimaryCard";
 import AnswerButton from "@/components/Common/Buttons/AnswerButton";
 import { updateStudyResults } from "@/api/quizData";
 import LoadingLayout from "@/components/Loading/LoadingLayout";
 import { motion, AnimatePresence } from "framer-motion";
 import { buttonVariants } from "@/variants/variants";
+import { useModalStore } from "@/store/useModalStore";
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */
@@ -58,6 +56,8 @@ const StudyingQuizLayout = () => {
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
   // Used to identify the first render of the component and avoid certain effects on the initial render.
   const [firstRender, setFirstRender] = useState(true);
+  const { isExitStudyModeModalOpen, toggleExitStudyModeModal } =
+    useModalStore();
 
   /* Variables */
   const currentQuestion = quizQuestions[currentQuestionIndex];
@@ -94,6 +94,30 @@ const StudyingQuizLayout = () => {
     400,
     { trailing: false }
   );
+  const updateResults = async () => {
+    try {
+      const response = await updateStudyResults(quizId, correctQuestionIDs);
+      mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+      console.log("Study results updated successfully:", response);
+    } catch (error) {
+      console.error("Error updating study results:", error);
+    }
+  };
+
+  const onDontSaveProgress = () => {
+    toggleExitStudyModeModal(false);
+    router.push(`/dashboard/`);
+  };
+
+  const onSaveProgress = async () => {
+    try {
+      await updateResults();
+      toggleExitStudyModeModal(false);
+      router.push(`/dashboard/`);
+    } catch (error) {
+      console.error("Error saving progress:", error);
+    }
+  };
 
   useEffect(() => {
     if (data) {
@@ -106,15 +130,6 @@ const StudyingQuizLayout = () => {
   }, [data]);
 
   useEffect(() => {
-    const updateResults = async () => {
-      try {
-        const response = await updateStudyResults(quizId, correctQuestionIDs);
-        mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
-        console.log("Study results updated successfully:", response);
-      } catch (error) {
-        console.error("Error updating study results:", error);
-      }
-    };
     if (firstRender) {
       // Skip the effect on the first render
       setFirstRender(false);
@@ -156,6 +171,16 @@ const StudyingQuizLayout = () => {
       exit={{ opacity: 0, y: 20 }}
       className="bg-slate-200 h-full min-h-screen pb-32"
     >
+      <ExitStudyModal
+        isOpen={isExitStudyModeModalOpen}
+        onClose={() => toggleExitStudyModeModal(false)}
+        onSaveProgress={() => {
+          onSaveProgress();
+        }}
+        onDontSaveProgress={() => {
+          onDontSaveProgress();
+        }}
+      />
       <Container>
         {data && (
           <Container>
@@ -164,6 +189,7 @@ const StudyingQuizLayout = () => {
               score={finalScore}
               displayScore={true}
               link={`/dashboard/quiz/${quizId}`}
+              mode={"study"}
             />
             <motion.div
               initial={{ opacity: 0 }}
