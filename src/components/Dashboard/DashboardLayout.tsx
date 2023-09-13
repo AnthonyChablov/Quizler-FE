@@ -12,6 +12,7 @@ import SideDrawer from "../Common/SideDrawer/SideDrawer";
 import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import ScrollToTop from "../Common/Buttons/ScrollToTop";
 import LoadingLayout from "../Loading/LoadingLayout";
+import Hero from "../Common/Hero/Hero";
 
 const DashboardLayout = () => {
   // Fetch quiz data from the API using useSWR
@@ -40,6 +41,12 @@ const DashboardLayout = () => {
   }
   return (
     <div className="h-full min-h-screen bg-slate-200 ">
+      <Hero
+        title="🚀 Test Your Knowledge!"
+        description="🧠 
+            Get ready to embark on an epic journey of discovery and learning."
+      />
+
       <Container>
         <DashBoardMenu />
         <div className="pt-32 sm:pt-28">

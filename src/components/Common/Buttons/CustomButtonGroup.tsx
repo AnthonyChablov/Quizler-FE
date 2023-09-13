@@ -23,7 +23,7 @@ const CustomButtonGroup: React.FC<CustomButtonGroupProps> = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 mt-4">
+    <div className="flex flex-col xs:flex-row space-y-4 xs:space-x-4 xs:space-y-0 mt-4">
       <button
         onClick={handleAddManuallyClick}
         className={`${

@@ -1,13 +1,14 @@
-import React from 'react'
-import BottomNav from '@/components/Dashboard/Navigation/BottomNav'
+import React from "react";
+import BottomNav from "@/components/Dashboard/Navigation/BottomNav";
+import ExploreLayout from "@/components/Explore/ExploreLayout";
 
 const page = () => {
   return (
     <div>
-        explore page
-        <BottomNav/>
+      <ExploreLayout />
+      <BottomNav />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

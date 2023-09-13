@@ -42,7 +42,7 @@ const ExitStudyModal = ({
           </button>
           <button
             onClick={onDontSaveProgress}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-52 mx-auto mx-auto"
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-52 mx-auto"
           >
             Leave Without Saving
           </button>
