@@ -41,7 +41,6 @@ const AddNewQuizAi = () => {
       toggleAddQuizSideDrawer(false);
       setQuizTitle("");
       setNumQuestions(1); // Reset the number of questions input
-
       mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
     } catch (error) {
       setIsLoading(false);
@@ -95,7 +94,7 @@ const AddNewQuizAi = () => {
             required
           ></input>
         </div>
-        <div className="w-full text-left">
+        <div className="w-full text-center mt-2">
           <CustomButton
             label="Add Quiz"
             textSize="text-sm md:text-md"
