@@ -3,12 +3,17 @@ import { QuizModalProps } from "./Modal";
 import Modal from "./Modal";
 import { deleteQuiz } from "@/api/quizData";
 import CloseButton from "../Buttons/CloseButton";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 export const DeleteQuizModal = ({
   quizId,
   isOpen,
   onClose,
 }: QuizModalProps) => {
+  /* State */
+  const { setNotificationMode, toggleIsNotificationOpen } =
+    useNotificationStore();
+
   const router = useRouter(); // Initialize the useRouter hook
 
   const handleDelete = async () => {
@@ -17,7 +22,8 @@ export const DeleteQuizModal = ({
       onClose();
       router.push("/dashboard"); // Redirect to the dashboard after successful deletion
     } catch (error) {
-      // Handle error if needed
+      toggleIsNotificationOpen(true);
+      setNotificationMode("error");
       console.error("Error deleting quiz:", error);
     }
   };

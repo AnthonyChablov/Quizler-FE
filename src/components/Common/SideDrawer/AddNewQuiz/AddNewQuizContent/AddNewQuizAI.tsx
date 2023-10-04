@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomButton from "../../../Buttons/CustomButton";
 import { QuizData } from "@/models/quizzes";
 import { addQuizWithAI } from "@/api/quizData";
@@ -6,16 +6,26 @@ import { mutate } from "swr";
 import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import { Question } from "@/models/quizzes";
 import Container from "@/components/Common/Container";
+import { useRouter } from "next/navigation";
+import { useLoadingStore } from "@/store/useLoadingStore";
+import { useNotificationStore } from "@/store/useNotificationStore";
+
 const AddNewQuizAi = () => {
+  /* State */
   const [quizTitle, setQuizTitle] = useState("");
   const [numQuestions, setNumQuestions] = useState(1); // Initialize with a default value
   const [questions, setQuestions] = useState<Question[]>([]);
   const { toggleAddQuizSideDrawer } = useSideDrawerStore();
+  const { setIsLoading } = useLoadingStore();
+  const { toggleIsNotificationOpen, setNotificationMode } =
+    useNotificationStore();
+
+  /* Router */
+  const router = useRouter();
 
   const handleSubmitAI = async (e: React.FormEvent) => {
     e.preventDefault();
     // Ai generated quiz logic
-
     const newQuiz: QuizData = {
       __v: 0,
       _id: Math.random().toString(36).substring(7),
@@ -26,12 +36,16 @@ const AddNewQuizAi = () => {
     };
 
     try {
+      setIsLoading(true);
       await addQuizWithAI(quizTitle, numQuestions); // await the function call
       toggleAddQuizSideDrawer(false);
       setQuizTitle("");
       setNumQuestions(1); // Reset the number of questions input
       mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
     } catch (error) {
+      setIsLoading(false);
+      toggleIsNotificationOpen(true);
+      setNotificationMode("error");
       console.error("An error occurred:", error);
     }
   };
@@ -80,7 +94,7 @@ const AddNewQuizAi = () => {
             required
           ></input>
         </div>
-        <div className="w-full text-left">
+        <div className="w-full text-center mt-2">
           <CustomButton
             label="Add Quiz"
             textSize="text-sm md:text-md"

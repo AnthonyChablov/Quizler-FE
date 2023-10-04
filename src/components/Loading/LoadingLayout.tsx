@@ -3,6 +3,7 @@ import LoadingSkeleton from "./LoadingSkeleton/LoadingSkeleton";
 import Container from "../Common/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
+import LoadingSpinner from "./LoadingSpinner/LoadingSpinner";
 
 const LoadingLayout = () => {
   return (
@@ -11,12 +12,7 @@ const LoadingLayout = () => {
       <div className="bg-slate-200 min-h-screen flex flex-col items-center justify-center">
         <Container>
           <div className="p-4 md:flex md:justify-between md:space-x-4 lg:space-x-8">
-            <div className="flex items-center justify-center flex-col">
-              <CircularProgress color="secondary" size={35} />
-              <p className="text-2xl text-purple-500 font-semibold mt-4">
-                Loading
-              </p>
-            </div>
+            <LoadingSpinner text="Loading" />
           </div>
         </Container>
       </div>

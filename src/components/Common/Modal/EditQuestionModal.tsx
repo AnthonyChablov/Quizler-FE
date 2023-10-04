@@ -5,6 +5,7 @@ import { Question } from "@/models/quizzes";
 import Modal from "./Modal";
 import CloseButton from "../Buttons/CloseButton";
 import { useQuestionStore } from "@/store/useQuestionStore";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 interface EditQuestionModalProps {
   questionId: string;
@@ -26,6 +27,8 @@ const EditQuestionModal = ({
   const [newQuestionData, setNewQuestionData] = useState<Question | null>(
     editQuestionData
   );
+  const { toggleIsNotificationOpen, setNotificationMode } =
+    useNotificationStore();
 
   /* Optimistic updates using swr */
   const { mutate } = useSWRConfig();
@@ -55,6 +58,8 @@ const EditQuestionModal = ({
         onClose();
       }
     } catch (error) {
+      toggleIsNotificationOpen(true);
+      setNotificationMode("error");
       console.error("Error updating question:", error);
     }
   };

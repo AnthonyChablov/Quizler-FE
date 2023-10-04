@@ -4,6 +4,7 @@ import { useSWRConfig } from "swr";
 import Modal from "./Modal";
 import { renameQuiz } from "@/api/quizData";
 import CloseButton from "../Buttons/CloseButton";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 export const RenameQuizModal = ({
   quizId,
@@ -13,6 +14,8 @@ export const RenameQuizModal = ({
   /* State */
   const [newTitle, setNewTitle] = useState("");
   const [error, setError] = useState<string | null>(null); // Explicitly define the type
+  const { setNotificationMode, toggleIsNotificationOpen } =
+    useNotificationStore();
 
   /* Optimistic updates using swr */
   const { mutate } = useSWRConfig();
@@ -20,6 +23,8 @@ export const RenameQuizModal = ({
   const handleRename = async (id: string, title: string) => {
     try {
       await renameQuiz(id, title); // Assuming renameQuiz returns a promise or can be awaited
+      toggleIsNotificationOpen(true);
+      setNotificationMode("error");
       mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
       onClose();
     } catch (error) {

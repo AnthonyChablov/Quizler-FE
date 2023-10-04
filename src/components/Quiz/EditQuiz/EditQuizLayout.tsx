@@ -1,44 +1,25 @@
 import React, { useEffect } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { fetchData } from "@/api/quizData";
 import { useParams } from "next/navigation";
 import Container from "../../Common/Container";
 import { QuizData } from "@/models/quizzes";
-import { DeleteQuizModal } from "../../Common/Modal/DeleteQuizModal";
-import { RenameQuizModal } from "../../Common/Modal/RenameQuizModal";
 import { useModalStore } from "@/store/useModalStore";
 import DisplayCard from "../../Common/Cards/DisplayCard";
 import AddButton from "../../Common/Buttons/AddButton";
 import LoadingLayout from "../../Loading/LoadingLayout";
 import QuizHeader from "../../Common/Header/QuizHeader";
 import SpeedDialButton from "../../Common/Buttons/SpeedDialButton";
-import AddQuestionModal from "../../Common/Modal/AddQuestionModal";
-import EditQuestionModal from "../../Common/Modal/EditQuestionModal";
-import { useQuestionStore } from "@/store/useQuestionStore";
+import QuizModals from "../QuizComponents/QuizModals/QuizModals";
+import Notification from "@/components/Common/Notification/Notification";
 
 const EditQuizLayout = () => {
   /* Next Router */
   const params = useParams();
   const quizId = params.quiz;
 
-  /* Optimistic updates using swr */
-  const { mutate } = useSWRConfig();
-
   /* State */
-  const {
-    isModalOpen,
-    isDeleteModalOpen,
-    isRenameModalOpen,
-    isAddQuizModalOpen,
-    isEditQuestionModalOpen,
-    toggleModal,
-    toggleDeleteModal,
-    toggleRenameModal,
-    toggleAddQuizModal,
-    toggleEditQuestionModal,
-  } = useModalStore();
-
-  const { editQuestionId } = useQuestionStore();
+  const { toggleAddQuizModal } = useModalStore();
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
@@ -49,10 +30,6 @@ const EditQuizLayout = () => {
       refreshInterval: 300000,
     }
   );
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   /* Variables */
   const quizHeader = data?.quizTitle ?? "Loading...";
@@ -68,38 +45,7 @@ const EditQuizLayout = () => {
     <div className=" bg-slate-200 h-full min-h-screen pb-24">
       <Container>
         {/* Modals */}
-        {isDeleteModalOpen && (
-          <DeleteQuizModal
-            quizId={String(quizId)}
-            isOpen={isDeleteModalOpen}
-            onClose={() => toggleDeleteModal(false)}
-          />
-        )}
-        {isRenameModalOpen && (
-          <RenameQuizModal
-            quizId={String(quizId)}
-            isOpen={isRenameModalOpen}
-            onClose={() => toggleRenameModal(false)}
-          />
-        )}
-        {isAddQuizModalOpen && (
-          <AddQuestionModal
-            quizId={String(quizId)}
-            isOpen={isAddQuizModalOpen}
-            onClose={() => toggleAddQuizModal(false)}
-          />
-        )}
-        {isEditQuestionModalOpen && editQuestionId && questions && (
-          <EditQuestionModal
-            questionData={questions.find(
-              (question) => question._id === editQuestionId
-            )} /* Find the specific question */
-            questionId={String(editQuestionId)}
-            quizId={String(quizId)}
-            isOpen={isEditQuestionModalOpen}
-            onClose={() => toggleEditQuestionModal(false)}
-          />
-        )}
+        <QuizModals quizId={quizId} questions={questions} />
         <QuizHeader
           headerText={quizHeader}
           displayScore={false}
@@ -123,6 +69,7 @@ const EditQuizLayout = () => {
           <AddButton onClick={() => toggleAddQuizModal(true)} />
         </div>
         <SpeedDialButton />
+        <Notification />
       </Container>
     </div>
   );
