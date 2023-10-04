@@ -15,30 +15,15 @@ import SpeedDialButton from "../../Common/Buttons/SpeedDialButton";
 import AddQuestionModal from "../../Common/Modal/AddQuestionModal";
 import EditQuestionModal from "../../Common/Modal/EditQuestionModal";
 import { useQuestionStore } from "@/store/useQuestionStore";
+import QuizModals from "../QuizComponents/QuizModals/QuizModals";
 
 const EditQuizLayout = () => {
   /* Next Router */
   const params = useParams();
   const quizId = params.quiz;
 
-  /* Optimistic updates using swr */
-  const { mutate } = useSWRConfig();
-
   /* State */
-  const {
-    isModalOpen,
-    isDeleteModalOpen,
-    isRenameModalOpen,
-    isAddQuizModalOpen,
-    isEditQuestionModalOpen,
-    toggleModal,
-    toggleDeleteModal,
-    toggleRenameModal,
-    toggleAddQuizModal,
-    toggleEditQuestionModal,
-  } = useModalStore();
-
-  const { editQuestionId } = useQuestionStore();
+  const { toggleAddQuizModal } = useModalStore();
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
@@ -68,38 +53,7 @@ const EditQuizLayout = () => {
     <div className=" bg-slate-200 h-full min-h-screen pb-24">
       <Container>
         {/* Modals */}
-        {isDeleteModalOpen && (
-          <DeleteQuizModal
-            quizId={String(quizId)}
-            isOpen={isDeleteModalOpen}
-            onClose={() => toggleDeleteModal(false)}
-          />
-        )}
-        {isRenameModalOpen && (
-          <RenameQuizModal
-            quizId={String(quizId)}
-            isOpen={isRenameModalOpen}
-            onClose={() => toggleRenameModal(false)}
-          />
-        )}
-        {isAddQuizModalOpen && (
-          <AddQuestionModal
-            quizId={String(quizId)}
-            isOpen={isAddQuizModalOpen}
-            onClose={() => toggleAddQuizModal(false)}
-          />
-        )}
-        {isEditQuestionModalOpen && editQuestionId && questions && (
-          <EditQuestionModal
-            questionData={questions.find(
-              (question) => question._id === editQuestionId
-            )} /* Find the specific question */
-            questionId={String(editQuestionId)}
-            quizId={String(quizId)}
-            isOpen={isEditQuestionModalOpen}
-            onClose={() => toggleEditQuestionModal(false)}
-          />
-        )}
+        <QuizModals quizId={quizId} questions={questions} />
         <QuizHeader
           headerText={quizHeader}
           displayScore={false}

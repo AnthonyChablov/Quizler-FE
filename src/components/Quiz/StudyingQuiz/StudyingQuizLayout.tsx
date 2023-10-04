@@ -7,7 +7,7 @@ import { QuizData } from "@/models/quizzes";
 import { Question } from "@/models/quizzes";
 import { Answer } from "@/models/quizzes";
 import { fetchData } from "@/api/quizData";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, usePathname } from "next/navigation";
 import ExitStudyModal from "@/components/Common/Modal/ExitStudyModal";
 import { useFormattedQuestions } from "@/hooks/useFormattedQuestion";
 import QuizHeader from "@/components/Common/Header/QuizHeader";
@@ -18,6 +18,8 @@ import LoadingLayout from "@/components/Loading/LoadingLayout";
 import { motion, AnimatePresence } from "framer-motion";
 import { buttonVariants } from "@/variants/variants";
 import { useModalStore } from "@/store/useModalStore";
+import { Suspense } from "react";
+import { NavigationEvents } from "@/hooks/NavigationEvents";
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */
@@ -25,6 +27,7 @@ const StudyingQuizLayout = () => {
   /* Extract URL Params */
   const params = useParams();
   const quizId = params.quiz.toString();
+  const pathname = usePathname();
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
@@ -181,6 +184,9 @@ const StudyingQuizLayout = () => {
           onDontSaveProgress();
         }}
       />
+      <Suspense fallback={null}>
+        <NavigationEvents />
+      </Suspense>
       <Container>
         {data && (
           <Container>
