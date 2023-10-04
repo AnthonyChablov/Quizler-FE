@@ -13,18 +13,19 @@ import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import ScrollToTop from "../Common/Buttons/ScrollToTop";
 import LoadingLayout from "../Loading/LoadingLayout";
 import Hero from "../Common/Hero/Hero";
-import Input from '@mui/material/Input';
-import Button from '@mui/material/Button';
+import Input from "@mui/material/Input";
+import Button from "@mui/material/Button";
 
 const DashboardLayout = () => {
-
-  const [searchKey, setSearchKey] = useState('')
+  const [searchKey, setSearchKey] = useState("");
   // Fetch quiz data from the API using useSWR
   // TODO: need to do query by the quizTitle, current just returns all quizzes
   const { data, error, isLoading } = useSWR(
-    searchKey != '' ?
-    [`https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`]
-    : "https://quizzlerreactapp.onrender.com/api/quizzes",
+    searchKey != ""
+      ? [
+          `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`,
+        ]
+      : "https://quizzlerreactapp.onrender.com/api/quizzes",
     fetchData,
     {
       revalidateOnFocus: false,
@@ -33,11 +34,12 @@ const DashboardLayout = () => {
   );
 
   // when search bar is used, this is called
-  const onChange = async (e) => {
-    const {value} = e.target;
-    console.log(value)
-    setSearchKey(value)
-  }
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // need to specify TS types especially on Event - Anthony
+    const { value } = e.target;
+    console.log(value);
+    setSearchKey(value);
+  };
 
   const { isAddQuizSideDrawerOpen, toggleAddQuizSideDrawer } =
     useSideDrawerStore();
@@ -68,13 +70,11 @@ const DashboardLayout = () => {
         </div>
 
         {/* adding a simple button + search bar */}
-        <div
-          className="my-10"
-        >
+        <div className="my-10">
           <Input
             className="quizSearch"
             onChange={onChange}
-            id='quizSearch'
+            id="quizSearch"
             type="search"
             name="search"
             value={searchKey}
