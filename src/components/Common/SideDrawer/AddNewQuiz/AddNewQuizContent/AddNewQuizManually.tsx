@@ -8,8 +8,11 @@ import { addQuiz } from "@/api/quizData";
 import Container from "@/components/Common/Container";
 import Icons from "@/components/Common/Icons";
 import FormTextInput from "@/components/Common/Form/FormTextInput";
+import { useLoadingStore } from "@/store/useLoadingStore";
 
 const AddNewQuizManually = () => {
+  /* State */
+  const { setIsLoading } = useLoadingStore();
   const [quizTitle, setQuizTitle] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const { toggleAddQuizSideDrawer } = useSideDrawerStore();
@@ -51,12 +54,14 @@ const AddNewQuizManually = () => {
     };
 
     try {
+      setIsLoading(true);
       await addQuiz(newQuiz);
       setQuizTitle("");
       setQuestions([]);
       toggleAddQuizSideDrawer(false);
       mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
     } catch (error) {
+      setIsLoading(false);
       console.error("An error occurred during manual quiz submission:", error);
     }
   };
