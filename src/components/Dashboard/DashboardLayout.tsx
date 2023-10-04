@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion components
 import SubHeader from "@/components/Common/SubHeader/SubHeader";
@@ -13,17 +13,31 @@ import { useSideDrawerStore } from "@/store/useSideDrawerStore";
 import ScrollToTop from "../Common/Buttons/ScrollToTop";
 import LoadingLayout from "../Loading/LoadingLayout";
 import Hero from "../Common/Hero/Hero";
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
 
 const DashboardLayout = () => {
+
+  const [searchKey, setSearchKey] = useState('')
   // Fetch quiz data from the API using useSWR
+  // TODO: need to do query by the quizTitle, current just returns all quizzes
   const { data, error, isLoading } = useSWR(
-    "https://quizzlerreactapp.onrender.com/api/quizzes",
+    searchKey != '' ?
+    [`https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`]
+    : "https://quizzlerreactapp.onrender.com/api/quizzes",
     fetchData,
     {
       revalidateOnFocus: false,
       refreshInterval: 300000,
     }
   );
+
+  // when search bar is used, this is called
+  const onChange = async (e) => {
+    const {value} = e.target;
+    console.log(value)
+    setSearchKey(value)
+  }
 
   const { isAddQuizSideDrawerOpen, toggleAddQuizSideDrawer } =
     useSideDrawerStore();
@@ -51,6 +65,27 @@ const DashboardLayout = () => {
         <DashBoardMenu />
         <div className="pt-32 sm:pt-28">
           <SubHeader text="Latest Quizzes" size="small" />
+        </div>
+
+        {/* adding a simple button + search bar */}
+        <div
+          className="my-10"
+        >
+          <Input
+            className="quizSearch"
+            onChange={onChange}
+            id='quizSearch'
+            type="search"
+            name="search"
+            value={searchKey}
+            placeholder="Search for quiz by title.."
+            size="medium"
+          />
+          {/* chloe: button is looking weird */}
+          {/* <Button 
+            variant="contained"
+            onClick={onChange}
+          >Search</Button> */}
         </div>
         <div
           className="space-x-1 space-y-6 pb-28 md:space-x-0 md:space-y-0 
