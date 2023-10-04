@@ -20,6 +20,7 @@ import { buttonVariants } from "@/variants/variants";
 import { useModalStore } from "@/store/useModalStore";
 import { Suspense } from "react";
 import { NavigationEvents } from "@/hooks/NavigationEvents";
+import QuizTimer from "../QuizComponents/QuizTimer/QuizTimer";
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */
@@ -122,6 +123,11 @@ const StudyingQuizLayout = () => {
     }
   };
 
+  function endOfQuiz() {
+    updateResults();
+    router.push(`/dashboard/quiz/${quizId}/completed`);
+  }
+
   useEffect(() => {
     if (data) {
       const filteredQuestions = data.questions.filter(
@@ -139,8 +145,7 @@ const StudyingQuizLayout = () => {
       return;
     }
     if (isEndOfQuiz) {
-      updateResults();
-      router.push(`/dashboard/quiz/${quizId}/completed`);
+      endOfQuiz();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -196,6 +201,12 @@ const StudyingQuizLayout = () => {
               displayScore={true}
               link={`/dashboard/quiz/${quizId}`}
               mode={"study"}
+            />
+            <QuizTimer
+              durationInSeconds={900}
+              onTimeout={() => {
+                endOfQuiz();
+              }}
             />
             <motion.div
               initial={{ opacity: 0 }}
