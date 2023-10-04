@@ -21,11 +21,10 @@ import Notification from "../Common/Notification/Notification";
 const DashboardLayout = () => {
   const [searchKey, setSearchKey] = useState("");
   // Fetch quiz data from the API using useSWR
-  // TODO: need to do query by the quizTitle, current just returns all quizzes
   const { data, error, isLoading } = useSWR(
     searchKey != ""
       ? [
-          `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`,
+          `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle="${searchKey}"`,
         ]
       : "https://quizzlerreactapp.onrender.com/api/quizzes",
     fetchData,
