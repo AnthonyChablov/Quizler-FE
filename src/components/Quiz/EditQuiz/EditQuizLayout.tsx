@@ -1,21 +1,17 @@
 import React, { useEffect } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { fetchData } from "@/api/quizData";
 import { useParams } from "next/navigation";
 import Container from "../../Common/Container";
 import { QuizData } from "@/models/quizzes";
-import { DeleteQuizModal } from "../../Common/Modal/DeleteQuizModal";
-import { RenameQuizModal } from "../../Common/Modal/RenameQuizModal";
 import { useModalStore } from "@/store/useModalStore";
 import DisplayCard from "../../Common/Cards/DisplayCard";
 import AddButton from "../../Common/Buttons/AddButton";
 import LoadingLayout from "../../Loading/LoadingLayout";
 import QuizHeader from "../../Common/Header/QuizHeader";
 import SpeedDialButton from "../../Common/Buttons/SpeedDialButton";
-import AddQuestionModal from "../../Common/Modal/AddQuestionModal";
-import EditQuestionModal from "../../Common/Modal/EditQuestionModal";
-import { useQuestionStore } from "@/store/useQuestionStore";
 import QuizModals from "../QuizComponents/QuizModals/QuizModals";
+import Notification from "@/components/Common/Notification/Notification";
 
 const EditQuizLayout = () => {
   /* Next Router */
@@ -34,10 +30,6 @@ const EditQuizLayout = () => {
       refreshInterval: 300000,
     }
   );
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   /* Variables */
   const quizHeader = data?.quizTitle ?? "Loading...";
@@ -77,6 +69,7 @@ const EditQuizLayout = () => {
           <AddButton onClick={() => toggleAddQuizModal(true)} />
         </div>
         <SpeedDialButton />
+        <Notification />
       </Container>
     </div>
   );

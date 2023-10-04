@@ -9,6 +9,7 @@ import Container from "@/components/Common/Container";
 import Icons from "@/components/Common/Icons";
 import FormTextInput from "@/components/Common/Form/FormTextInput";
 import { useLoadingStore } from "@/store/useLoadingStore";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 const AddNewQuizManually = () => {
   /* State */
@@ -23,6 +24,8 @@ const AddNewQuizManually = () => {
     incorrect_answers: ["", "", ""],
     isCorrect: false,
   });
+  const { toggleIsNotificationOpen, setNotificationMode } =
+    useNotificationStore();
 
   const handleAddQuestion = () => {
     setQuestions([...questions, newQuestionData]);
@@ -62,6 +65,8 @@ const AddNewQuizManually = () => {
       mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
     } catch (error) {
       setIsLoading(false);
+      toggleIsNotificationOpen(true);
+      setNotificationMode("error");
       console.error("An error occurred during manual quiz submission:", error);
     }
   };

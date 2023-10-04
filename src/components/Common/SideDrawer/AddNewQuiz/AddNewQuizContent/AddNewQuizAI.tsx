@@ -8,6 +8,7 @@ import { Question } from "@/models/quizzes";
 import Container from "@/components/Common/Container";
 import { useRouter } from "next/navigation";
 import { useLoadingStore } from "@/store/useLoadingStore";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 const AddNewQuizAi = () => {
   /* State */
@@ -16,6 +17,8 @@ const AddNewQuizAi = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const { toggleAddQuizSideDrawer } = useSideDrawerStore();
   const { setIsLoading } = useLoadingStore();
+  const { toggleIsNotificationOpen, setNotificationMode } =
+    useNotificationStore();
 
   /* Router */
   const router = useRouter();
@@ -38,9 +41,12 @@ const AddNewQuizAi = () => {
       toggleAddQuizSideDrawer(false);
       setQuizTitle("");
       setNumQuestions(1); // Reset the number of questions input
+
       mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
     } catch (error) {
       setIsLoading(false);
+      toggleIsNotificationOpen(true);
+      setNotificationMode("error");
       console.error("An error occurred:", error);
     }
   };
