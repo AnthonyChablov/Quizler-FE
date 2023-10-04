@@ -47,7 +47,7 @@ const AddNewQuiz = () => {
             </h2>
             <CloseButton onClick={() => toggleAddQuizSideDrawer(false)} />
           </div>
-          {isLoading ? (
+          {!isLoading ? (
             <>
               <div className="flex justify-center mb-8">
                 <CustomButtonGroup
