@@ -23,9 +23,8 @@ const DashboardLayout = () => {
   // Fetch quiz data from the API using useSWR
   const { data, error, isLoading } = useSWR(
     searchKey != ""
-      ? [
-          `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle="${searchKey}"`,
-        ]
+      ? 
+        `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle="${searchKey}"`
       : "https://quizzlerreactapp.onrender.com/api/quizzes",
     fetchData,
     {
