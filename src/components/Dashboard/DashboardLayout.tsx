@@ -11,23 +11,34 @@ import ScrollToTop from "../Common/Buttons/ScrollToTop";
 import LoadingLayout from "../Loading/LoadingLayout";
 import Hero from "../Common/Hero/Hero";
 import Input from "@mui/material/Input";
-import Button from "@mui/material/Button";
 import LatestQuizzes from "./LatestQuizzes/LatestQuizzes";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import DirectoryCard from "./Cards/DirectoryCard";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import Notification from "../Common/Notification/Notification";
 
 const DashboardLayout = () => {
   const [searchKey, setSearchKey] = useState("");
+
   // Fetch quiz data from the API using useSWR
   // TODO: need to do query by the quizTitle, current just returns all quizzes
   const { data, error, isLoading } = useSWR(
     searchKey != ""
-      ? [
-          `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`,
-        ]
+      ? `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`
       : "https://quizzlerreactapp.onrender.com/api/quizzes",
+    fetchData,
+    {
+      revalidateOnFocus: false,
+      refreshInterval: 300000,
+    }
+  );
+
+  // Fetch Directories
+  const {
+    data: directoryData,
+    error: directoryError,
+    isLoading: directoryLoading,
+  } = useSWR(
+    "https://quizzlerreactapp.onrender.com/api/directory/6508bbf7a027061a12c9c8e4",
     fetchData,
     {
       revalidateOnFocus: false,
@@ -46,6 +57,10 @@ const DashboardLayout = () => {
   const { isNotificationOpen, toggleIsNotificationOpen } =
     useNotificationStore();
 
+  useEffect(() => {
+    console.log(directoryData);
+  }, [directoryData]);
+
   if (error) {
     return <p>Error: {error.message}</p>;
   }
@@ -61,12 +76,20 @@ const DashboardLayout = () => {
       />
       <Container>
         <DashBoardMenu />
-        <div className="pt-32 sm:pt-28">
-          <SubHeader text="Latest Quizzes" size="small" />
+        {/* Display Directories */}
+        <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">
+          <SubHeader text="Directories" size="small" />
         </div>
-
-        {/* adding a simple button + search bar */}
-        <div className="my-10">
+        {/* Directories */}
+        <div
+          className="space-x-1 space-y-6  md:space-x-0 md:space-y-0 
+        md:grid md:grid-cols-2 gap-6 lg:grid-cols-3 3xl:grid-cols-4 xl:gap-7"
+        >
+          <DirectoryCard title="Directory Name" linkTo="123" />
+        </div>
+        <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">
+          {/* DIsplay laterst Quizzes */}
+          <SubHeader text="Latest Quizzes" size="small" />
           <Input
             className="quizSearch"
             onChange={onChange}
@@ -75,16 +98,10 @@ const DashboardLayout = () => {
             name="search"
             value={searchKey}
             placeholder="Search for quiz by title.."
-            size="medium"
+            size="small"
           />
-          {/* chloe: button is looking weird */}
-          {/* <Button 
-            variant="contained"
-            onClick={onChange}
-          >Search</Button> */}
         </div>
         <LatestQuizzes quizzes={data} />
-        <SubHeader text="My Quizzes" size="small" />
       </Container>
       <SideDrawer open={isAddQuizSideDrawerOpen} />
       <Notification />
