@@ -12,9 +12,10 @@ import LoadingLayout from "../Loading/LoadingLayout";
 import Hero from "../Common/Hero/Hero";
 import Input from "@mui/material/Input";
 import LatestQuizzes from "./LatestQuizzes/LatestQuizzes";
-import DirectoryCard from "./Cards/DirectoryCard";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import Notification from "../Common/Notification/Notification";
+import { DirectoryData } from "@/models/directories";
+import DirectoryCard from "./Cards/DirectoryCard";
 
 const DashboardLayout = () => {
   const [searchKey, setSearchKey] = useState("");
@@ -85,7 +86,18 @@ const DashboardLayout = () => {
           className="space-x-1 space-y-6  md:space-x-0 md:space-y-0 
         md:grid md:grid-cols-2 gap-6 lg:grid-cols-3 3xl:grid-cols-4 xl:gap-7"
         >
-          <DirectoryCard title="Directory Name" linkTo="123" />
+          {directoryData?.subdirectories?.map(
+            (directory: DirectoryData, index: number) => {
+              return (
+                <React.Fragment key={index}>
+                  <DirectoryCard
+                    title={directory?.name}
+                    linkTo={`/dashboard/explore/directory/${directory?._id}`}
+                  />
+                </React.Fragment>
+              );
+            }
+          )}
         </div>
         <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">
           {/* DIsplay laterst Quizzes */}

@@ -21,23 +21,13 @@ const DirectoryCard = ({ title, linkTo }: IDirectoryCard) => {
         <div className="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
           <div className="flex">
             <Image src={iconFolder} width={25} height={25} alt="folder icon" />
-            <h3 className="text-lg font-semibold truncate ml-5">{title}</h3>
+            <h3 className="text-xl font-semibold truncate ml-5">{title}</h3>
           </div>
           <div className="space-x-2 flex flex-col xs:flex-row justify-end items-center">
             <Link href={`${linkTo}/edit`}>
-              <SecondaryButton
-                label="Edit"
-                onClick={() => {
-                  123;
-                }}
-              />
+              <SecondaryButton label="Edit" onClick={() => {}} />
             </Link>
-            <PrimaryButton
-              label="View"
-              onClick={() => {
-                123;
-              }}
-            />
+            <PrimaryButton label="View" onClick={() => {}} />
           </div>
         </div>
       </Link>
