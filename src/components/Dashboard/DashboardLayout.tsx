@@ -79,7 +79,7 @@ const DashboardLayout = () => {
         <DashBoardMenu />
         {/* Display Directories */}
         <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">
-          <SubHeader text="Directories" size="small" />
+          <SubHeader text="Latest Directories" size="small" />
         </div>
         {/* Directories */}
         <div
