@@ -47,13 +47,6 @@ const DashboardLayout = () => {
     }
   );
 
-  // when search bar is used, this is called
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // need to specify TS types especially on Event - Anthony
-    const { value } = e.target;
-    console.log(value);
-    setSearchKey(value);
-  };
   const { isAddQuizSideDrawerOpen } = useSideDrawerStore();
   const { isNotificationOpen, toggleIsNotificationOpen } =
     useNotificationStore();
@@ -102,16 +95,6 @@ const DashboardLayout = () => {
         <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">
           {/* DIsplay laterst Quizzes */}
           <SubHeader text="Latest Quizzes" size="small" />
-          <Input
-            className="quizSearch"
-            onChange={onChange}
-            id="quizSearch"
-            type="search"
-            name="search"
-            value={searchKey}
-            placeholder="Search for quiz by title.."
-            size="small"
-          />
         </div>
         <LatestQuizzes quizzes={data} />
       </Container>
