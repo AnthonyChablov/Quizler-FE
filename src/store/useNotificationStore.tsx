@@ -1,13 +1,25 @@
 import create from "zustand";
 type State = {
   isNotificationOpen: boolean;
-  notificationMode: "error" | "warning" | "info" | "success" | undefined;
+  notificationMode:
+    | "error"
+    | "warning"
+    | "info"
+    | "success"
+    | "characterCount"
+    | undefined;
 };
 
 type Actions = {
   toggleIsNotificationOpen: (newValue: boolean) => void;
   setNotificationMode: (
-    newValue: "error" | "warning" | "info" | "success" | undefined
+    newValue:
+      | "error"
+      | "warning"
+      | "info"
+      | "success"
+      | "characterCount"
+      | undefined
   ) => void;
 };
 

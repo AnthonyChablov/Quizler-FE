@@ -7,13 +7,34 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import Icons from "../Icons";
 import { useModalStore } from "@/store/useModalStore";
 
-export default function SpeedDialTooltipOpen() {
+interface ISpeedDialTooltipOpen {
+  isEdit?: boolean;
+  isDelete?: boolean;
+  isRename?: boolean;
+  isAddDirectory?: boolean;
+  isAddQuiz?: boolean;
+  isDeleteDirectory?: boolean;
+  isEditDirectory?: boolean;
+}
+
+export default function SpeedDialTooltipOpen({
+  isEdit,
+  isDelete,
+  isRename,
+  isAddDirectory,
+  isAddQuiz,
+  isDeleteDirectory,
+  isEditDirectory,
+}: ISpeedDialTooltipOpen) {
   /* Next Router */
   const params = useParams();
   const quizId = params.quiz;
   const router = useRouter();
 
+  /* State */
   const [open, setOpen] = React.useState(false);
+
+  /* Functions for handelling buttons*/
   const handleOpen = () => {
     setOpen(true);
   };
@@ -37,23 +58,85 @@ export default function SpeedDialTooltipOpen() {
     router.push(`/dashboard/quiz/${quizId}`);
   };
 
-  const actions = [
-    {
+  const handleAddDirectoryClick = () => {
+    // Handle Add Directory click here
+    handleClose();
+  };
+
+  const handleAddQuizClick = () => {
+    // Handle Add Quiz click here
+    handleClose();
+  };
+
+  const handleDeleteDirectoryClick = () => {
+    // Handle Delete Directory click here
+    handleClose();
+  };
+
+  const handleEditDirectoryClick = () => {
+    // Handle Delete Directory click here
+    handleClose();
+    toggleEditDirectoryModalOpen(true);
+  };
+
+  // Create an array to store the actions based on props
+  let actions = [];
+
+  if (isEdit) {
+    actions.push({
       icon: <Icons type="edit" size={25} color="#7861f3" />,
       name: "Edit",
       onclick: handleRenameClick,
-    },
-    {
+    });
+  }
+
+  if (isDelete) {
+    actions.push({
       icon: <Icons type="delete" size={25} color="#7861f3" />,
       name: "Delete",
       onclick: handleDeleteClick,
-    },
-    {
-      icon: <Icons type="play" size={30} color="#7861f3" />,
-      name: "Play",
-      onclick: handlePlayClick,
-    },
-  ];
+    });
+  }
+
+  if (isRename) {
+    actions.push({
+      icon: <Icons type="edit" size={25} color="#7861f3" />,
+      name: "Rename",
+      onclick: handleRenameClick,
+    });
+  }
+
+  if (isAddDirectory) {
+    actions.push({
+      icon: <Icons type="add" size={25} color="#7861f3" />,
+      name: "Add Directory",
+      onclick: handleAddDirectoryClick,
+    });
+  }
+
+  if (isAddQuiz) {
+    actions.push({
+      icon: <Icons type="add" size={25} color="#7861f3" />,
+      name: "Add Quiz",
+      onclick: handleAddQuizClick,
+    });
+  }
+
+  if (isDeleteDirectory) {
+    actions.push({
+      icon: <Icons type="delete" size={25} color="#7861f3" />,
+      name: "Delete Directory",
+      onclick: handleDeleteDirectoryClick,
+    });
+  }
+
+  if (isEditDirectory) {
+    actions.push({
+      icon: <Icons type="edit" size={25} color="#7861f3" />,
+      name: "Edit Directory",
+      onclick: handleEditDirectoryClick,
+    });
+  }
 
   const {
     isModalOpen,
@@ -62,14 +145,10 @@ export default function SpeedDialTooltipOpen() {
     toggleModal,
     toggleDeleteModal,
     toggleRenameModal,
-  } = useModalStore((state) => ({
-    isModalOpen: state.isModalOpen,
-    isDeleteModalOpen: state.isDeleteModalOpen,
-    isRenameModalOpen: state.isRenameModalOpen,
-    toggleModal: state.toggleModal,
-    toggleDeleteModal: state.toggleDeleteModal,
-    toggleRenameModal: state.toggleRenameModal,
-  }));
+
+    /* Directories */
+    toggleEditDirectoryModalOpen,
+  } = useModalStore();
 
   return (
     <Box

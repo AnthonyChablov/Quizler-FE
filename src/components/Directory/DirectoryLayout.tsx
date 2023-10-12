@@ -5,20 +5,23 @@ import { fetchData } from "@/api/quizData";
 import { useParams, useRouter, usePathname } from "next/navigation";
 import LoadingLayout from "../Loading/LoadingLayout";
 import Container from "../Common/Container";
-import iconFolder from "../../../public/icon _folder_.png";
-import Image from "next/image";
 import QuizHeader from "../Common/Header/QuizHeader";
 import SubHeader from "../Common/SubHeader/SubHeader";
 import DirectoryCard from "../Dashboard/Cards/DirectoryCard";
 import { DirectoryData } from "@/models/directories";
 import LatestQuizzes from "../Dashboard/LatestQuizzes/LatestQuizzes";
 import SpeedDialTooltipOpen from "../Common/Buttons/SpeedDialButton";
+import EditDirectoryModal from "../Common/Modal/DirectoryModals/EditDirectoryModal";
+import { useModalStore } from "@/store/useModalStore";
 
 const DirectoryLayout = () => {
   const router = useRouter();
   const params = useParams();
   const directoryId = params.directory.toString();
   const pathname = usePathname();
+
+  /* State */
+  const { isEditDirectoryModalOpen } = useModalStore();
 
   // Fetch Directories
   const {
@@ -86,9 +89,18 @@ const DirectoryLayout = () => {
           </div>
           <LatestQuizzes quizzes={directoryData?.quizzes} />
         </div>
-        <SpeedDialTooltipOpen />{" "}
+        <SpeedDialTooltipOpen
+          isAddDirectory={true}
+          isAddQuiz={true}
+          isDeleteDirectory={true}
+          isEditDirectory={true}
+        />
         {/* Add quiz, Add DIrectory , Delete Directory  */}
       </Container>
+      <EditDirectoryModal
+        isOpen={isEditDirectoryModalOpen}
+        onClose={() => {}}
+      />
     </div>
   );
 };

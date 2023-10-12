@@ -7,6 +7,8 @@ type State = {
   isAddQuizModalOpen: boolean;
   isEditQuestionModalOpen: boolean;
   isExitStudyModeModalOpen: boolean;
+  /* Directories */
+  isEditDirectoryModalOpen: boolean;
 };
 
 type Actions = {
@@ -16,6 +18,8 @@ type Actions = {
   toggleAddQuizModal: (newValue: boolean) => void;
   toggleEditQuestionModal: (newValue: boolean) => void;
   toggleExitStudyModeModal: (newValue: boolean) => void;
+  toggleEditDirectoryModalOpen: (newValue: boolean) => void;
+  /* Directories */
 };
 
 export const useModalStore = create<State & Actions>((set) => ({
@@ -33,4 +37,9 @@ export const useModalStore = create<State & Actions>((set) => ({
     set({ isEditQuestionModalOpen: newValue }),
   toggleExitStudyModeModal: (newValue) =>
     set({ isExitStudyModeModalOpen: newValue }),
+
+  /* Directories */
+  isEditDirectoryModalOpen: false,
+  toggleEditDirectoryModalOpen: (newValue) =>
+    set({ isAddQuizModalOpen: newValue }),
 }));

@@ -28,6 +28,8 @@ const Notification = () => {
         return "info";
       case "success":
         return "success";
+      case "characterCount":
+        return "error";
       default:
         return "info"; // Default to "info" if notificationMode is undefined
     }
@@ -43,6 +45,8 @@ const Notification = () => {
         return "Information: This is just for your knowledge.";
       case "success":
         return "Success: Successfully created quiz!";
+      case "characterCount":
+        return "Error: Character Count Exceeds Limit.";
       default:
         return "Default message";
     }
