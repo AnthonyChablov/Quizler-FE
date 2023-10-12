@@ -23,20 +23,22 @@ async function handleRequest<T>(
 export async function createDirectory(
   name: string,
   parentDirectoryId: string | undefined
-): Promise<void> {
+): Promise<any> {
   const url = `${API_BASE_URL}/directory`;
-  await handleRequest(
-    axios.post(
-      url,
-      {
-        name,
-        parentDirectoryId,
-      },
-      {
+  /* Requst Body */
+  const reqBody = {
+    name,
+    parentDirectoryId,
+  };
+  try {
+    await handleRequest(
+      axios.post(url, reqBody, {
         headers: { "Content-Type": "application/json" },
-      }
-    )
-  );
+      })
+    );
+  } catch (err) {
+    throw new Error("An error occurred while adding a quiz with AI");
+  }
 }
 
 // Function to read a directory by ID
