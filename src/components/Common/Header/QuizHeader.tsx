@@ -1,14 +1,18 @@
 import React from "react";
 import Icons from "../Icons";
+import Image from "next/image";
 import Link from "next/link";
 import { useQuizStore } from "@/store/useQuizStore";
 import { useModalStore } from "@/store/useModalStore";
+import iconFolder from "../../../../public/icon _folder_.png";
+
 interface QuizHeaderProps {
   headerText: string;
   score?: number;
   displayScore?: boolean;
   link: string;
-  mode?: "study" | "intro" | "end";
+  mode?: "study" | "intro" | "end" | "directory";
+  displayImg?: boolean;
 }
 
 const QuizHeader: React.FC<QuizHeaderProps> = ({
@@ -17,6 +21,7 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
   displayScore,
   link,
   mode,
+  displayImg,
 }) => {
   /* State */
   const isHelpOpen = useQuizStore((state) => state.isHelpOpen);
@@ -49,11 +54,18 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
           </Link>
         )}
         <div className="absolute top-16 md:top-0 inset-0 flex justify-center items-center ">
-          <h1 className="font-bold text-lg w-fit truncate ">{headerText}</h1>
+          {displayImg && (
+            <Image src={iconFolder} width={25} height={25} alt="folder icon" />
+          )}
+          <h1
+            className={`font-bold text-lg w-fit truncate ${
+              displayImg ? "ml-5" : "ml-0"
+            }`}
+          >
+            {headerText}
+          </h1>
         </div>
-        {/* <button onClick={() => toggleHelp(!isHelpOpen)}>
-          <Icons type='question' color='#7861f3' size={25}/>
-        </button> */}
+
         {displayScore && (
           <div className="flex items-center">
             <p className="font-semibold text-sm">Score : {score}</p>

@@ -95,7 +95,8 @@ export async function updateStudyResults(
 
 export async function addQuizWithAI(
   quizTopic: string,
-  questionCount: number
+  questionCount: number,
+  directoryId: string
 ): Promise<any> {
   const url = `${API_BASE_URL}/quizzes/openai`; // Your API endpoint to add a quiz with AI
 
@@ -103,9 +104,11 @@ export async function addQuizWithAI(
     "Content-Type": "application/json",
   };
 
+  /* Req Body */
   const requestData = {
     quizTopic: quizTopic,
     questionCount: questionCount,
+    directory: directoryId,
   };
 
   try {

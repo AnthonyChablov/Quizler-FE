@@ -11,22 +11,20 @@ import ScrollToTop from "../Common/Buttons/ScrollToTop";
 import LoadingLayout from "../Loading/LoadingLayout";
 import Hero from "../Common/Hero/Hero";
 import Input from "@mui/material/Input";
-import Button from "@mui/material/Button";
 import LatestQuizzes from "./LatestQuizzes/LatestQuizzes";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import Notification from "../Common/Notification/Notification";
+import { DirectoryData } from "@/models/directories";
+import DirectoryCard from "./Cards/DirectoryCard";
 
 const DashboardLayout = () => {
   const [searchKey, setSearchKey] = useState("");
+
   // Fetch quiz data from the API using useSWR
   // TODO: need to do query by the quizTitle, current just returns all quizzes
   const { data, error, isLoading } = useSWR(
     searchKey != ""
-      ? [
-          `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`,
-        ]
+      ? `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`
       : "https://quizzlerreactapp.onrender.com/api/quizzes",
     fetchData,
     {
@@ -35,16 +33,27 @@ const DashboardLayout = () => {
     }
   );
 
-  // when search bar is used, this is called
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // need to specify TS types especially on Event - Anthony
-    const { value } = e.target;
-    console.log(value);
-    setSearchKey(value);
-  };
+  // Fetch Directories
+  const {
+    data: directoryData,
+    error: directoryError,
+    isLoading: directoryLoading,
+  } = useSWR(
+    "https://quizzlerreactapp.onrender.com/api/directory/6508bbf7a027061a12c9c8e4",
+    fetchData,
+    {
+      revalidateOnFocus: false,
+      refreshInterval: 300000,
+    }
+  );
+
   const { isAddQuizSideDrawerOpen } = useSideDrawerStore();
   const { isNotificationOpen, toggleIsNotificationOpen } =
     useNotificationStore();
+
+  useEffect(() => {
+    console.log(directoryData);
+  }, [directoryData]);
 
   if (error) {
     return <p>Error: {error.message}</p>;
@@ -61,30 +70,33 @@ const DashboardLayout = () => {
       />
       <Container>
         <DashBoardMenu />
-        <div className="pt-32 sm:pt-28">
+        {/* Display Directories */}
+        <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">
+          <SubHeader text="Latest Directories" size="small" />
+        </div>
+        {/* Directories */}
+        <div
+          className="space-x-1 space-y-6  md:space-x-0 md:space-y-0 
+        md:grid md:grid-cols-2 gap-6 lg:grid-cols-3 3xl:grid-cols-4 xl:gap-7"
+        >
+          {directoryData?.subdirectories?.map(
+            (directory: DirectoryData, index: number) => {
+              return (
+                <React.Fragment key={index}>
+                  <DirectoryCard
+                    title={directory?.name}
+                    linkTo={`/dashboard/explore/directory/${directory?._id}`}
+                  />
+                </React.Fragment>
+              );
+            }
+          )}
+        </div>
+        <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">
+          {/* DIsplay laterst Quizzes */}
           <SubHeader text="Latest Quizzes" size="small" />
         </div>
-
-        {/* adding a simple button + search bar */}
-        <div className="my-10">
-          <Input
-            className="quizSearch"
-            onChange={onChange}
-            id="quizSearch"
-            type="search"
-            name="search"
-            value={searchKey}
-            placeholder="Search for quiz by title.."
-            size="medium"
-          />
-          {/* chloe: button is looking weird */}
-          {/* <Button 
-            variant="contained"
-            onClick={onChange}
-          >Search</Button> */}
-        </div>
         <LatestQuizzes quizzes={data} />
-        <SubHeader text="My Quizzes" size="small" />
       </Container>
       <SideDrawer open={isAddQuizSideDrawerOpen} />
       <Notification />
