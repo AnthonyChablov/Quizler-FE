@@ -166,16 +166,13 @@ export default function SpeedDialTooltipOpen({
         ariaLabel="SpeedDial tooltip example"
         sx={{ position: "absolute", bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
+        /* openIcon={} */
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
         FabProps={{
           sx: {
-            background: "linear-gradient(to right, #7861f3,  #7861f3)",
             color: "white", // Text color
-            "&:hover": {
-              background: "linear-gradient(to right, #667eea,  #667eea)",
-            },
           },
         }}
       >
@@ -186,6 +183,9 @@ export default function SpeedDialTooltipOpen({
             tooltipTitle={action.name}
             tooltipOpen
             onClick={action.onclick}
+            sx={{
+              width: "auto",
+            }}
           />
         ))}
       </SpeedDial>

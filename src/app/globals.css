@@ -6,3 +6,11 @@
 .body{
     scrollbar-gutter: auto;
 }
+
+.MuiSpeedDial-fab {
+    background-color: #7861f3;
+}
+
+.MuiSpeedDial-fab:hover {
+    background-color: #7861f3;
+}
