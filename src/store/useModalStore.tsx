@@ -9,6 +9,8 @@ type State = {
   isExitStudyModeModalOpen: boolean;
   /* Directories */
   isEditDirectoryModalOpen: boolean;
+  isDeleteDirectoryModalOpen: boolean;
+  isAddDirectoryModalOpen: boolean;
 };
 
 type Actions = {
@@ -18,8 +20,10 @@ type Actions = {
   toggleAddQuizModal: (newValue: boolean) => void;
   toggleEditQuestionModal: (newValue: boolean) => void;
   toggleExitStudyModeModal: (newValue: boolean) => void;
-  toggleEditDirectoryModalOpen: (newValue: boolean) => void;
   /* Directories */
+  toggleEditDirectoryModalOpen: (newValue: boolean) => void;
+  toggleDeleteDirectoryModalOpen: (newValue: boolean) => void;
+  toggleAddDirectoryModalOpen: (newValue: boolean) => void;
 };
 
 export const useModalStore = create<State & Actions>((set) => ({
@@ -42,4 +46,10 @@ export const useModalStore = create<State & Actions>((set) => ({
   isEditDirectoryModalOpen: false,
   toggleEditDirectoryModalOpen: (newValue) =>
     set({ isAddQuizModalOpen: newValue }),
+  isDeleteDirectoryModalOpen: false,
+  toggleDeleteDirectoryModalOpen: (newValue) =>
+    set({ isDeleteDirectoryModalOpen: newValue }),
+  isAddDirectoryModalOpen: false,
+  toggleAddDirectoryModalOpen: (newValue) =>
+    set({ isAddDirectoryModalOpen: newValue }),
 }));

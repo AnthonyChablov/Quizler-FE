@@ -13,6 +13,8 @@ import LatestQuizzes from "../Dashboard/LatestQuizzes/LatestQuizzes";
 import SpeedDialTooltipOpen from "../Common/Buttons/SpeedDialButton";
 import EditDirectoryModal from "../Common/Modal/DirectoryModals/EditDirectoryModal";
 import { useModalStore } from "@/store/useModalStore";
+import { DeleteDirectoryModal } from "../Common/Modal/DirectoryModals/DeleteDirectoryModal";
+import { AddDirectoryModal } from "../Common/Modal/DirectoryModals/AddDirectoryModal";
 
 const DirectoryLayout = () => {
   const router = useRouter();
@@ -22,6 +24,8 @@ const DirectoryLayout = () => {
 
   /* State */
   const { isEditDirectoryModalOpen } = useModalStore();
+  const { isDeleteDirectoryModalOpen } = useModalStore();
+  const { isAddDirectoryModalOpen } = useModalStore();
 
   // Fetch Directories
   const {
@@ -89,13 +93,26 @@ const DirectoryLayout = () => {
           </div>
           <LatestQuizzes quizzes={directoryData?.quizzes} />
         </div>
+        {/** chloe: added condition for checking if its in a parent directory */}
         <SpeedDialTooltipOpen
           isAddDirectory={true}
           isAddQuiz={true}
           isDeleteDirectory={true}
           isEditDirectory={true}
+          parentDirectoryId={directoryId}
         />
         {/* Add quiz, Add DIrectory , Delete Directory  */}
+        {/** FIXME: is this how you make them open? */}
+        {isDeleteDirectoryModalOpen && <DeleteDirectoryModal
+          isOpen={isDeleteDirectoryModalOpen}
+          onClose={() => {}}
+          directoryId={directoryId}
+        />}
+        {isAddDirectoryModalOpen && <AddDirectoryModal
+          isOpen={isAddDirectoryModalOpen}
+          onClose={() => {}}
+          parentDirectoryId={directoryId}
+        />}
       </Container>
       <EditDirectoryModal
         isOpen={isEditDirectoryModalOpen}
