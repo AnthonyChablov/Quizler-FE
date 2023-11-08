@@ -25,7 +25,7 @@ export async function renameQuiz(
   quizId: string,
   newQuizTitle: string
 ): Promise<any> {
-  const url = `${API_BASE_URL}/quizzes/${quizId}`;
+  const url = `${API_BASE_URL}/quizzes/rename/${quizId}`;
 
   try {
     return handleRequest(

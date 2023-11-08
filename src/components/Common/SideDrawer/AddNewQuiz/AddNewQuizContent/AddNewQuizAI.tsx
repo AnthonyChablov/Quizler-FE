@@ -51,7 +51,12 @@ const AddNewQuizAi = () => {
     }
   );
 
-  /* Direcotyr data state for button toggle */
+  useEffect(() => {
+    console.log(selectedDirectory);
+    console.log(newDirectory);
+  }, [selectedDirectory, newDirectory]);
+
+  /* Directory data state for button toggle */
   const [selectedOption, setSelectedOption] = useState(
     directoryData?.subdirectories.length !== 0 ? "new" : "existing"
   );
@@ -68,7 +73,7 @@ const AddNewQuizAi = () => {
           /* Need to create directory first */
           await createDirectory(newDirectory, parentDirectoryId);
           /* Then make req to add quiz to that directory  */
-          await addQuizWithAI(quizTitle, numQuestions, ""); // await the function call
+          await addQuizWithAI(quizTitle, numQuestions, newDirectory); // await the function call
         } else {
           await addQuizWithAI(quizTitle, numQuestions, selectedDirectory); // await the function call
         }
@@ -77,6 +82,9 @@ const AddNewQuizAi = () => {
         setQuizTitle("");
         setNumQuestions(1); // Reset the number of questions input
         mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
+        mutate(
+          "https://quizzlerreactapp.onrender.com/api/directory/6508bbf7a027061a12c9c8e4"
+        );
       } catch (error) {
         setIsLoading(false);
         toggleIsNotificationOpen(true);

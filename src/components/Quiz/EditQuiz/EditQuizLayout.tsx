@@ -68,7 +68,12 @@ const EditQuizLayout = () => {
         <div className="w-full flex justify-center mt-6">
           <AddButton onClick={() => toggleAddQuizModal(true)} />
         </div>
-        <SpeedDialButton />
+        <SpeedDialButton
+          isPlayQuiz={true}
+          isDeleteQuiz={true}
+          isRenameQuiz={true}
+          isAddQuestion={true}
+        />
         <Notification />
       </Container>
     </div>
