@@ -6,6 +6,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import Icons from "../Icons";
 import { useModalStore } from "@/store/useModalStore";
+import AddNewQuiz from "../SideDrawer/AddNewQuiz/AddNewQuizLayout";
 
 interface ISpeedDialTooltipOpen {
   isEdit?: boolean;
@@ -15,6 +16,7 @@ interface ISpeedDialTooltipOpen {
   isAddQuiz?: boolean;
   isDeleteDirectory?: boolean;
   isEditDirectory?: boolean;
+  parentDirectoryId?: string;
 }
 
 export default function SpeedDialTooltipOpen({
@@ -25,6 +27,7 @@ export default function SpeedDialTooltipOpen({
   isAddQuiz,
   isDeleteDirectory,
   isEditDirectory,
+  parentDirectoryId,
 }: ISpeedDialTooltipOpen) {
   /* Next Router */
   const params = useParams();
@@ -58,24 +61,31 @@ export default function SpeedDialTooltipOpen({
     router.push(`/dashboard/quiz/${quizId}`);
   };
 
+  // Handle Add Directory click here
   const handleAddDirectoryClick = () => {
-    // Handle Add Directory click here
+    // FIXME: Opens Add Directory modal
+    toggleAddDirectoryModalOpen(true);
     handleClose();
   };
 
+  // Handle Add Quiz click here
   const handleAddQuizClick = () => {
-    // Handle Add Quiz click here
     handleClose();
+    AddNewQuiz();
   };
 
+  // Handle Delete Directory click here
+  // Opens a new modal confirming the deletion
   const handleDeleteDirectoryClick = () => {
-    // Handle Delete Directory click here
+    // FIXME: Opens Delete Directory modal
+    toggleDeleteDirectoryModalOpen(true);
     handleClose();
   };
 
+  // Handle Edit Directory click here
   const handleEditDirectoryClick = () => {
-    // Handle Delete Directory click here
     handleClose();
+    // FIXME: Opens Edit Directory modal
     toggleEditDirectoryModalOpen(true);
   };
 
@@ -148,6 +158,8 @@ export default function SpeedDialTooltipOpen({
 
     /* Directories */
     toggleEditDirectoryModalOpen,
+    toggleDeleteDirectoryModalOpen,
+    toggleAddDirectoryModalOpen,
   } = useModalStore();
 
   return (

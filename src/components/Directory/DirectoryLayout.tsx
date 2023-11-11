@@ -13,6 +13,8 @@ import LatestQuizzes from "../Dashboard/LatestQuizzes/LatestQuizzes";
 import SpeedDialTooltipOpen from "../Common/Buttons/SpeedDialButton";
 import EditDirectoryModal from "../Common/Modal/DirectoryModals/EditDirectoryModal";
 import { useModalStore } from "@/store/useModalStore";
+import { DeleteDirectoryModal } from "../Common/Modal/DirectoryModals/DeleteDirectoryModal";
+import { AddDirectoryModal } from "../Common/Modal/DirectoryModals/AddDirectoryModal";
 
 const DirectoryLayout = () => {
   const router = useRouter();
@@ -21,7 +23,15 @@ const DirectoryLayout = () => {
   const pathname = usePathname();
 
   /* State */
-  const { isEditDirectoryModalOpen } = useModalStore();
+  const {
+    isEditDirectoryModalOpen,
+    isDeleteDirectoryModalOpen,
+    isAddDirectoryModalOpen,
+
+    toggleEditDirectoryModalOpen,
+    toggleDeleteDirectoryModalOpen,
+    toggleAddDirectoryModalOpen,
+  } = useModalStore();
 
   // Fetch Directories
   const {
@@ -89,17 +99,28 @@ const DirectoryLayout = () => {
           </div>
           <LatestQuizzes quizzes={directoryData?.quizzes} />
         </div>
-        <SpeedDialTooltipOpen
+        { (!isDeleteDirectoryModalOpen && !isAddDirectoryModalOpen) && <SpeedDialTooltipOpen
           isAddDirectory={true}
           isAddQuiz={true}
           isDeleteDirectory={true}
           isEditDirectory={true}
-        />
+          parentDirectoryId={directoryId}
+        />}
         {/* Add quiz, Add DIrectory , Delete Directory  */}
+        {isDeleteDirectoryModalOpen && <DeleteDirectoryModal
+          isOpen={isDeleteDirectoryModalOpen}
+          onClose={() => {toggleDeleteDirectoryModalOpen(false)}}
+          directoryId={directoryId}
+        />}
+        {isAddDirectoryModalOpen && <AddDirectoryModal
+          isOpen={isAddDirectoryModalOpen}
+          onClose={() => {toggleAddDirectoryModalOpen(false)}}
+          parentDirectoryId={directoryId}
+        />}
       </Container>
       <EditDirectoryModal
         isOpen={isEditDirectoryModalOpen}
-        onClose={() => {}}
+        onClose={() => {toggleEditDirectoryModalOpen(false)}}
       />
     </div>
   );
