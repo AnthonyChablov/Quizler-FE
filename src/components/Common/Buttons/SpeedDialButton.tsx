@@ -65,7 +65,6 @@ export default function SpeedDialTooltipOpen({
   const handleAddDirectoryClick = () => {
     // FIXME: Opens Add Directory modal
     toggleAddDirectoryModalOpen(true);
-    // TODO: need to pass in parentDirectoryId
     handleClose();
   };
 
@@ -80,8 +79,6 @@ export default function SpeedDialTooltipOpen({
   const handleDeleteDirectoryClick = () => {
     // FIXME: Opens Delete Directory modal
     toggleDeleteDirectoryModalOpen(true);
-    //DeleteDirectoryModal(parentDirectoryId);
-    // TODO: need to pass in parentDirectoryId
     handleClose();
   };
 
@@ -90,7 +87,6 @@ export default function SpeedDialTooltipOpen({
     handleClose();
     // FIXME: Opens Edit Directory modal
     toggleEditDirectoryModalOpen(true);
-    // TODO: need to pass in parentDirectoryId
   };
 
   // Create an array to store the actions based on props
