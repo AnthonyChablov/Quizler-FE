@@ -1,8 +1,8 @@
 const express = require("express");
 const next = require("next");
-const mongoose = require("mongoose");
-const quizRoute = require("./src/api/routes/quiz");
-const directoryRoute = require("./src/api/routes/directory");
+const db = require("./src/api/models");
+const quizRoute = require("./src/api/routes/quiz.routes.js");
+const directoryRoute = require("./src/api/routes/directory.routes.js");
 
 const port = parseInt(process.env.PORT) || 8080;
 const dev = process.env.NODE_ENV !== "production";
@@ -12,16 +12,16 @@ const handle = app.getRequestHandler();
 let database_uri = process.env.MONGO_URL;
 
 // Connect to MongoDB
-mongoose.connect(database_uri, {
+db.mongoose.connect(database_uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-mongoose.connection.on("connected", () => {
+db.mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB");
 });
 
-mongoose.connection.on("error", (err) => {
+db.mongoose.connection.on("error", (err) => {
   console.error("Error connecting to MongoDB:", err);
   process.exit(1); // Terminate the application on database connection error
 });
