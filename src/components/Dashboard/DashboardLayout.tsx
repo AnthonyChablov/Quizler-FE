@@ -16,6 +16,7 @@ import { useNotificationStore } from "@/store/useNotificationStore";
 import Notification from "../Common/Notification/Notification";
 import { DirectoryData } from "@/models/directories";
 import DirectoryCard from "./Cards/DirectoryCard";
+import { API_BASE_URL } from "../../api/baseApiUrl";
 
 const DashboardLayout = () => {
   const [searchKey, setSearchKey] = useState("");
@@ -24,8 +25,8 @@ const DashboardLayout = () => {
   // TODO: need to do query by the quizTitle, current just returns all quizzes
   const { data, error, isLoading } = useSWR(
     searchKey != ""
-      ? `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`
-      : "https://quizzlerreactapp.onrender.com/api/quizzes",
+      ? `${API_BASE_URL}/quizzes?quizTitle=${searchKey}`
+      : `${API_BASE_URL}/quizzes`,
     fetchData,
     {
       revalidateOnFocus: false,
@@ -39,7 +40,7 @@ const DashboardLayout = () => {
     error: directoryError,
     isLoading: directoryLoading,
   } = useSWR(
-    "https://quizzlerreactapp.onrender.com/api/directory/6508bbf7a027061a12c9c8e4",
+    `${API_BASE_URL}/directory/6508bbf7a027061a12c9c8e4`,
     fetchData,
     {
       revalidateOnFocus: false,
