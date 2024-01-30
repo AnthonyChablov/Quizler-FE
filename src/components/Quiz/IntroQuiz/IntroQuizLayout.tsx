@@ -73,7 +73,7 @@ const IntroQuizLayout = () => {
   }
   /* Error State */
   if (error) {
-    return <div>Error fetching data</div>;
+    return <div>Error fetching data intor</div>;
   }
   return (
     <div className="bg-slate-200 h-full min-h-screen pb-32 ">
@@ -91,8 +91,8 @@ const IntroQuizLayout = () => {
                 quizTitle={data?.quizTitle}
                 quizText="Test your knowledge by clicking the button below to start the quiz."
                 primaryButtonLabel="Start Quiz 🚀"
-                secondaryButtonLabel="Restart Progress 🔁"
                 onPrimaryButtonClick={handleStartQuiz}
+                secondaryButtonLabel="Restart Progress 🔁"
                 onSecondaryButtonClick={handleRestartProgress}
               />
               <div className="py-8 px-5 bg-slate-50 p-5 rounded-b-xl shadow-xl">

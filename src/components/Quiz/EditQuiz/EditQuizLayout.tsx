@@ -40,7 +40,7 @@ const EditQuizLayout = () => {
     return <LoadingLayout />;
   }
   if (error) {
-    return <div>Error fetching data</div>;
+    return <div>Error fetching data edit</div>;
   }
   return (
     <div className=" bg-slate-200 h-full min-h-screen pb-24">

@@ -16,8 +16,8 @@ import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const AddNewQuizAi = () => {
   /* State */
-  const [quizTitle, setQuizTitle] = useState('');
-  const [numQuestions, setNumQuestions] = useState(1); // Initialize with a default value
+  const [quizContent, setQuizContent] = useState('');
+  const [numQuestions, setNumQuestions] = useState(5); // Initialize with a default value
 
   /* directory State */
   const [addToDirectoryMode, setAddToDirectoryMode] = useState<
@@ -36,7 +36,7 @@ const AddNewQuizAi = () => {
   const router = useRouter();
 
   /* Variables */
-  const maxCharacters = 2000;
+  const maxCharacters = 6000 * 6;
   const parentDirectoryId = '6508bbf7a027061a12c9c8e4';
 
   const {
@@ -55,40 +55,79 @@ const AddNewQuizAi = () => {
   const directories = directoryData?.subdirectories || [];
 
   const handleSubmitAI = async (e: React.FormEvent) => {
-    // Ai generated quiz logic
-    if (quizTitle.length <= maxCharacters) {
-      e.preventDefault();
-      try {
-        setIsLoading(true);
+    // Calculate character limit based on token approximation (6000 tokens * 6 characters/token)
 
-        if (addToDirectoryMode === 'new') {
-          /* Need to create directory first */
-          await createDirectory(newDirectory, parentDirectoryId);
-          /* Then make req to add quiz to that directory  */
-          await addQuizWithAI(quizTitle, numQuestions, ''); // await the function call
-        } else {
-          await addQuizWithAI(quizTitle, numQuestions, selectedDirectory); // await the function call
-        }
+    e.preventDefault();
 
-        toggleAddQuizSideDrawer(false);
-        setQuizTitle('');
-        setNumQuestions(1); // Reset the number of questions input
-        mutate(`${API_BASE_URL}/quizzes`);
-      } catch (error) {
-        setIsLoading(false);
-        toggleIsNotificationOpen(true);
-        setNotificationMode('error');
-        console.error('An error occurred:', error);
-      }
-    } else {
-      e.preventDefault();
+    if (quizContent.length > maxCharacters) {
+      // If character count exceeds the limit, show a notification and do not proceed
       toggleIsNotificationOpen(true);
       setNotificationMode('characterCount');
       setTimeout(() => {
         toggleIsNotificationOpen(false);
       }, 3000); // timeout to 3 seconds
+      return; // Exit the function to prevent further processing
+    }
+
+    try {
+      setIsLoading(true);
+      // ... rest of your logic
+      if (addToDirectoryMode === 'new') {
+        /* Need to create directory first */
+        await createDirectory(newDirectory);
+        /* Then make req to add quiz to that directory  */
+        await addQuizWithAI(quizContent, numQuestions, ''); // await the function call
+      } else {
+        await addQuizWithAI(quizContent, numQuestions, selectedDirectory); // await the function call
+      }
+
+      toggleAddQuizSideDrawer(false);
+      setQuizContent('');
+      setNumQuestions(1); // Reset the number of questions input
+      mutate(`${API_BASE_URL}/quizzes`);
+    } catch (error) {
+      setIsLoading(false);
+      toggleIsNotificationOpen(true);
+      setNotificationMode('error');
+      console.error('An error occurred:', error);
     }
   };
+
+  // const handleSubmitAI = async (e: React.FormEvent) => {
+  //   // Ai generated quiz logic
+  //   if (quizContent.length <= maxCharacters) {
+  //     e.preventDefault();
+  //     try {
+  //       setIsLoading(true);
+
+  //       if (addToDirectoryMode === 'new') {
+  //         /* Need to create directory first */
+  //         await createDirectory(newDirectory);
+  //         /* Then make req to add quiz to that directory  */
+  //         await addQuizWithAI(quizContent, numQuestions, ''); // await the function call
+  //       } else {
+  //         await addQuizWithAI(quizContent, numQuestions, selectedDirectory); // await the function call
+  //       }
+
+  //       toggleAddQuizSideDrawer(false);
+  //       setQuizContent('');
+  //       setNumQuestions(1); // Reset the number of questions input
+  //       mutate(`${API_BASE_URL}/quizzes`);
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //       toggleIsNotificationOpen(true);
+  //       setNotificationMode('error');
+  //       console.error('An error occurred:', error);
+  //     }
+  //   } else {
+  //     e.preventDefault();
+  //     toggleIsNotificationOpen(true);
+  //     setNotificationMode('characterCount');
+  //     setTimeout(() => {
+  //       toggleIsNotificationOpen(false);
+  //     }, 3000); // timeout to 3 seconds
+  //   }
+  // };
 
   return (
     <form onSubmit={handleSubmitAI}>
@@ -107,18 +146,18 @@ const AddNewQuizAi = () => {
             id="numQuestions"
             type="text"
             placeholder="Enter Quiz Title..."
-            value={quizTitle}
-            onChange={(e) => setQuizTitle(e.target.value)}
+            value={quizContent}
+            onChange={(e) => setQuizContent(e.target.value)}
             required
           ></input>
           <p
             className={`mt-2 text-right text-purple-700 text-sm font-regular capitalize font-bold ${
-              quizTitle.length > maxCharacters
+              quizContent.length > maxCharacters
                 ? 'text-red-600'
                 : 'text-purple-700'
             }`}
           >
-            Character Count : {quizTitle.length}/{maxCharacters}
+            Character Count : {quizContent.length}/{maxCharacters}
           </p>
         </div>
         {/* Number Questions Input*/}
@@ -139,7 +178,7 @@ const AddNewQuizAi = () => {
               const value = parseInt(e.target.value);
               setNumQuestions(value);
             }}
-            min="1" // Set a minimum value (1) to ensure a positive number
+            min="2" // Set a minimum value (1) to ensure a positive number
             max="30" // Set the maximum value to 30 (or any other suitable limit)
             required
           ></input>

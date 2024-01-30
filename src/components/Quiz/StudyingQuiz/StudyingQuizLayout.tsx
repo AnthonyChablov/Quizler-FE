@@ -33,11 +33,11 @@ const StudyingQuizLayout = () => {
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
-    `${API_BASE_URL}quizzes/${quizId}`,
+    `${API_BASE_URL}/users/quizzes/${quizId}`,
     fetchData,
     {
       revalidateOnFocus: false,
-      refreshInterval: 300000,
+      refreshInterval: 700000,
     },
   );
 
@@ -171,7 +171,7 @@ const StudyingQuizLayout = () => {
   }
   /* Error State */
   if (error) {
-    return <div>Error fetching data</div>;
+    return <div>Error fetching data study</div>;
   }
   return (
     <motion.div

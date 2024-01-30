@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { API_BASE_URL } from '@/api/baseApiUrl';
+import { Tiktoken } from '@dqbd/tiktoken/lite';
+import cl100k_base from '@dqbd/tiktoken/encoders/cl100k_base.json';
 
 // Define a function to handle API requests
 async function handleRequest<T>(
@@ -22,18 +24,21 @@ async function handleRequest<T>(
 // Function to create a new directory
 export async function createDirectory(
   name: string,
-  parentDirectoryId: string | undefined,
+  // parentDirectoryId: string | undefined,
 ): Promise<any> {
-  const url = `${API_BASE_URL}/directory`;
+  const url = `${API_BASE_URL}/users/addDirectory`;
   /* Requst Body */
   const reqBody = {
     name,
-    parentDirectoryId,
+    // parentDirectoryId,
   };
   try {
     await handleRequest(
       axios.post(url, reqBody, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       }),
     );
   } catch (err) {

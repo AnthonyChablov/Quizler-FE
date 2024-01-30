@@ -10,15 +10,27 @@ async function handleRequest<T>(
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      // More detailed error logging
+      console.error('Axios error:', error.response?.data || error.message);
       const errorData = error.response?.data;
       throw new Error(errorData?.error || 'An unknown error occurred');
+    } else {
+      // Non-Axios errors
+      console.error('Non-Axios error:', error);
+      throw new Error('An unknown error occurred');
     }
-    throw new Error('An unknown error occurred');
   }
 }
 
+const getAuthHeaders = () => ({
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
 export async function fetchData(url: string): Promise<any> {
-  return handleRequest(axios.get(url));
+  return handleRequest(axios.get(url, getAuthHeaders()));
 }
 
 export async function renameQuiz(
@@ -26,71 +38,38 @@ export async function renameQuiz(
   newQuizTitle: string,
 ): Promise<any> {
   const url = `${API_BASE_URL}/quizzes/${quizId}`;
-
-  try {
-    return handleRequest(
-      axios.put(
-        url,
-        { quizTitle: newQuizTitle },
-        { headers: { 'Content-Type': 'application/json' } },
-      ),
-    );
-  } catch (error) {
-    throw new Error('An error occurred while renaming the quiz');
-  }
+  return handleRequest(
+    axios.put(url, { quizTitle: newQuizTitle }, getAuthHeaders()),
+  );
 }
 
 export async function deleteQuiz(quizId: string): Promise<any> {
   const url = `${API_BASE_URL}/quizzes/${quizId}`;
-
-  try {
-    return handleRequest(
-      axios.delete(url, { headers: { 'Content-Type': 'application/json' } }),
-    );
-  } catch (error) {
-    throw new Error('An error occurred while deleting the quiz');
-  }
+  return handleRequest(axios.delete(url, getAuthHeaders()));
 }
 
 export async function addQuiz(quizData: any): Promise<void> {
   const url = `${API_BASE_URL}/quizzes`;
-
-  try {
-    await handleRequest(
-      axios.post(url, quizData, {
-        headers: { 'Content-Type': 'application/json' },
-      }),
-    );
-    console.log('Quiz added successfully');
-  } catch (error) {
-    console.error('An error occurred:', error);
-  }
+  await handleRequest(axios.post(url, quizData, getAuthHeaders()));
 }
 
 export async function restartQuiz(quizId: string): Promise<QuizResponseData> {
-  const url = `${API_BASE_URL}/quizzes/restart/${quizId}`;
-
-  try {
-    return handleRequest(axios.put(url));
-  } catch (error) {
-    throw new Error('An error occurred while restarting the quiz');
-  }
+  const url = `${API_BASE_URL}users/quizzes/${quizId}/restart`;
+  return handleRequest(axios.put(url, {}, getAuthHeaders()));
 }
 
 export async function updateStudyResults(
   quizId: string,
   correctQuestionsParam: string[],
 ): Promise<any> {
-  const url = `${API_BASE_URL}/quizzes/update/${quizId}`;
-
-  console.log(url);
-  try {
-    return handleRequest(
-      axios.put(url, { correctQuestions: correctQuestionsParam }),
-    );
-  } catch (error) {
-    throw new Error('An error occurred while updating study results');
-  }
+  const url = `${API_BASE_URL}/users/quizzes/${quizId}/markCorrect`;
+  return handleRequest(
+    axios.put(
+      url,
+      { correctQuestions: correctQuestionsParam },
+      getAuthHeaders(),
+    ),
+  );
 }
 
 export async function addQuizWithAI(
@@ -98,22 +77,11 @@ export async function addQuizWithAI(
   questionCount: number,
   directoryId: string,
 ): Promise<any> {
-  const url = `${API_BASE_URL}/quizzes/openai`; // Your API endpoint to add a quiz with AI
-
-  const headers = {
-    'Content-Type': 'application/json',
-  };
-
-  /* Req Body */
+  const url = `${API_BASE_URL}/users/quizzes/openai`;
   const requestData = {
     quizTopic: quizTopic,
     questionCount: questionCount,
     directory: directoryId,
   };
-
-  try {
-    return await axios.post(url, requestData, { headers });
-  } catch (error) {
-    throw new Error('An error occurred while adding a quiz with AI');
-  }
+  return await handleRequest(axios.post(url, requestData, getAuthHeaders()));
 }

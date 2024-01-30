@@ -83,7 +83,7 @@ const EndQuizLayout = () => {
 
   /* Error State */
   if (error) {
-    return <div>Error fetching data</div>;
+    return <div>Error fetching data end</div>;
   }
 
   /* Render when data is available */

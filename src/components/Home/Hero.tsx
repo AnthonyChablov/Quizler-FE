@@ -11,7 +11,7 @@ const Hero = () => {
           A platform to enhance your knowledge and have fun at the same time.
         </p>
         <Link
-          href="/dashboard"
+          href="/login"
           className="px-6 py-3  bg-indigo-600
           text-white rounded-full font-semibold transition duration-200 hover:opacity-80"
         >
