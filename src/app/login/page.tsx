@@ -1,12 +1,12 @@
-import React from 'react'
-import Login from '@/components/UserAuth/Login'
+import React from 'react';
+import Login from '@/components/UserAuth/Login';
 
 const page = () => {
   return (
     <div>
-      <Login/>
+      <Login />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

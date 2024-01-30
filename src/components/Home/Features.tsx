@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface FeatureProps {
   title: string;
@@ -17,19 +17,19 @@ const Feature: React.FC<FeatureProps> = ({ title, description }) => {
 const FeaturesSection: React.FC = () => {
   const features = [
     {
-      title: "Interactive Quizzes",
+      title: 'Interactive Quizzes',
       description:
-        "Engage in interactive quizzes to test your knowledge and learn in a fun way.",
+        'Engage in interactive quizzes to test your knowledge and learn in a fun way.',
     },
     {
-      title: "Personalized Learning",
+      title: 'Personalized Learning',
       description:
-        "Receive personalized learning recommendations based on your performance.",
+        'Receive personalized learning recommendations based on your performance.',
     },
     {
-      title: "Progress Tracking",
+      title: 'Progress Tracking',
       description:
-        "Track your progress over time and see how you are improving.",
+        'Track your progress over time and see how you are improving.',
     },
   ];
 

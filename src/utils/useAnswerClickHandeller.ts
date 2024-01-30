@@ -3,13 +3,17 @@ import { useState } from 'react';
 type SetScoreFunction = React.Dispatch<
   React.SetStateAction<{ correct: number; incorrect: number }>
 >;
-type SetCurrentQuestionIndexFunction = React.Dispatch<React.SetStateAction<number>>;
-type SetSelectedAnswerIndexFunction = React.Dispatch<React.SetStateAction<number | null>>;
+type SetCurrentQuestionIndexFunction = React.Dispatch<
+  React.SetStateAction<number>
+>;
+type SetSelectedAnswerIndexFunction = React.Dispatch<
+  React.SetStateAction<number | null>
+>;
 
 export function useAnswerClickHandler(
   setScore: SetScoreFunction,
   setCurrentQuestionIndex: SetCurrentQuestionIndexFunction,
-  setSelectedAnswerIndex: SetSelectedAnswerIndexFunction
+  setSelectedAnswerIndex: SetSelectedAnswerIndexFunction,
 ) {
   return function handleAnswerClick(isCorrect: boolean, answerIndex: number) {
     setSelectedAnswerIndex(answerIndex);

@@ -1,18 +1,19 @@
-"use client";
-import React, { useEffect } from "react";
-import useSWR from "swr";
-import { fetchData } from "@/api/quizData";
-import { useParams, useRouter, usePathname } from "next/navigation";
-import LoadingLayout from "../Loading/LoadingLayout";
-import Container from "../Common/Container";
-import QuizHeader from "../Common/Header/QuizHeader";
-import SubHeader from "../Common/SubHeader/SubHeader";
-import DirectoryCard from "../Dashboard/Cards/DirectoryCard";
-import { DirectoryData } from "@/models/directories";
-import LatestQuizzes from "../Dashboard/LatestQuizzes/LatestQuizzes";
-import SpeedDialTooltipOpen from "../Common/Buttons/SpeedDialButton";
-import EditDirectoryModal from "../Common/Modal/DirectoryModals/EditDirectoryModal";
-import { useModalStore } from "@/store/useModalStore";
+'use client';
+import React, { useEffect } from 'react';
+import useSWR from 'swr';
+import { fetchData } from '@/api/quizData';
+import { useParams, useRouter, usePathname } from 'next/navigation';
+import LoadingLayout from '../Loading/LoadingLayout';
+import Container from '../Common/Container';
+import QuizHeader from '../Common/Header/QuizHeader';
+import SubHeader from '../Common/SubHeader/SubHeader';
+import DirectoryCard from '../Dashboard/Cards/DirectoryCard';
+import { DirectoryData } from '@/models/directories';
+import LatestQuizzes from '../Dashboard/LatestQuizzes/LatestQuizzes';
+import SpeedDialTooltipOpen from '../Common/Buttons/SpeedDialButton';
+import EditDirectoryModal from '../Common/Modal/DirectoryModals/EditDirectoryModal';
+import { useModalStore } from '@/store/useModalStore';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const DirectoryLayout = () => {
   const router = useRouter();
@@ -28,14 +29,10 @@ const DirectoryLayout = () => {
     data: directoryData,
     error: directoryError,
     isLoading: directoryLoading,
-  } = useSWR(
-    `https://quizzlerreactapp.onrender.com/api/directory/${directoryId}`,
-    fetchData,
-    {
-      revalidateOnFocus: false,
-      refreshInterval: 300000,
-    }
-  );
+  } = useSWR(`${API_BASE_URL}/directory/${directoryId}`, fetchData, {
+    revalidateOnFocus: false,
+    refreshInterval: 300000,
+  });
 
   useEffect(() => {
     console.log(directoryData);
@@ -58,10 +55,10 @@ const DirectoryLayout = () => {
       <Container>
         <QuizHeader
           headerText={directoryData.directory.name}
-          mode={"end"}
+          mode={'end'}
           displayImg={true}
           displayScore={false}
-          link={"/dashboard"}
+          link={'/dashboard'}
         />
         <div className="pt-14 h-full min-h-screen bg-slate-200">
           {/* Directories */}
@@ -80,7 +77,7 @@ const DirectoryLayout = () => {
                     />
                   </React.Fragment>
                 );
-              }
+              },
             )}
           </div>
           <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">

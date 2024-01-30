@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
-import useSWR from "swr";
-import { fetchData } from "@/api/quizData";
-import { useParams } from "next/navigation";
-import Container from "../../Common/Container";
-import { QuizData } from "@/models/quizzes";
-import { useModalStore } from "@/store/useModalStore";
-import DisplayCard from "../../Common/Cards/DisplayCard";
-import AddButton from "../../Common/Buttons/AddButton";
-import LoadingLayout from "../../Loading/LoadingLayout";
-import QuizHeader from "../../Common/Header/QuizHeader";
-import SpeedDialButton from "../../Common/Buttons/SpeedDialButton";
-import QuizModals from "../QuizComponents/QuizModals/QuizModals";
-import Notification from "@/components/Common/Notification/Notification";
+import React, { useEffect } from 'react';
+import useSWR from 'swr';
+import { fetchData } from '@/api/quizData';
+import { useParams } from 'next/navigation';
+import Container from '../../Common/Container';
+import { QuizData } from '@/models/quizzes';
+import { useModalStore } from '@/store/useModalStore';
+import DisplayCard from '../../Common/Cards/DisplayCard';
+import AddButton from '../../Common/Buttons/AddButton';
+import LoadingLayout from '../../Loading/LoadingLayout';
+import QuizHeader from '../../Common/Header/QuizHeader';
+import SpeedDialButton from '../../Common/Buttons/SpeedDialButton';
+import QuizModals from '../QuizComponents/QuizModals/QuizModals';
+import Notification from '@/components/Common/Notification/Notification';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const EditQuizLayout = () => {
   /* Next Router */
@@ -23,16 +24,16 @@ const EditQuizLayout = () => {
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
-    `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
+    `${API_BASE_URL}/quizzes/${quizId}`,
     fetchData,
     {
       revalidateOnFocus: false,
       refreshInterval: 300000,
-    }
+    },
   );
 
   /* Variables */
-  const quizHeader = data?.quizTitle ?? "Loading...";
+  const quizHeader = data?.quizTitle ?? 'Loading...';
   const questions = data?.questions; // Extract the questions from the fetched data
 
   if (isValidating || isLoading) {

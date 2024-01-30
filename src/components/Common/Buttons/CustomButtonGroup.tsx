@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Icons from "../Icons";
+import React, { useState } from 'react';
+import Icons from '../Icons';
 
 interface CustomButtonGroupProps {
   onAddManuallyClick: () => void;
@@ -28,8 +28,8 @@ const CustomButtonGroup: React.FC<CustomButtonGroupProps> = ({
         onClick={handleAddManuallyClick}
         className={`${
           isAddQuizManually
-            ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-500 text-white font-bold "
-            : "bg-purple-100 text-purple-500 font-regular "
+            ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-500 text-white font-bold '
+            : 'bg-purple-100 text-purple-500 font-regular '
         } px-4 py-2 rounded-lg focus:outline-none flex items-center justify-center font-semibold text-sm sm:text-md 
         hover:brightness-90 transition-transform transform active:scale-95 `}
       >
@@ -39,8 +39,8 @@ const CustomButtonGroup: React.FC<CustomButtonGroupProps> = ({
         onClick={handleUseAIClick}
         className={`${
           !isAddQuizManually
-            ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-500 text-white font-bold"
-            : "bg-purple-100 text-purple-500 font-regular"
+            ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-purple-500 text-white font-bold'
+            : 'bg-purple-100 text-purple-500 font-regular'
         } px-4 py-2 rounded-lg focus:outline-none flex items-center justify-center
         hover:brightness-90 transition-transform transform active:scale-95
         `}

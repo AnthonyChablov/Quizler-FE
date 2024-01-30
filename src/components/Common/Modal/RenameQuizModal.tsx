@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { QuizModalProps } from "./Modal";
-import { useSWRConfig } from "swr";
-import Modal from "./Modal";
-import { renameQuiz } from "@/api/quizData";
-import CloseButton from "../Buttons/CloseButton";
-import { useNotificationStore } from "@/store/useNotificationStore";
-
+import React, { useState } from 'react';
+import { QuizModalProps } from './Modal';
+import { useSWRConfig } from 'swr';
+import Modal from './Modal';
+import { renameQuiz } from '@/api/quizData';
+import CloseButton from '../Buttons/CloseButton';
+import { useNotificationStore } from '@/store/useNotificationStore';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 export const RenameQuizModal = ({
   quizId,
   isOpen,
   onClose,
 }: QuizModalProps) => {
   /* State */
-  const [newTitle, setNewTitle] = useState("");
+  const [newTitle, setNewTitle] = useState('');
   const [error, setError] = useState<string | null>(null); // Explicitly define the type
   const { setNotificationMode, toggleIsNotificationOpen } =
     useNotificationStore();
@@ -24,8 +24,8 @@ export const RenameQuizModal = ({
     try {
       await renameQuiz(id, title); // Assuming renameQuiz returns a promise or can be awaited
       toggleIsNotificationOpen(true);
-      setNotificationMode("error");
-      mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+      setNotificationMode('error');
+      mutate(`${API_BASE_URL}/quizzes/${quizId}`);
       onClose();
     } catch (error) {
       setError(String(error));

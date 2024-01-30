@@ -1,20 +1,21 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Container from "../../Common/Container";
-import LoadingLayout from "../../Loading/LoadingLayout";
-import { fetchData } from "@/api/quizData";
-import useSWR from "swr";
-import { restartQuiz } from "@/api/quizData";
-import { QuizData } from "@/models/quizzes";
-import QuizHeader from "../../Common/Header/QuizHeader";
-import QuizInfoDisplay from "../QuizComponents/QuizInfoDisplay/QuizInfoDisplay";
-import ColorDot from "../QuizComponents/ColorDot/ColorDot";
-import { Question } from "@/models/quizzes";
-import { motion, AnimatePresence } from "framer-motion";
-import { mutate } from "swr";
-import Icons from "@/components/Common/Icons";
-import { useQuizStore } from "@/store/useQuizStore";
+'use client';
+import React, { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Container from '../../Common/Container';
+import LoadingLayout from '../../Loading/LoadingLayout';
+import { fetchData } from '@/api/quizData';
+import useSWR from 'swr';
+import { restartQuiz } from '@/api/quizData';
+import { QuizData } from '@/models/quizzes';
+import QuizHeader from '../../Common/Header/QuizHeader';
+import QuizInfoDisplay from '../QuizComponents/QuizInfoDisplay/QuizInfoDisplay';
+import ColorDot from '../QuizComponents/ColorDot/ColorDot';
+import { Question } from '@/models/quizzes';
+import { motion, AnimatePresence } from 'framer-motion';
+import { mutate } from 'swr';
+import Icons from '@/components/Common/Icons';
+import { useQuizStore } from '@/store/useQuizStore';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const IntroQuizLayout = () => {
   /* Extract URL Params */
@@ -27,12 +28,12 @@ const IntroQuizLayout = () => {
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
-    `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
+    `${API_BASE_URL}/quizzes/${quizId}`,
     fetchData,
     {
       revalidateOnFocus: false,
       refreshInterval: 300000,
-    }
+    },
   );
 
   /* State */
@@ -56,12 +57,12 @@ const IntroQuizLayout = () => {
   async function handleRestartProgress() {
     try {
       await restartQuiz(quizId);
-      mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+      mutate(`${API_BASE_URL}/quizzes/${quizId}`);
     } catch (error) {
-      console.error("Error restarting progress:", error);
+      console.error('Error restarting progress:', error);
       // Handle the error or show a user-friendly message here
       alert(
-        "An error occurred while restarting progress. Please try again later. 😞"
+        'An error occurred while restarting progress. Please try again later. 😞',
       );
     }
   }
@@ -97,11 +98,11 @@ const IntroQuizLayout = () => {
               <div className="py-8 px-5 bg-slate-50 p-5 rounded-b-xl shadow-xl">
                 <div
                   className={`flex justify-between items-center mb-4 ${
-                    isQuestionsVisible ? "mb-4" : "mb-0"
+                    isQuestionsVisible ? 'mb-4' : 'mb-0'
                   }`}
                 >
                   <h2 className="text-lg md:text-xl font-semibold">
-                    {isQuestionsVisible ? "Questions" : "Show Questions"}
+                    {isQuestionsVisible ? 'Questions' : 'Show Questions'}
                   </h2>
                   <button onClick={toggleQuestionsVisibility}>
                     {isQuestionsVisible ? (
@@ -116,7 +117,7 @@ const IntroQuizLayout = () => {
                     <motion.div
                       key="questions"
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3 }}
                     >
@@ -134,11 +135,11 @@ const IntroQuizLayout = () => {
                                   {index + 1}. {question?.questionTitle}
                                 </p>
                                 <p className="text-gray-600">
-                                  {question.isCorrect ? "Correct" : "Incorrect"}
+                                  {question.isCorrect ? 'Correct' : 'Incorrect'}
                                 </p>
                               </div>
                             </div>
-                          )
+                          ),
                         )}
                       </div>
                     </motion.div>

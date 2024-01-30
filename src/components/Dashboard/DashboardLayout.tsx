@@ -1,64 +1,61 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import SubHeader from "@/components/Common/SubHeader/SubHeader";
-import Container from "@/components/Common/Container";
-import DashBoardMenu from "./DashBoardMenu/DashBoardMenu";
-import { fetchData } from "@/api/quizData";
-import SideDrawer from "../Common/SideDrawer/SideDrawer";
-import { useSideDrawerStore } from "@/store/useSideDrawerStore";
-import ScrollToTop from "../Common/Buttons/ScrollToTop";
-import LoadingLayout from "../Loading/LoadingLayout";
-import Hero from "../Common/Hero/Hero";
-import Input from "@mui/material/Input";
-import LatestQuizzes from "./LatestQuizzes/LatestQuizzes";
-import { useNotificationStore } from "@/store/useNotificationStore";
-import Notification from "../Common/Notification/Notification";
-import { DirectoryData } from "@/models/directories";
-import DirectoryCard from "./Cards/DirectoryCard";
+'use client';
+import React, { useEffect, useState } from 'react';
+import useSWR from 'swr';
+import SubHeader from '@/components/Common/SubHeader/SubHeader';
+import Container from '@/components/Common/Container';
+import DashBoardMenu from './DashBoardMenu/DashBoardMenu';
+import { fetchData } from '@/api/quizData';
+import SideDrawer from '../Common/SideDrawer/SideDrawer';
+import { useSideDrawerStore } from '@/store/useSideDrawerStore';
+import ScrollToTop from '../Common/Buttons/ScrollToTop';
+import LoadingLayout from '../Loading/LoadingLayout';
+import Hero from '../Common/Hero/Hero';
+import Input from '@mui/material/Input';
+import LatestQuizzes from './LatestQuizzes/LatestQuizzes';
+import { useNotificationStore } from '@/store/useNotificationStore';
+import Notification from '../Common/Notification/Notification';
+import { DirectoryData } from '@/models/directories';
+import DirectoryCard from './Cards/DirectoryCard';
+import { API_BASE_URL } from '@/api/baseApiUrl';
+import { readRootDirectory } from '@/api/directoryData';
 
 const DashboardLayout = () => {
-  const [searchKey, setSearchKey] = useState("");
+  const [searchKey, setSearchKey] = useState('');
 
   // Fetch quiz data from the API using useSWR
   // TODO: need to do query by the quizTitle, current just returns all quizzes
   const { data, error, isLoading } = useSWR(
-    searchKey != ""
-      ? `https://quizzlerreactapp.onrender.com/api/quizzes?quizTitle=${searchKey}`
-      : "https://quizzlerreactapp.onrender.com/api/quizzes",
+    searchKey != ''
+      ? `${API_BASE_URL}/quizzes?quizTitle=${searchKey}`
+      : `${API_BASE_URL}/quizzes`,
     fetchData,
     {
       revalidateOnFocus: false,
       refreshInterval: 300000,
-    }
+    },
   );
 
-  // Fetch Directories
+  // Fetch root directory data
   const {
-    data: directoryData,
-    error: directoryError,
-    isLoading: directoryLoading,
-  } = useSWR(
-    "https://quizzlerreactapp.onrender.com/api/directory/6508bbf7a027061a12c9c8e4",
-    fetchData,
-    {
-      revalidateOnFocus: false,
-      refreshInterval: 300000,
-    }
-  );
-
+    data: rootDirectoryData,
+    error: rootDirectoryError,
+    isLoading: rootDirectoryLoading,
+  } = useSWR('rootDirectory', readRootDirectory, {
+    revalidateOnFocus: false,
+    refreshInterval: 700000,
+  });
   const { isAddQuizSideDrawerOpen } = useSideDrawerStore();
   const { isNotificationOpen, toggleIsNotificationOpen } =
     useNotificationStore();
 
   useEffect(() => {
-    console.log(directoryData);
-  }, [directoryData]);
+    console.log(rootDirectoryData);
+  }, [rootDirectoryData]);
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
+  if (rootDirectoryError) {
+    return <p>Error: {rootDirectoryError.message}</p>;
   }
-  if (isLoading) {
+  if (rootDirectoryLoading) {
     return <LoadingLayout />;
   }
   return (
@@ -79,7 +76,7 @@ const DashboardLayout = () => {
           className="space-x-1 space-y-6  md:space-x-0 md:space-y-0 
         md:grid md:grid-cols-2 gap-6 lg:grid-cols-3 3xl:grid-cols-4 xl:gap-7"
         >
-          {directoryData?.subdirectories?.map(
+          {rootDirectoryData?.subdirectories?.map(
             (directory: DirectoryData, index: number) => {
               return (
                 <React.Fragment key={index}>
@@ -89,7 +86,7 @@ const DashboardLayout = () => {
                   />
                 </React.Fragment>
               );
-            }
+            },
           )}
         </div>
         <div className="pt-32 mb-6 sm:pt-28 flex items-center justify-between">

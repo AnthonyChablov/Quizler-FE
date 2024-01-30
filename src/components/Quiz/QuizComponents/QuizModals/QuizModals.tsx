@@ -1,11 +1,11 @@
-import React from "react";
-import { DeleteQuizModal } from "@/components/Common/Modal/DeleteQuizModal";
-import { RenameQuizModal } from "@/components/Common/Modal/RenameQuizModal";
-import AddQuestionModal from "@/components/Common/Modal/AddQuestionModal";
-import EditQuestionModal from "@/components/Common/Modal/EditQuestionModal";
-import { useModalStore } from "@/store/useModalStore";
-import { Question } from "@/models/quizzes";
-import { useQuestionStore } from "@/store/useQuestionStore";
+import React from 'react';
+import { DeleteQuizModal } from '@/components/Common/Modal/DeleteQuizModal';
+import { RenameQuizModal } from '@/components/Common/Modal/RenameQuizModal';
+import AddQuestionModal from '@/components/Common/Modal/AddQuestionModal';
+import EditQuestionModal from '@/components/Common/Modal/EditQuestionModal';
+import { useModalStore } from '@/store/useModalStore';
+import { Question } from '@/models/quizzes';
+import { useQuestionStore } from '@/store/useQuestionStore';
 
 interface QuizModalsProps {
   quizId: string | string[];
@@ -51,7 +51,7 @@ const QuizModals: React.FC<QuizModalsProps> = ({ quizId, questions }) => {
       {isEditQuestionModalOpen && editQuestionId && questions && (
         <EditQuestionModal
           questionData={questions.find(
-            (question) => question._id === editQuestionId
+            (question) => question._id === editQuestionId,
           )} /* Find the specific question */
           questionId={String(editQuestionId)}
           quizId={String(quizId)}

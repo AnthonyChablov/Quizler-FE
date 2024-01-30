@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import CloseButton from "../../Buttons/CloseButton";
-import { useSWRConfig } from "swr";
-import Container from "../../Container";
-import { useSideDrawerStore } from "@/store/useSideDrawerStore";
-import { Question } from "@/models/quizzes";
-import { ButtonGroup } from "@mui/material";
-import Button from "@mui/material/Button";
-import CustomButtonGroup from "../../Buttons/CustomButtonGroup";
-import AddNewQuizAi from "./AddNewQuizContent/AddNewQuizAI";
-import AddNewQuizManually from "./AddNewQuizContent/AddNewQuizManually";
-import { useLoadingStore } from "@/store/useLoadingStore";
-import LoadingSpinner from "@/components/Loading/LoadingSpinner/LoadingSpinner";
+import React, { useState, useEffect } from 'react';
+import CloseButton from '../../Buttons/CloseButton';
+import { useSWRConfig } from 'swr';
+import Container from '../../Container';
+import { useSideDrawerStore } from '@/store/useSideDrawerStore';
+import { Question } from '@/models/quizzes';
+import { ButtonGroup } from '@mui/material';
+import Button from '@mui/material/Button';
+import CustomButtonGroup from '../../Buttons/CustomButtonGroup';
+import AddNewQuizAi from './AddNewQuizContent/AddNewQuizAI';
+import AddNewQuizManually from './AddNewQuizContent/AddNewQuizManually';
+import { useLoadingStore } from '@/store/useLoadingStore';
+import LoadingSpinner from '@/components/Loading/LoadingSpinner/LoadingSpinner';
 
 const AddNewQuiz = () => {
   const { mutate } = useSWRConfig();
 
-  const [quizTitle, setQuizTitle] = useState("");
+  const [quizTitle, setQuizTitle] = useState('');
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isAddQuizManually, setIsAddQuizManually] = useState(true);

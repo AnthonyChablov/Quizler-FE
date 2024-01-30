@@ -1,17 +1,17 @@
-import React from "react";
-import Icons from "../Icons";
-import Image from "next/image";
-import Link from "next/link";
-import { useQuizStore } from "@/store/useQuizStore";
-import { useModalStore } from "@/store/useModalStore";
-import iconFolder from "../../../../public/icon _folder_.png";
+import React from 'react';
+import Icons from '../Icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useQuizStore } from '@/store/useQuizStore';
+import { useModalStore } from '@/store/useModalStore';
+import iconFolder from '../../../../public/icon _folder_.png';
 
 interface QuizHeaderProps {
   headerText: string;
   score?: number;
   displayScore?: boolean;
   link: string;
-  mode?: "study" | "intro" | "end" | "directory";
+  mode?: 'study' | 'intro' | 'end' | 'directory';
   displayImg?: boolean;
 }
 
@@ -32,7 +32,7 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
   return (
     <div className="py-4 relative ">
       <div className="flex justify-between items-center ">
-        {mode === "study" && (
+        {mode === 'study' && (
           <button
             className="z-10"
             onClick={() => {
@@ -42,14 +42,14 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
             <Icons type="back" color="#7861f3" size={25} />
           </button>
         )}
-        {mode === "intro" ||
-          (mode === "end" && (
-            <Link href={link || "dashboard"} className="z-10">
+        {mode === 'intro' ||
+          (mode === 'end' && (
+            <Link href={link || 'dashboard'} className="z-10">
               <Icons type="back" color="#7861f3" size={25} />
             </Link>
           ))}
         {mode === undefined && (
-          <Link href={link || "dashboard"} className="z-10">
+          <Link href={link || 'dashboard'} className="z-10">
             <Icons type="back" color="#7861f3" size={25} />
           </Link>
         )}
@@ -59,7 +59,7 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
           )}
           <h1
             className={`font-bold text-lg w-fit truncate ${
-              displayImg ? "ml-5" : "ml-0"
+              displayImg ? 'ml-5' : 'ml-0'
             }`}
           >
             {headerText}

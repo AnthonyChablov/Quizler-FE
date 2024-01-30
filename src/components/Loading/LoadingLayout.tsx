@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react";
-import LoadingSkeleton from "./LoadingSkeleton/LoadingSkeleton";
-import Container from "../Common/Container";
-import CircularProgress from "@mui/material/CircularProgress";
-import LinearProgress from "@mui/material/LinearProgress";
-import LoadingSpinner from "./LoadingSpinner/LoadingSpinner";
+import React, { ReactNode } from 'react';
+import LoadingSkeleton from './LoadingSkeleton/LoadingSkeleton';
+import Container from '../Common/Container';
+import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
+import LoadingSpinner from './LoadingSpinner/LoadingSpinner';
 
 const LoadingLayout = () => {
   return (

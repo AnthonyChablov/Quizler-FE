@@ -1,5 +1,5 @@
-import React from "react";
-import Skeleton from "@mui/material/Skeleton";
+import React from 'react';
+import Skeleton from '@mui/material/Skeleton';
 
 const LoadingSkeleton = () => {
   return (
@@ -11,26 +11,26 @@ const LoadingSkeleton = () => {
           animation="wave"
           width={100}
           height={24}
-          style={{ borderRadius: "4px", marginBottom: "8px" }}
+          style={{ borderRadius: '4px', marginBottom: '8px' }}
         />
       </div>
       {/* Rectangular Skeleton */}
-      <div style={{ marginTop: "16px" }}>
+      <div style={{ marginTop: '16px' }}>
         <Skeleton
           variant="rectangular"
           animation="wave"
           height={200}
-          style={{ borderRadius: "8px" }}
+          style={{ borderRadius: '8px' }}
         />
       </div>
 
       {/* Another Text Skeleton */}
-      <div style={{ marginTop: "16px" }}>
+      <div style={{ marginTop: '16px' }}>
         <Skeleton
           variant="text"
           animation="wave"
           height={24}
-          style={{ borderRadius: "4px" }}
+          style={{ borderRadius: '4px' }}
         />
       </div>
     </div>

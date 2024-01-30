@@ -1,11 +1,11 @@
-import React from "react";
-import Icons from "@/components/Common/Icons";
-import Link from "next/link";
+import React from 'react';
+import Icons from '@/components/Common/Icons';
+import Link from 'next/link';
 
 const navItems = [
-  { href: "/dashboard", iconType: "home", iconSize: 25 },
-  { href: "/dashboard/explore", iconType: "explore", iconSize: 28 },
-  { href: "/dashboard/profile", iconType: "user", iconSize: 28 },
+  { href: '/dashboard', iconType: 'home', iconSize: 25 },
+  { href: '/dashboard/explore', iconType: 'explore', iconSize: 28 },
+  { href: '/dashboard/profile', iconType: 'user', iconSize: 28 },
 ];
 
 const BottomNav = () => {

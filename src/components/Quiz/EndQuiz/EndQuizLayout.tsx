@@ -1,18 +1,19 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import { fetchData } from "@/api/quizData";
-import { QuizData } from "@/models/quizzes";
-import { useParams, useRouter } from "next/navigation";
-import Container from "../../Common/Container";
-import QuizHeader from "../../Common/Header/QuizHeader";
-import LoadingLayout from "../../Loading/LoadingLayout";
-import Score from "../QuizComponents/Score/Score";
-import { Question } from "@/models/quizzes";
-import QuizInfoDisplay from "../QuizComponents/QuizInfoDisplay/QuizInfoDisplay";
-import Icons from "@/components/Common/Icons";
-import { motion, AnimatePresence } from "framer-motion"; // Import animation components
-import ColorDot from "../QuizComponents/ColorDot/ColorDot";
+'use client';
+import React, { useEffect, useState } from 'react';
+import useSWR from 'swr';
+import { fetchData } from '@/api/quizData';
+import { QuizData } from '@/models/quizzes';
+import { useParams, useRouter } from 'next/navigation';
+import Container from '../../Common/Container';
+import QuizHeader from '../../Common/Header/QuizHeader';
+import LoadingLayout from '../../Loading/LoadingLayout';
+import Score from '../QuizComponents/Score/Score';
+import { Question } from '@/models/quizzes';
+import QuizInfoDisplay from '../QuizComponents/QuizInfoDisplay/QuizInfoDisplay';
+import Icons from '@/components/Common/Icons';
+import { motion, AnimatePresence } from 'framer-motion'; // Import animation components
+import ColorDot from '../QuizComponents/ColorDot/ColorDot';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const EndQuizLayout = () => {
   /* Extract URL Params and Router */
@@ -22,12 +23,12 @@ const EndQuizLayout = () => {
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
-    `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
+    `${API_BASE_URL}/quizzes/${quizId}`,
     fetchData,
     {
       revalidateOnFocus: false,
       refreshInterval: 300000,
-    }
+    },
   );
 
   /* State */
@@ -38,7 +39,7 @@ const EndQuizLayout = () => {
   const [isQuestionsVisible, setIsQuestionsVisible] = useState(true);
   // State to track the visibility of correct answers for each question
   const [showCorrectAnswers, setShowCorrectAnswers] = useState<boolean[]>(
-    data?.questions.map(() => false) || []
+    data?.questions.map(() => false) || [],
   );
 
   /* Functions */
@@ -63,7 +64,7 @@ const EndQuizLayout = () => {
       // Count how many questions have isCorrect set to true
       const correctQuestionsCount = data.questions.reduce(
         (count, question) => (question.isCorrect ? count + 1 : count),
-        0
+        0,
       );
       setScore({
         correct: correctQuestionsCount,
@@ -127,14 +128,14 @@ const EndQuizLayout = () => {
                     router.push(`/dashboard/quiz/${quizId}/`);
                   },
                   percentage: Math.round(
-                    (score.correct / data?.questions.length) * 100
+                    (score.correct / data?.questions.length) * 100,
                   ),
                 }}
               />
               <div className="py-8 px-5 bg-slate-50 p-5 rounded-b-xl shadow-xl">
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
+                  animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -161,8 +162,8 @@ const EndQuizLayout = () => {
                                   </p>
                                   <p className="text-gray-600 text-md">
                                     {question.isCorrect
-                                      ? "Correct"
-                                      : "Incorrect"}
+                                      ? 'Correct'
+                                      : 'Incorrect'}
                                   </p>
                                 </div>
                               </div>
@@ -181,7 +182,7 @@ const EndQuizLayout = () => {
                         {/* Button to toggle visibility of correct answer */}
                         <button
                           className={`text-blue-500 mt-2 h-full flex items-start ${
-                            showCorrectAnswers[index] ? "" : "h-10"
+                            showCorrectAnswers[index] ? '' : 'h-10'
                           }`}
                           onClick={() => toggleCorrectAnswerVisibility(index)}
                         >

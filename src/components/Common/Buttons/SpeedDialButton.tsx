@@ -1,11 +1,11 @@
-import * as React from "react";
-import { useRouter, useParams } from "next/navigation";
-import Box from "@mui/material/Box";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import Icons from "../Icons";
-import { useModalStore } from "@/store/useModalStore";
+import * as React from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import Box from '@mui/material/Box';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import Icons from '../Icons';
+import { useModalStore } from '@/store/useModalStore';
 
 interface ISpeedDialTooltipOpen {
   isEdit?: boolean;
@@ -85,7 +85,7 @@ export default function SpeedDialTooltipOpen({
   if (isEdit) {
     actions.push({
       icon: <Icons type="edit" size={25} color="#7861f3" />,
-      name: "Edit",
+      name: 'Edit',
       onclick: handleRenameClick,
     });
   }
@@ -93,7 +93,7 @@ export default function SpeedDialTooltipOpen({
   if (isDelete) {
     actions.push({
       icon: <Icons type="delete" size={25} color="#7861f3" />,
-      name: "Delete",
+      name: 'Delete',
       onclick: handleDeleteClick,
     });
   }
@@ -101,7 +101,7 @@ export default function SpeedDialTooltipOpen({
   if (isRename) {
     actions.push({
       icon: <Icons type="edit" size={25} color="#7861f3" />,
-      name: "Rename",
+      name: 'Rename',
       onclick: handleRenameClick,
     });
   }
@@ -109,7 +109,7 @@ export default function SpeedDialTooltipOpen({
   if (isAddDirectory) {
     actions.push({
       icon: <Icons type="add" size={25} color="#7861f3" />,
-      name: "Add Directory",
+      name: 'Add Directory',
       onclick: handleAddDirectoryClick,
     });
   }
@@ -117,7 +117,7 @@ export default function SpeedDialTooltipOpen({
   if (isAddQuiz) {
     actions.push({
       icon: <Icons type="add" size={25} color="#7861f3" />,
-      name: "Add Quiz",
+      name: 'Add Quiz',
       onclick: handleAddQuizClick,
     });
   }
@@ -125,7 +125,7 @@ export default function SpeedDialTooltipOpen({
   if (isDeleteDirectory) {
     actions.push({
       icon: <Icons type="delete" size={25} color="#7861f3" />,
-      name: "Delete Directory",
+      name: 'Delete Directory',
       onclick: handleDeleteDirectoryClick,
     });
   }
@@ -133,7 +133,7 @@ export default function SpeedDialTooltipOpen({
   if (isEditDirectory) {
     actions.push({
       icon: <Icons type="edit" size={25} color="#7861f3" />,
-      name: "Edit Directory",
+      name: 'Edit Directory',
       onclick: handleEditDirectoryClick,
     });
   }
@@ -154,9 +154,9 @@ export default function SpeedDialTooltipOpen({
     <Box
       sx={{
         height: 330,
-        transform: "translateZ(0px)",
+        transform: 'translateZ(0px)',
         flexGrow: 1,
-        position: "fixed",
+        position: 'fixed',
         bottom: 60,
         right: 30,
         zIndex: 100,
@@ -164,17 +164,17 @@ export default function SpeedDialTooltipOpen({
     >
       <SpeedDial
         ariaLabel="SpeedDial tooltip example"
-        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        sx={{ position: 'absolute', bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
         FabProps={{
           sx: {
-            background: "linear-gradient(to right, #7861f3,  #7861f3)",
-            color: "white", // Text color
-            "&:hover": {
-              background: "linear-gradient(to right, #667eea,  #667eea)",
+            background: 'linear-gradient(to right, #7861f3,  #7861f3)',
+            color: 'white', // Text color
+            '&:hover': {
+              background: 'linear-gradient(to right, #667eea,  #667eea)',
             },
           },
         }}

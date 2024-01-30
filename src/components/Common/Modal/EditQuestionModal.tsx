@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { editQuestion } from "@/api/questionData";
-import { useSWRConfig } from "swr";
-import { Question } from "@/models/quizzes";
-import Modal from "./Modal";
-import CloseButton from "../Buttons/CloseButton";
-import { useQuestionStore } from "@/store/useQuestionStore";
-import { useNotificationStore } from "@/store/useNotificationStore";
+import React, { useState, useEffect } from 'react';
+import { editQuestion } from '@/api/questionData';
+import { useSWRConfig } from 'swr';
+import { Question } from '@/models/quizzes';
+import Modal from './Modal';
+import CloseButton from '../Buttons/CloseButton';
+import { useQuestionStore } from '@/store/useQuestionStore';
+import { useNotificationStore } from '@/store/useNotificationStore';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 interface EditQuestionModalProps {
   questionId: string;
@@ -25,7 +26,7 @@ const EditQuestionModal = ({
   /* State */
   const { editQuestionData, setEditQuestionData } = useQuestionStore();
   const [newQuestionData, setNewQuestionData] = useState<Question | null>(
-    editQuestionData
+    editQuestionData,
   );
   const { toggleIsNotificationOpen, setNotificationMode } =
     useNotificationStore();
@@ -54,13 +55,13 @@ const EditQuestionModal = ({
     try {
       if (newQuestionData) {
         await editQuestion(questionId, newQuestionData); // Update the question
-        mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+        mutate(`${API_BASE_URL}/quizzes/${quizId}`);
         onClose();
       }
     } catch (error) {
       toggleIsNotificationOpen(true);
-      setNotificationMode("error");
-      console.error("Error updating question:", error);
+      setNotificationMode('error');
+      console.error('Error updating question:', error);
     }
   };
 
@@ -75,8 +76,8 @@ const EditQuestionModal = ({
         <input
           type="text"
           placeholder="Question Title"
-          value={newQuestionData?.questionTitle || ""}
-          onChange={(e) => handleInputChange("questionTitle", e.target.value)}
+          value={newQuestionData?.questionTitle || ''}
+          onChange={(e) => handleInputChange('questionTitle', e.target.value)}
           className="mb-2 p-2 border rounded-lg w-full"
         />
 
@@ -106,10 +107,10 @@ const EditQuestionModal = ({
         <input
           type="text"
           placeholder="Correct Answer"
-          value={newQuestionData?.correct_answer || ""}
-          onChange={(e) => handleInputChange("correct_answer", e.target.value)}
+          value={newQuestionData?.correct_answer || ''}
+          onChange={(e) => handleInputChange('correct_answer', e.target.value)}
           className="mb-2 p-2 border rounded-lg w-full "
-          disabled={newQuestionData?.correct_answer === "True"}
+          disabled={newQuestionData?.correct_answer === 'True'}
         />
         <button
           type="submit"

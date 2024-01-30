@@ -1,5 +1,5 @@
-import React from "react";
-import { useExploreStore } from "@/store/useExploreStore";
+import React from 'react';
+import { useExploreStore } from '@/store/useExploreStore';
 
 const ExploreMenu = () => {
   // State for the search query
@@ -12,7 +12,7 @@ const ExploreMenu = () => {
     >
       <div className="flex items-center justify-between pb-4">
         <h2 className="font-semibold text-md sm:text-lg md:text-lg mb-2">
-          {"Discover new Quizzes"}
+          {'Discover new Quizzes'}
         </h2>
       </div>
       <p className="text-gray-700 text-left text-sm">

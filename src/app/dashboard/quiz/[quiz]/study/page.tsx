@@ -1,6 +1,6 @@
-import React from "react";
-import BottomNav from "@/components/Dashboard/Navigation/BottomNav";
-import StudyingQuizLayout from "@/components/Quiz/StudyingQuiz/StudyingQuizLayout";
+import React from 'react';
+import BottomNav from '@/components/Dashboard/Navigation/BottomNav';
+import StudyingQuizLayout from '@/components/Quiz/StudyingQuiz/StudyingQuizLayout';
 
 const pages = () => {
   return (

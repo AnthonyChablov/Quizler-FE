@@ -9,5 +9,6 @@ type Actions = {
 
 export const useSideDrawerStore = create<State & Actions>((set) => ({
   isAddQuizSideDrawerOpen: false,
-  toggleAddQuizSideDrawer: (newValue) => set({ isAddQuizSideDrawerOpen: newValue }),
+  toggleAddQuizSideDrawer: (newValue) =>
+    set({ isAddQuizSideDrawerOpen: newValue }),
 }));

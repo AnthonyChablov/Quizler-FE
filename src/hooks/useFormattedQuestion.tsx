@@ -1,8 +1,8 @@
 // Import necessary modules
 
-import { useEffect, useState } from "react"; // Import React's 'useEffect' and 'useState' hooks for managing state and side effects.
-import { shuffleArray } from "@/utils/shuffleArray"; // Import a function for shuffling arrays.
-import { Answer, Question } from "@/models/quizzes"; // Import data models 'Answer' and 'Question' from a specific location.
+import { useEffect, useState } from 'react'; // Import React's 'useEffect' and 'useState' hooks for managing state and side effects.
+import { shuffleArray } from '@/utils/shuffleArray'; // Import a function for shuffling arrays.
+import { Answer, Question } from '@/models/quizzes'; // Import data models 'Answer' and 'Question' from a specific location.
 
 // Define a custom hook called useFormattedQuestions
 export function useFormattedQuestions(currentQuestion: Question | null) {

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Icons from "../Icons";
+import React, { useEffect, useState } from 'react';
+import Icons from '../Icons';
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,14 +17,14 @@ const ScrollToTop = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", toggleVisibility);
+    window.addEventListener('scroll', toggleVisibility);
     return () => {
-      window.removeEventListener("scroll", toggleVisibility);
+      window.removeEventListener('scroll', toggleVisibility);
     };
   }, []);
 

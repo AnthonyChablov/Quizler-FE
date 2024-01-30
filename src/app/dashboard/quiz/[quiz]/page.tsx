@@ -1,5 +1,5 @@
-import BottomNav from "@/components/Dashboard/Navigation/BottomNav";
-import IntroQuizLayout from "@/components/Quiz/IntroQuiz/IntroQuizLayout";
+import BottomNav from '@/components/Dashboard/Navigation/BottomNav';
+import IntroQuizLayout from '@/components/Quiz/IntroQuiz/IntroQuizLayout';
 
 const quizDetail = () => {
   return (

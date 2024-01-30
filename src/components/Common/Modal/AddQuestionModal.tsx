@@ -1,11 +1,12 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import { addQuestion } from "@/api/questionData";
-import { useSWRConfig } from "swr";
-import { Question } from "@/models/quizzes";
-import Modal from "./Modal";
-import Icons from "../Icons";
-import CloseButton from "../Buttons/CloseButton";
+import React, { useState } from 'react';
+import { addQuestion } from '@/api/questionData';
+import { useSWRConfig } from 'swr';
+import { Question } from '@/models/quizzes';
+import Modal from './Modal';
+import Icons from '../Icons';
+import CloseButton from '../Buttons/CloseButton';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 interface AddQuizModalProps {
   quizId: string;
@@ -17,9 +18,9 @@ const AddQuestionModal = ({ quizId, isOpen, onClose }: AddQuizModalProps) => {
   /* State */
   const [questionData, setQuestionData] = useState<Question>({
     _id: quizId,
-    questionTitle: "",
-    correct_answer: "",
-    incorrect_answers: ["", "", ""], // Initialize with 3 empty strings
+    questionTitle: '',
+    correct_answer: '',
+    incorrect_answers: ['', '', ''], // Initialize with 3 empty strings
   });
 
   /* Optimistic updates using swr */
@@ -33,11 +34,11 @@ const AddQuestionModal = ({ quizId, isOpen, onClose }: AddQuizModalProps) => {
     e.preventDefault();
     try {
       await addQuestion(quizId, questionData);
-      mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
+      mutate(`${API_BASE_URL}/quizzes/${quizId}`);
       onClose();
     } catch (error) {
       // Handle error
-      console.error("Error adding question:", error);
+      console.error('Error adding question:', error);
     }
   };
 
@@ -54,7 +55,7 @@ const AddQuestionModal = ({ quizId, isOpen, onClose }: AddQuizModalProps) => {
           type="text"
           placeholder="Question Title"
           value={questionData.questionTitle}
-          onChange={(e) => handleInputChange("questionTitle", e.target.value)}
+          onChange={(e) => handleInputChange('questionTitle', e.target.value)}
           className="mb-2 p-2 border rounded-lg w-full"
         />
 
@@ -87,9 +88,9 @@ const AddQuestionModal = ({ quizId, isOpen, onClose }: AddQuizModalProps) => {
           type="text"
           placeholder="Correct Answer"
           value={questionData.correct_answer}
-          onChange={(e) => handleInputChange("correct_answer", e.target.value)}
+          onChange={(e) => handleInputChange('correct_answer', e.target.value)}
           className="mb-2 p-2 border rounded-lg w-full"
-          disabled={questionData.correct_answer === "True"}
+          disabled={questionData.correct_answer === 'True'}
         />
 
         {/* Incorrect Answers */}
@@ -102,21 +103,21 @@ const AddQuestionModal = ({ quizId, isOpen, onClose }: AddQuizModalProps) => {
             onChange={(e) => {
               const newIncorrectAnswers = [...questionData.incorrect_answers];
               newIncorrectAnswers[index] = e.target.value; // Assign the new value to the correct index
-              handleInputChange("incorrect_answers", newIncorrectAnswers);
+              handleInputChange('incorrect_answers', newIncorrectAnswers);
             }}
             className="mb-2 p-2 border rounded-lg w-full"
-            disabled={questionData.correct_answer === "True"}
+            disabled={questionData.correct_answer === 'True'}
           />
         ))}
 
         {questionData.incorrect_answers.length < 3 &&
-          questionData.correct_answer !== "True" && (
+          questionData.correct_answer !== 'True' && (
             <button
               type="button"
               onClick={() =>
                 setQuestionData({
                   ...questionData,
-                  incorrect_answers: [...questionData.incorrect_answers, ""],
+                  incorrect_answers: [...questionData.incorrect_answers, ''],
                 })
               }
               className="mb-2 bg-gray-300 py-1 px-2 rounded"

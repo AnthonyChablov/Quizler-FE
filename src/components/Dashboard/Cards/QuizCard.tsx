@@ -1,8 +1,8 @@
-"use client";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import PrimaryButton from "@/components/Common/Buttons/PrimaryButton";
-import SecondaryButton from "@/components/Common/Buttons/SecondaryButton";
+'use client';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
 
 interface QuizCardProps {
   topic: string;

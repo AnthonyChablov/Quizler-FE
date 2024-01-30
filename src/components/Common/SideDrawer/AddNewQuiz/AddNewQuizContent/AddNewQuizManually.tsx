@@ -1,27 +1,28 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import CustomButton from "../../../Buttons/CustomButton";
-import { QuizData, Question } from "@/models/quizzes";
-import { mutate } from "swr";
-import { useSideDrawerStore } from "@/store/useSideDrawerStore";
-import { addQuiz } from "@/api/quizData";
-import Container from "@/components/Common/Container";
-import Icons from "@/components/Common/Icons";
-import FormTextInput from "@/components/Common/Form/FormTextInput";
-import { useLoadingStore } from "@/store/useLoadingStore";
-import { useNotificationStore } from "@/store/useNotificationStore";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import CustomButton from '../../../Buttons/CustomButton';
+import { QuizData, Question } from '@/models/quizzes';
+import { mutate } from 'swr';
+import { useSideDrawerStore } from '@/store/useSideDrawerStore';
+import { addQuiz } from '@/api/quizData';
+import Container from '@/components/Common/Container';
+import Icons from '@/components/Common/Icons';
+import FormTextInput from '@/components/Common/Form/FormTextInput';
+import { useLoadingStore } from '@/store/useLoadingStore';
+import { useNotificationStore } from '@/store/useNotificationStore';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const AddNewQuizManually = () => {
   /* State */
   const { setIsLoading } = useLoadingStore();
-  const [quizTitle, setQuizTitle] = useState("");
+  const [quizTitle, setQuizTitle] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const { toggleAddQuizSideDrawer } = useSideDrawerStore();
   const [newQuestionData, setNewQuestionData] = useState<Question>({
     _id: Math.random().toString(36).substring(7),
-    questionTitle: "",
-    correct_answer: "",
-    incorrect_answers: ["", "", ""],
+    questionTitle: '',
+    correct_answer: '',
+    incorrect_answers: ['', '', ''],
     isCorrect: false,
   });
   const { toggleIsNotificationOpen, setNotificationMode } =
@@ -31,9 +32,9 @@ const AddNewQuizManually = () => {
     setQuestions([...questions, newQuestionData]);
     setNewQuestionData({
       _id: Math.random().toString(36).substring(7),
-      questionTitle: "",
-      correct_answer: "",
-      incorrect_answers: ["", "", ""],
+      questionTitle: '',
+      correct_answer: '',
+      incorrect_answers: ['', '', ''],
       isCorrect: false,
     });
   };
@@ -59,15 +60,15 @@ const AddNewQuizManually = () => {
     try {
       setIsLoading(true);
       await addQuiz(newQuiz);
-      setQuizTitle("");
+      setQuizTitle('');
       setQuestions([]);
       toggleAddQuizSideDrawer(false);
-      mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
+      mutate(`${API_BASE_URL}/quizzes`);
     } catch (error) {
       setIsLoading(false);
       toggleIsNotificationOpen(true);
-      setNotificationMode("error");
-      console.error("An error occurred during manual quiz submission:", error);
+      setNotificationMode('error');
+      console.error('An error occurred during manual quiz submission:', error);
     }
   };
 
@@ -91,8 +92,8 @@ const AddNewQuizManually = () => {
           <motion.div
             key={index}
             className="mb-6 bg-slate-300 p-5 rounded-xl shadow-md"
-            initial={{ opacity: 1, height: "auto" }}
-            animate={{ opacity: 1, height: "auto" }}
+            initial={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >

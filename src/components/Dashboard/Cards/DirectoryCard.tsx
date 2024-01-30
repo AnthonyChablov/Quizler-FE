@@ -1,10 +1,10 @@
-import React from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
-import SecondaryButton from "@/components/Common/Buttons/SecondaryButton";
-import PrimaryButton from "@/components/Common/Buttons/PrimaryButton";
-import iconFolder from "../../../../public/icon _folder_.png";
+import React from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import iconFolder from '../../../../public/icon _folder_.png';
 
 interface IDirectoryCard {
   title: string;

@@ -1,5 +1,5 @@
-import CustomButton from "@/components/Common/Buttons/CustomButton";
-import Score from "../Score/Score";
+import CustomButton from '@/components/Common/Buttons/CustomButton';
+import Score from '../Score/Score';
 
 interface IQuizInfoDisplay {
   quizTitle: string;
@@ -34,7 +34,7 @@ const QuizInfoDisplay = ({
     >
       <h1 className="text-3xl font-bold mb-6">{quizTitle}! 🎉</h1>
       <p className="text-md mb-8 max-w-xl mx-auto">{quizText}</p>
-      {showScore && <Score {...scoreProps} />}{" "}
+      {showScore && <Score {...scoreProps} />}{' '}
       {/* Conditionally render the Score component */}
       <div className="space-y-4 md:space-x-4 mt-4">
         <CustomButton

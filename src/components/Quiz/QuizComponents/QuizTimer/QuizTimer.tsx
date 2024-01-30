@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import LinearProgress, {
   linearProgressClasses,
-} from "@mui/material/LinearProgress";
-import { styled } from "@mui/material/styles";
+} from '@mui/material/LinearProgress';
+import { styled } from '@mui/material/styles';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
     backgroundColor:
-      theme.palette.grey[theme.palette.mode === "light" ? 50 : 200],
+      theme.palette.grey[theme.palette.mode === 'light' ? 50 : 200],
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: theme.palette.mode === "light" ? "#9333EA" : "#38b2ac",
+    backgroundColor: theme.palette.mode === 'light' ? '#9333EA' : '#38b2ac',
   },
 }));
 
@@ -68,11 +68,11 @@ const QuizTimer: React.FC<QuizTimerProps> = ({
           <div className="flex items-center text-lg">
             <div className="text-md font-semibold">
               <span className=" mr-1">
-                {minutes.toString().padStart(2, "0")}
+                {minutes.toString().padStart(2, '0')}
               </span>
               <span>:</span>
               <span className="ml-1">
-                {seconds.toString().padStart(2, "0")}
+                {seconds.toString().padStart(2, '0')}
               </span>
             </div>
           </div>

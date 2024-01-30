@@ -1,4 +1,4 @@
-import create from "zustand";
+import create from 'zustand';
 type State = {
   searchQuery: string;
 };
@@ -8,6 +8,6 @@ type Actions = {
 };
 
 export const useExploreStore = create<State & Actions>((set) => ({
-  searchQuery: "",
+  searchQuery: '',
   setSearchQuery: (newSearchQuery) => set({ searchQuery: newSearchQuery }),
 }));

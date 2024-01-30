@@ -6,7 +6,11 @@ interface SubHeaderProps {
   color?: string;
 }
 
-const SubHeader: React.FC<SubHeaderProps> = ({ text, size = 'medium', color = 'gray' }) => {
+const SubHeader: React.FC<SubHeaderProps> = ({
+  text,
+  size = 'medium',
+  color = 'gray',
+}) => {
   let textSize = 'text-lg';
   if (size === 'small') {
     textSize = 'text-sm';
@@ -17,10 +21,8 @@ const SubHeader: React.FC<SubHeaderProps> = ({ text, size = 'medium', color = 'g
   const textColor = `text-${color}-600`;
 
   return (
-    <div className={`${textSize} font-semibold ${textColor} mb-4`}>
-      {text}
-    </div>
+    <div className={`${textSize} font-semibold ${textColor} mb-4`}>{text}</div>
   );
-}
+};
 
 export default SubHeader;

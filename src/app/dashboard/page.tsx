@@ -1,6 +1,6 @@
-import React from "react";
-import DashboardLayout from "@/components/Dashboard/DashboardLayout";
-import BottomNav from "@/components/Dashboard/Navigation/BottomNav";
+import React from 'react';
+import DashboardLayout from '@/components/Dashboard/DashboardLayout';
+import BottomNav from '@/components/Dashboard/Navigation/BottomNav';
 
 const page = () => {
   return (

@@ -1,13 +1,13 @@
-import React from 'react'
-import BottomNav from '@/components/Dashboard/Navigation/BottomNav'
+import React from 'react';
+import BottomNav from '@/components/Dashboard/Navigation/BottomNav';
 
 const page = () => {
   return (
     <div>
-        profile page 
-        <BottomNav/>
+      profile page
+      <BottomNav />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

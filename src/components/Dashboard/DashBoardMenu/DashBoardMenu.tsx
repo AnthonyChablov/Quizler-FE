@@ -1,13 +1,13 @@
-"use client";
-import Icons from "@/components/Common/Icons";
-import React, { useState } from "react";
-import CloseButton from "@/components/Common/Buttons/CloseButton";
-import { useSideDrawerStore } from "@/store/useSideDrawerStore";
+'use client';
+import Icons from '@/components/Common/Icons';
+import React, { useState } from 'react';
+import CloseButton from '@/components/Common/Buttons/CloseButton';
+import { useSideDrawerStore } from '@/store/useSideDrawerStore';
 
 const DashBoardMenu = () => {
   /* State */
   const [isAddingQuiz, setIsAddingQuiz] = useState(false);
-  const [quizData, setQuizData] = useState("");
+  const [quizData, setQuizData] = useState('');
   const { toggleAddQuizSideDrawer } = useSideDrawerStore();
 
   const handleAddQuizClick = () => {
@@ -19,9 +19,9 @@ const DashBoardMenu = () => {
   };
 
   const handleSaveQuizClick = () => {
-    console.log("Quiz data:", quizData);
+    console.log('Quiz data:', quizData);
     handleCloseButtonClick();
-    setQuizData("");
+    setQuizData('');
   };
 
   return (
@@ -31,7 +31,7 @@ const DashBoardMenu = () => {
     >
       <div className="flex items-center justify-between pb-4">
         <h2 className="font-semibold text-md sm:text-lg md:text-lg mb-2">
-          {"Add New Quiz"}
+          {'Add New Quiz'}
         </h2>
       </div>
       <p className="text-gray-700 text-left text-sm">

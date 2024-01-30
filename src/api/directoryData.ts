@@ -1,9 +1,9 @@
-import axios, { AxiosResponse } from "axios";
-import { API_BASE_URL } from "./baseApiUrl";
+import axios, { AxiosResponse } from 'axios';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 // Define a function to handle API requests
 async function handleRequest<T>(
-  request: Promise<AxiosResponse<T>>
+  request: Promise<AxiosResponse<T>>,
 ): Promise<T> {
   try {
     const response = await request;
@@ -11,9 +11,9 @@ async function handleRequest<T>(
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorData = error.response?.data;
-      throw new Error(errorData?.error || "An unknown error occurred");
+      throw new Error(errorData?.error || 'An unknown error occurred');
     }
-    throw new Error("An unknown error occurred");
+    throw new Error('An unknown error occurred');
   }
 }
 
@@ -22,7 +22,7 @@ async function handleRequest<T>(
 // Function to create a new directory
 export async function createDirectory(
   name: string,
-  parentDirectoryId: string | undefined
+  parentDirectoryId: string | undefined,
 ): Promise<any> {
   const url = `${API_BASE_URL}/directory`;
   /* Requst Body */
@@ -33,12 +33,26 @@ export async function createDirectory(
   try {
     await handleRequest(
       axios.post(url, reqBody, {
-        headers: { "Content-Type": "application/json" },
-      })
+        headers: { 'Content-Type': 'application/json' },
+      }),
     );
   } catch (err) {
-    throw new Error("An error occurred while adding a quiz with AI");
+    throw new Error('An error occurred while adding a quiz with AI');
   }
+}
+
+// Function to read the users rood directory
+export async function readRootDirectory(): Promise<any> {
+  const url = `${API_BASE_URL}/users/directory`; // Make sure URL includes the directory ID
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem('token');
+  // Configure the headers with the Authorization token
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return handleRequest(axios.get(url, config));
 }
 
 // Function to read a directory by ID
@@ -50,7 +64,7 @@ export async function readDirectory(id: string): Promise<any> {
 // Function to move a directory
 export async function moveDirectory(
   directoryId: string,
-  newParentId: string
+  newParentId: string,
 ): Promise<void> {
   const url = `${API_BASE_URL}/directory/move`;
   await handleRequest(
@@ -61,16 +75,16 @@ export async function moveDirectory(
         newParentId,
       },
       {
-        headers: { "Content-Type": "application/json" },
-      }
-    )
+        headers: { 'Content-Type': 'application/json' },
+      },
+    ),
   );
 }
 
 // Function to rename a directory
 export async function renameDirectory(
   directoryId: string,
-  newTitle: string
+  newTitle: string,
 ): Promise<void> {
   const url = `${API_BASE_URL}/directory/rename`;
   await handleRequest(
@@ -81,9 +95,9 @@ export async function renameDirectory(
         newTitle,
       },
       {
-        headers: { "Content-Type": "application/json" },
-      }
-    )
+        headers: { 'Content-Type': 'application/json' },
+      },
+    ),
   );
 }
 
@@ -91,7 +105,7 @@ export async function renameDirectory(
 export async function switchOrder(
   directoryId: string,
   newQuizIdOrder: string[],
-  newSubDirIdOrder: string[]
+  newSubDirIdOrder: string[],
 ): Promise<void> {
   const url = `${API_BASE_URL}/directory/switch-order`;
   await handleRequest(
@@ -103,9 +117,9 @@ export async function switchOrder(
         newSubDirIdOrder,
       },
       {
-        headers: { "Content-Type": "application/json" },
-      }
-    )
+        headers: { 'Content-Type': 'application/json' },
+      },
+    ),
   );
 }
 
@@ -115,15 +129,15 @@ export async function deleteDirectory(directoryId: string): Promise<void> {
   await handleRequest(
     axios.delete(url, {
       data: { directoryId },
-      headers: { "Content-Type": "application/json" },
-    })
+      headers: { 'Content-Type': 'application/json' },
+    }),
   );
 }
 
 // Function to move a quiz between directories
 export async function moveQuiz(
   quizId: string,
-  newDirectoryId: string
+  newDirectoryId: string,
 ): Promise<void> {
   const url = `${API_BASE_URL}/quizzes/move`;
   await handleRequest(
@@ -134,8 +148,8 @@ export async function moveQuiz(
         newDirectoryId,
       },
       {
-        headers: { "Content-Type": "application/json" },
-      }
-    )
+        headers: { 'Content-Type': 'application/json' },
+      },
+    ),
   );
 }

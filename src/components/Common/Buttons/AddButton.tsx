@@ -13,8 +13,8 @@ const AddButton: React.FC<AddButtonProps> = ({ onClick }) => {
         rounded flex flex-col-reverse items-center justify-center"
       onClick={onClick}
     >
-        <p className='text-lg uppercase font-semibold'>Add</p>
-        <Icons type='add' size={30} color=''/>
+      <p className="text-lg uppercase font-semibold">Add</p>
+      <Icons type="add" size={30} color="" />
     </button>
   );
 };

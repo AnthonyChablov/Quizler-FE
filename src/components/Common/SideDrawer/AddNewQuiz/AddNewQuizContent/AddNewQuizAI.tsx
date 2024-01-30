@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from "react";
-import CustomButton from "../../../Buttons/CustomButton";
-import { QuizData } from "@/models/quizzes";
-import { addQuizWithAI } from "@/api/quizData";
-import { mutate } from "swr";
-import { useSideDrawerStore } from "@/store/useSideDrawerStore";
-import { Question } from "@/models/quizzes";
-import Container from "@/components/Common/Container";
-import { useRouter } from "next/navigation";
-import { useLoadingStore } from "@/store/useLoadingStore";
-import { useNotificationStore } from "@/store/useNotificationStore";
-import useSWR from "swr";
-import { fetchData } from "@/api/quizData";
-import { createDirectory } from "@/api/directoryData";
+import React, { useState, useEffect } from 'react';
+import CustomButton from '../../../Buttons/CustomButton';
+import { QuizData } from '@/models/quizzes';
+import { addQuizWithAI } from '@/api/quizData';
+import { mutate } from 'swr';
+import { useSideDrawerStore } from '@/store/useSideDrawerStore';
+import { Question } from '@/models/quizzes';
+import Container from '@/components/Common/Container';
+import { useRouter } from 'next/navigation';
+import { useLoadingStore } from '@/store/useLoadingStore';
+import { useNotificationStore } from '@/store/useNotificationStore';
+import useSWR from 'swr';
+import { fetchData } from '@/api/quizData';
+import { createDirectory } from '@/api/directoryData';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const AddNewQuizAi = () => {
   /* State */
-  const [quizTitle, setQuizTitle] = useState("");
+  const [quizTitle, setQuizTitle] = useState('');
   const [numQuestions, setNumQuestions] = useState(1); // Initialize with a default value
 
   /* directory State */
   const [addToDirectoryMode, setAddToDirectoryMode] = useState<
-    "existing" | "new"
-  >("existing");
-  const [selectedDirectory, setSelectedDirectory] = useState(""); // State for selected directory
-  const [newDirectory, setNewDirectory] = useState(""); // State for new directory
+    'existing' | 'new'
+  >('existing');
+  const [selectedDirectory, setSelectedDirectory] = useState(''); // State for selected directory
+  const [newDirectory, setNewDirectory] = useState(''); // State for new directory
 
   const [questions, setQuestions] = useState<Question[]>([]);
   const { toggleAddQuizSideDrawer } = useSideDrawerStore();
@@ -36,24 +37,20 @@ const AddNewQuizAi = () => {
 
   /* Variables */
   const maxCharacters = 2000;
-  const parentDirectoryId = "6508bbf7a027061a12c9c8e4";
+  const parentDirectoryId = '6508bbf7a027061a12c9c8e4';
 
   const {
     data: directoryData,
     error: directoryError,
     isLoading: directoryLoading,
-  } = useSWR(
-    `https://quizzlerreactapp.onrender.com/api/directory/6508bbf7a027061a12c9c8e4`,
-    fetchData,
-    {
-      revalidateOnFocus: false,
-      refreshInterval: 300000,
-    }
-  );
+  } = useSWR(`${API_BASE_URL}/directory/6508bbf7a027061a12c9c8e4`, fetchData, {
+    revalidateOnFocus: false,
+    refreshInterval: 300000,
+  });
 
   /* Direcotyr data state for button toggle */
   const [selectedOption, setSelectedOption] = useState(
-    directoryData?.subdirectories.length !== 0 ? "new" : "existing"
+    directoryData?.subdirectories.length !== 0 ? 'new' : 'existing',
   );
   const directories = directoryData?.subdirectories || [];
 
@@ -64,29 +61,29 @@ const AddNewQuizAi = () => {
       try {
         setIsLoading(true);
 
-        if (addToDirectoryMode === "new") {
+        if (addToDirectoryMode === 'new') {
           /* Need to create directory first */
           await createDirectory(newDirectory, parentDirectoryId);
           /* Then make req to add quiz to that directory  */
-          await addQuizWithAI(quizTitle, numQuestions, ""); // await the function call
+          await addQuizWithAI(quizTitle, numQuestions, ''); // await the function call
         } else {
           await addQuizWithAI(quizTitle, numQuestions, selectedDirectory); // await the function call
         }
 
         toggleAddQuizSideDrawer(false);
-        setQuizTitle("");
+        setQuizTitle('');
         setNumQuestions(1); // Reset the number of questions input
-        mutate("https://quizzlerreactapp.onrender.com/api/quizzes");
+        mutate(`${API_BASE_URL}/quizzes`);
       } catch (error) {
         setIsLoading(false);
         toggleIsNotificationOpen(true);
-        setNotificationMode("error");
-        console.error("An error occurred:", error);
+        setNotificationMode('error');
+        console.error('An error occurred:', error);
       }
     } else {
       e.preventDefault();
       toggleIsNotificationOpen(true);
-      setNotificationMode("characterCount");
+      setNotificationMode('characterCount');
       setTimeout(() => {
         toggleIsNotificationOpen(false);
       }, 3000); // timeout to 3 seconds
@@ -117,8 +114,8 @@ const AddNewQuizAi = () => {
           <p
             className={`mt-2 text-right text-purple-700 text-sm font-regular capitalize font-bold ${
               quizTitle.length > maxCharacters
-                ? "text-red-600"
-                : "text-purple-700"
+                ? 'text-red-600'
+                : 'text-purple-700'
             }`}
           >
             Character Count : {quizTitle.length}/{maxCharacters}
@@ -159,8 +156,8 @@ const AddNewQuizAi = () => {
                 type="radio"
                 name="directoryMode"
                 value="existing"
-                checked={addToDirectoryMode === "existing"}
-                onChange={() => setAddToDirectoryMode("existing")}
+                checked={addToDirectoryMode === 'existing'}
+                onChange={() => setAddToDirectoryMode('existing')}
               />
               Existing Directory
             </label>
@@ -170,8 +167,8 @@ const AddNewQuizAi = () => {
                 type="radio"
                 name="directoryMode"
                 value="new"
-                checked={addToDirectoryMode === "new"}
-                onChange={() => setAddToDirectoryMode("new")}
+                checked={addToDirectoryMode === 'new'}
+                onChange={() => setAddToDirectoryMode('new')}
               />
               New Directory
             </label>
@@ -179,7 +176,7 @@ const AddNewQuizAi = () => {
         </div>
 
         {/*Add Quiz To Existing Directory Input*/}
-        {addToDirectoryMode === "existing" &&
+        {addToDirectoryMode === 'existing' &&
           directoryData?.subdirectories.length !== 0 && (
             // Existing Directory Input
             <div className="mb-5">
@@ -204,7 +201,7 @@ const AddNewQuizAi = () => {
             </div>
           )}
 
-        {addToDirectoryMode === "new" && (
+        {addToDirectoryMode === 'new' && (
           // New Directory Input
           <div className="mb-5">
             <label className="block text-gray-700 text-sm font-bold mb-2">

@@ -1,6 +1,6 @@
-import React from "react";
-import Container from "@/components/Common/Container";
-import "@/styles/animations.css";
+import React from 'react';
+import Container from '@/components/Common/Container';
+import '@/styles/animations.css';
 
 interface HeroProps {
   title: string;

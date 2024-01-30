@@ -1,10 +1,10 @@
-import React from "react";
-import Drawer from "@mui/material/Drawer";
-import AddNewQuiz from "./AddNewQuiz/AddNewQuizLayout";
-import { useSideDrawerStore } from "@/store/useSideDrawerStore";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-const drawerWidth = "25vw"; // Width for desktop (quarter of the viewport width)
+import React from 'react';
+import Drawer from '@mui/material/Drawer';
+import AddNewQuiz from './AddNewQuiz/AddNewQuizLayout';
+import { useSideDrawerStore } from '@/store/useSideDrawerStore';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+const drawerWidth = '25vw'; // Width for desktop (quarter of the viewport width)
 
 interface SideDrawerProps {
   open: boolean;
@@ -14,7 +14,7 @@ const SideDrawer = ({ open }: SideDrawerProps) => {
   const { toggleAddQuizSideDrawer, isAddQuizSideDrawerOpen } =
     useSideDrawerStore();
   const theme = useTheme();
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const largeScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <Drawer
@@ -29,7 +29,7 @@ const SideDrawer = ({ open }: SideDrawerProps) => {
             }
           : {
               sx: {
-                width: "100%",
+                width: '100%',
               },
             }
       }

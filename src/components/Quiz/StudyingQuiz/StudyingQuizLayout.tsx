@@ -1,26 +1,27 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Container from "@/components/Common/Container";
-import useSWR, { mutate } from "swr";
-import { throttle } from "lodash";
-import { QuizData } from "@/models/quizzes";
-import { Question } from "@/models/quizzes";
-import { Answer } from "@/models/quizzes";
-import { fetchData } from "@/api/quizData";
-import { useParams, useRouter, usePathname } from "next/navigation";
-import ExitStudyModal from "@/components/Common/Modal/ExitStudyModal";
-import { useFormattedQuestions } from "@/hooks/useFormattedQuestion";
-import QuizHeader from "@/components/Common/Header/QuizHeader";
-import PrimaryCard from "@/components/Common/Cards/PrimaryCard";
-import AnswerButton from "@/components/Common/Buttons/AnswerButton";
-import { updateStudyResults } from "@/api/quizData";
-import LoadingLayout from "@/components/Loading/LoadingLayout";
-import { motion, AnimatePresence } from "framer-motion";
-import { buttonVariants } from "@/variants/variants";
-import { useModalStore } from "@/store/useModalStore";
-import { Suspense } from "react";
-import { NavigationEvents } from "@/hooks/NavigationEvents";
-import QuizTimer from "../QuizComponents/QuizTimer/QuizTimer";
+'use client';
+import React, { useState, useEffect } from 'react';
+import Container from '@/components/Common/Container';
+import useSWR, { mutate } from 'swr';
+import { throttle } from 'lodash';
+import { QuizData } from '@/models/quizzes';
+import { Question } from '@/models/quizzes';
+import { Answer } from '@/models/quizzes';
+import { fetchData } from '@/api/quizData';
+import { useParams, useRouter, usePathname } from 'next/navigation';
+import ExitStudyModal from '@/components/Common/Modal/ExitStudyModal';
+import { useFormattedQuestions } from '@/hooks/useFormattedQuestion';
+import QuizHeader from '@/components/Common/Header/QuizHeader';
+import PrimaryCard from '@/components/Common/Cards/PrimaryCard';
+import AnswerButton from '@/components/Common/Buttons/AnswerButton';
+import { updateStudyResults } from '@/api/quizData';
+import LoadingLayout from '@/components/Loading/LoadingLayout';
+import { motion, AnimatePresence } from 'framer-motion';
+import { buttonVariants } from '@/variants/variants';
+import { useModalStore } from '@/store/useModalStore';
+import { Suspense } from 'react';
+import { NavigationEvents } from '@/hooks/NavigationEvents';
+import QuizTimer from '../QuizComponents/QuizTimer/QuizTimer';
+import { API_BASE_URL } from '@/api/baseApiUrl';
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */
@@ -32,12 +33,12 @@ const StudyingQuizLayout = () => {
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
-    `https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`,
+    `${API_BASE_URL}quizzes/${quizId}`,
     fetchData,
     {
       revalidateOnFocus: false,
       refreshInterval: 300000,
-    }
+    },
   );
 
   /* State */
@@ -45,7 +46,7 @@ const StudyingQuizLayout = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0); // This is what moves on to the next question
   // Stores the index of the selected answer for the current question or null if none is selected.
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(
-    null
+    null,
   );
   // Stores an array of question IDs that have been answered correctly.
   const [correctQuestionIDs, setCorrectQuestionIDs] = useState<string[]>([]);
@@ -96,15 +97,15 @@ const StudyingQuizLayout = () => {
       }, 1000);
     },
     400,
-    { trailing: false }
+    { trailing: false },
   );
   const updateResults = async () => {
     try {
       const response = await updateStudyResults(quizId, correctQuestionIDs);
-      mutate(`https://quizzlerreactapp.onrender.com/api/quizzes/${quizId}`);
-      console.log("Study results updated successfully:", response);
+      mutate(`${API_BASE_URL}/quizzes/${quizId}`);
+      console.log('Study results updated successfully:', response);
     } catch (error) {
-      console.error("Error updating study results:", error);
+      console.error('Error updating study results:', error);
     }
   };
 
@@ -119,7 +120,7 @@ const StudyingQuizLayout = () => {
       toggleExitStudyModeModal(false);
       router.push(`/dashboard/`);
     } catch (error) {
-      console.error("Error saving progress:", error);
+      console.error('Error saving progress:', error);
     }
   };
 
@@ -131,7 +132,7 @@ const StudyingQuizLayout = () => {
   useEffect(() => {
     if (data) {
       const filteredQuestions = data.questions.filter(
-        (question) => question.isCorrect === false
+        (question) => question.isCorrect === false,
       );
       setQuizQuestions(filteredQuestions);
     }
@@ -200,7 +201,7 @@ const StudyingQuizLayout = () => {
               score={finalScore}
               displayScore={true}
               link={`/dashboard/quiz/${quizId}`}
-              mode={"study"}
+              mode={'study'}
             />
             <QuizTimer
               durationInSeconds={900}
@@ -222,7 +223,7 @@ const StudyingQuizLayout = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    transition={{ type: "spring", stiffness: 120, damping: 15 }}
+                    transition={{ type: 'spring', stiffness: 120, damping: 15 }}
                   >
                     <PrimaryCard
                       question={`${currentQuestionIndex + 1}. ${
@@ -257,8 +258,8 @@ const StudyingQuizLayout = () => {
                       answerState={
                         selectedAnswerIndex === index
                           ? answer.isCorrect
-                            ? "correct"
-                            : "incorrect"
+                            ? 'correct'
+                            : 'incorrect'
                           : null
                       }
                     />

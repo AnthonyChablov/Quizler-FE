@@ -1,7 +1,7 @@
-import React from "react";
-import Modal from "./Modal";
-import CloseButton from "../Buttons/CloseButton";
-import { Question } from "@/models/quizzes";
+import React from 'react';
+import Modal from './Modal';
+import CloseButton from '../Buttons/CloseButton';
+import { Question } from '@/models/quizzes';
 
 interface ExitStudyModalModalProps {
   isOpen: boolean;

@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 const config: Config = {
@@ -9,7 +9,7 @@ const config: Config = {
   ],
   theme: {
     screens: {
-      'xs': '300px',
+      xs: '300px',
       ...defaultTheme.screens,
     },
     extend: {
@@ -21,5 +21,5 @@ const config: Config = {
     },
   },
   plugins: [],
-}
-export default config
+};
+export default config;

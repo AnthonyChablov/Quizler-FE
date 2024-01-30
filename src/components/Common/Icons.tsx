@@ -6,16 +6,16 @@ import {
   BiShow,
   BiHide,
   BiSolidMagicWand,
-} from "react-icons/bi";
-import { IoMdClose, IoMdArrowBack, IoMdAddCircleOutline } from "react-icons/io";
+} from 'react-icons/bi';
+import { IoMdClose, IoMdArrowBack, IoMdAddCircleOutline } from 'react-icons/io';
 import {
   AiOutlineQuestionCircle,
   AiFillDelete,
   AiOutlineEdit,
   AiOutlineMinus,
   AiOutlinePlus,
-} from "react-icons/ai";
-import { FaArrowUp } from "react-icons/fa";
+} from 'react-icons/ai';
+import { FaArrowUp } from 'react-icons/fa';
 
 interface IIcons {
   type: string;

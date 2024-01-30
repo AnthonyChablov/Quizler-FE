@@ -1,9 +1,9 @@
-import { useRouter } from "next/navigation"; // Import the useRouter hook
-import { QuizModalProps } from "./Modal";
-import Modal from "./Modal";
-import { deleteQuiz } from "@/api/quizData";
-import CloseButton from "../Buttons/CloseButton";
-import { useNotificationStore } from "@/store/useNotificationStore";
+import { useRouter } from 'next/navigation'; // Import the useRouter hook
+import { QuizModalProps } from './Modal';
+import Modal from './Modal';
+import { deleteQuiz } from '@/api/quizData';
+import CloseButton from '../Buttons/CloseButton';
+import { useNotificationStore } from '@/store/useNotificationStore';
 
 export const DeleteQuizModal = ({
   quizId,
@@ -20,11 +20,11 @@ export const DeleteQuizModal = ({
     try {
       await deleteQuiz(quizId); // Assuming deleteQuiz returns a promise or can be awaited
       onClose();
-      router.push("/dashboard"); // Redirect to the dashboard after successful deletion
+      router.push('/dashboard'); // Redirect to the dashboard after successful deletion
     } catch (error) {
       toggleIsNotificationOpen(true);
-      setNotificationMode("error");
-      console.error("Error deleting quiz:", error);
+      setNotificationMode('error');
+      console.error('Error deleting quiz:', error);
     }
   };
 

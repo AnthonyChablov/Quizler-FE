@@ -1,7 +1,7 @@
-import React from "react";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import { useNotificationStore } from "@/store/useNotificationStore";
+import React from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { useNotificationStore } from '@/store/useNotificationStore';
 
 const Notification = () => {
   const { isNotificationOpen, toggleIsNotificationOpen, notificationMode } =
@@ -9,9 +9,9 @@ const Notification = () => {
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
-    reason?: string
+    reason?: string,
   ) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
 
@@ -20,35 +20,35 @@ const Notification = () => {
 
   const getAlertSeverity = () => {
     switch (notificationMode) {
-      case "error":
-        return "error";
-      case "warning":
-        return "warning";
-      case "info":
-        return "info";
-      case "success":
-        return "success";
-      case "characterCount":
-        return "error";
+      case 'error':
+        return 'error';
+      case 'warning':
+        return 'warning';
+      case 'info':
+        return 'info';
+      case 'success':
+        return 'success';
+      case 'characterCount':
+        return 'error';
       default:
-        return "info"; // Default to "info" if notificationMode is undefined
+        return 'info'; // Default to "info" if notificationMode is undefined
     }
   };
 
   const getMessageText = () => {
     switch (notificationMode) {
-      case "error":
-        return "An error occurred, Please Try Again !";
-      case "warning":
-        return "Warning: Something might be wrong!";
-      case "info":
-        return "Information: This is just for your knowledge.";
-      case "success":
-        return "Success: Successfully created quiz!";
-      case "characterCount":
-        return "Error: Character Count Exceeds Limit.";
+      case 'error':
+        return 'An error occurred, Please Try Again !';
+      case 'warning':
+        return 'Warning: Something might be wrong!';
+      case 'info':
+        return 'Information: This is just for your knowledge.';
+      case 'success':
+        return 'Success: Successfully created quiz!';
+      case 'characterCount':
+        return 'Error: Character Count Exceeds Limit.';
       default:
-        return "Default message";
+        return 'Default message';
     }
   };
 
@@ -62,7 +62,7 @@ const Notification = () => {
         <Alert
           onClose={handleClose}
           severity={getAlertSeverity()} // Set the severity based on notificationMode
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
         >
           {getMessageText()} {/* Set the message based on notificationMode */}
         </Alert>
