@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Question, QuizResponseData } from '@/models/quizzes';
-import { API_BASE_URL } from '@/api/baseApiUrl';
-
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
 async function handleRequest<T>(
   request: Promise<AxiosResponse<T>>,
 ): Promise<T> {
@@ -47,6 +47,20 @@ export async function deleteQuiz(quizId: string): Promise<any> {
   const url = `${API_BASE_URL}/quizzes/${quizId}`;
   return handleRequest(axios.delete(url, getAuthHeaders()));
 }
+
+// Assuming API_BASE_URL is defined globally or imported from your configuration
+export async function readQuiz(quizId: string): Promise<any> {
+  const url = `${API_BASE_URL}/quizzes/${quizId}`;
+  try {
+    const response = await axios.get(url, getAuthHeaders());
+    return response.data; // Return the data from the API call
+  } catch (error) {
+    // Handle error appropriately
+    console.error('Error fetching quiz:', error);
+    throw error;
+  }
+}
+
 
 export async function addQuiz(quizData: any): Promise<void> {
   const url = `${API_BASE_URL}/quizzes`;

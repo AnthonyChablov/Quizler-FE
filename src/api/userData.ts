@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
-import { API_BASE_URL } from '@/api/baseApiUrl';
-
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
+const url = `${API_BASE_URL}/users/login`;
+console.log(url);
 interface UserRegistrationData {
   username: string;
   email: string;
@@ -9,7 +11,7 @@ interface UserRegistrationData {
 }
 
 interface UserLoginData {
-  username: string;
+  email: string;
   password: string;
 }
 

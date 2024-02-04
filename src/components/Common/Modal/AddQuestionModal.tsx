@@ -6,7 +6,8 @@ import { Question } from '@/models/quizzes';
 import Modal from './Modal';
 import Icons from '../Icons';
 import CloseButton from '../Buttons/CloseButton';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
 
 interface AddQuizModalProps {
   quizId: string;
@@ -131,7 +132,7 @@ const AddQuestionModal = ({ quizId, isOpen, onClose }: AddQuizModalProps) => {
           className="bg-gradient-to-r from-indigo-500 via-purple-500 
             to-purple-500 text-white py-2 px-4 rounded"
         >
-          Add Question
+          Add Questions
         </button>
       </form>
     </Modal>

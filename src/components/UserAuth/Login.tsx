@@ -9,7 +9,7 @@ import { loginUser } from '@/api/userData'; // adjust the import path accordingl
 import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
@@ -17,7 +17,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       // Replace with your actual login function and handle the response
-      const response = await loginUser({ username, password });
+      const response = await loginUser({ email, password });
       console.log('Login successful:', response);
 
       // Save the token, set user context, or redirect as needed
@@ -41,8 +41,8 @@ const LoginPage = () => {
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
             <Input
               placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               fullWidth
             />
             <Input

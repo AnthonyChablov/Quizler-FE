@@ -21,7 +21,8 @@ import { useModalStore } from '@/store/useModalStore';
 import { Suspense } from 'react';
 import { NavigationEvents } from '@/hooks/NavigationEvents';
 import QuizTimer from '../QuizComponents/QuizTimer/QuizTimer';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
 
 const StudyingQuizLayout = () => {
   /* Optimistic updates using swr */

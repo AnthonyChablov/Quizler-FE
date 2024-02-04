@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Question } from '@/models/quizzes';
-import { API_BASE_URL } from '@/api/baseApiUrl';
-
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.API_BASE_LOCAL;
 async function handleRequest<T>(
   request: Promise<AxiosResponse<T>>,
 ): Promise<T> {

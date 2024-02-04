@@ -15,7 +15,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { mutate } from 'swr';
 import Icons from '@/components/Common/Icons';
 import { useQuizStore } from '@/store/useQuizStore';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
 
 const IntroQuizLayout = () => {
   /* Extract URL Params */

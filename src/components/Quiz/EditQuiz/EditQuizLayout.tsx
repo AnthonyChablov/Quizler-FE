@@ -12,7 +12,8 @@ import QuizHeader from '../../Common/Header/QuizHeader';
 import SpeedDialButton from '../../Common/Buttons/SpeedDialButton';
 import QuizModals from '../QuizComponents/QuizModals/QuizModals';
 import Notification from '@/components/Common/Notification/Notification';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
 
 const EditQuizLayout = () => {
   /* Next Router */

@@ -13,22 +13,21 @@ import QuizInfoDisplay from '../QuizComponents/QuizInfoDisplay/QuizInfoDisplay';
 import Icons from '@/components/Common/Icons';
 import { motion, AnimatePresence } from 'framer-motion'; // Import animation components
 import ColorDot from '../QuizComponents/ColorDot/ColorDot';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+import { readQuiz } from '@/api/quizData';
 
+// import { API_BASE_URL } from '@/api/baseApiUrl';
 const EndQuizLayout = () => {
   /* Extract URL Params and Router */
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
   const params = useParams();
   const quizId = params.quiz.toString();
   const router = useRouter();
 
   /* Fetch Data */
   const { data, error, isValidating, isLoading } = useSWR<QuizData>(
-    `${API_BASE_URL}/quizzes/${quizId}`,
-    fetchData,
-    {
-      revalidateOnFocus: false,
-      refreshInterval: 300000,
-    },
+    quizId,
+    () => readQuiz(quizId),
+    { revalidateOnFocus: false, refreshInterval: 300000 },
   );
 
   /* State */

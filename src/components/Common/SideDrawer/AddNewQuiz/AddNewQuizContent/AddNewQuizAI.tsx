@@ -12,12 +12,13 @@ import { useNotificationStore } from '@/store/useNotificationStore';
 import useSWR from 'swr';
 import { fetchData } from '@/api/quizData';
 import { createDirectory } from '@/api/directoryData';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.API_BASE_LOCAL;
 
 const AddNewQuizAi = () => {
   /* State */
   const [quizContent, setQuizContent] = useState('');
-  const [numQuestions, setNumQuestions] = useState(5); // Initialize with a default value
+  const [numQuestions, setNumQuestions] = useState(20); // Initialize with a default value
 
   /* directory State */
   const [addToDirectoryMode, setAddToDirectoryMode] = useState<
@@ -37,18 +38,23 @@ const AddNewQuizAi = () => {
 
   /* Variables */
   const maxCharacters = 6000 * 6;
-  const parentDirectoryId = '6508bbf7a027061a12c9c8e4';
 
-  const {
-    data: directoryData,
-    error: directoryError,
-    isLoading: directoryLoading,
-  } = useSWR(`${API_BASE_URL}/directory/6508bbf7a027061a12c9c8e4`, fetchData, {
-    revalidateOnFocus: false,
-    refreshInterval: 300000,
-  });
+  const { data: directoryData } = useSWR(
+    `${API_BASE_URL}/users/directory`,
+    fetchData,
+    { revalidateOnFocus: false, refreshInterval: 300000 },
+  );
 
-  /* Direcotyr data state for button toggle */
+  // const {
+  //   data: directoryData,
+  //   error: directoryError,
+  //   isLoading: directoryLoading,
+  // } = useSWR(`${API_BASE_URL}/users/directory`, fetchData, {
+  //   revalidateOnFocus: false,
+  //   refreshInterval: 300000,
+  // });
+
+  /* Directory data state for button toggle */
   const [selectedOption, setSelectedOption] = useState(
     directoryData?.subdirectories.length !== 0 ? 'new' : 'existing',
   );
@@ -60,31 +66,32 @@ const AddNewQuizAi = () => {
     e.preventDefault();
 
     if (quizContent.length > maxCharacters) {
-      // If character count exceeds the limit, show a notification and do not proceed
       toggleIsNotificationOpen(true);
       setNotificationMode('characterCount');
       setTimeout(() => {
         toggleIsNotificationOpen(false);
-      }, 3000); // timeout to 3 seconds
-      return; // Exit the function to prevent further processing
+      }, 3000);
+      return;
     }
 
     try {
       setIsLoading(true);
-      // ... rest of your logic
+      let directoryId = selectedDirectory;
+
       if (addToDirectoryMode === 'new') {
-        /* Need to create directory first */
-        await createDirectory(newDirectory);
-        /* Then make req to add quiz to that directory  */
-        await addQuizWithAI(quizContent, numQuestions, ''); // await the function call
-      } else {
-        await addQuizWithAI(quizContent, numQuestions, selectedDirectory); // await the function call
+        // Create new directory and use its ID
+        const newDirResponse = await createDirectory(newDirectory);
+        directoryId = newDirResponse._id; // Update directoryId with the ID of the newly created directory
       }
 
+      // Add quiz to the specified directory
+      await addQuizWithAI(quizContent, numQuestions, directoryId);
       toggleAddQuizSideDrawer(false);
+      // router.push('/dashboard');
+      window.location.reload()
       setQuizContent('');
-      setNumQuestions(1); // Reset the number of questions input
-      mutate(`${API_BASE_URL}/quizzes`);
+      setNumQuestions(20); // Reset the number of questions input
+      // mutate(`${API_BASE_URL}/quizzes`);
     } catch (error) {
       setIsLoading(false);
       toggleIsNotificationOpen(true);
@@ -92,42 +99,6 @@ const AddNewQuizAi = () => {
       console.error('An error occurred:', error);
     }
   };
-
-  // const handleSubmitAI = async (e: React.FormEvent) => {
-  //   // Ai generated quiz logic
-  //   if (quizContent.length <= maxCharacters) {
-  //     e.preventDefault();
-  //     try {
-  //       setIsLoading(true);
-
-  //       if (addToDirectoryMode === 'new') {
-  //         /* Need to create directory first */
-  //         await createDirectory(newDirectory);
-  //         /* Then make req to add quiz to that directory  */
-  //         await addQuizWithAI(quizContent, numQuestions, ''); // await the function call
-  //       } else {
-  //         await addQuizWithAI(quizContent, numQuestions, selectedDirectory); // await the function call
-  //       }
-
-  //       toggleAddQuizSideDrawer(false);
-  //       setQuizContent('');
-  //       setNumQuestions(1); // Reset the number of questions input
-  //       mutate(`${API_BASE_URL}/quizzes`);
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //       toggleIsNotificationOpen(true);
-  //       setNotificationMode('error');
-  //       console.error('An error occurred:', error);
-  //     }
-  //   } else {
-  //     e.preventDefault();
-  //     toggleIsNotificationOpen(true);
-  //     setNotificationMode('characterCount');
-  //     setTimeout(() => {
-  //       toggleIsNotificationOpen(false);
-  //     }, 3000); // timeout to 3 seconds
-  //   }
-  // };
 
   return (
     <form onSubmit={handleSubmitAI}>
@@ -258,7 +229,7 @@ const AddNewQuizAi = () => {
         )}
         <div className="w-full text-center mt-2">
           <CustomButton
-            label="Add Quiz"
+            label="Add Quiz!"
             textSize="text-sm md:text-md"
             type="submit"
           />

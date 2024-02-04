@@ -5,7 +5,9 @@ import Modal from './Modal';
 import { renameQuiz } from '@/api/quizData';
 import CloseButton from '../Buttons/CloseButton';
 import { useNotificationStore } from '@/store/useNotificationStore';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.API_BASE_LOCAL;
+
 export const RenameQuizModal = ({
   quizId,
   isOpen,

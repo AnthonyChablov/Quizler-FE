@@ -6,7 +6,8 @@ import { fetchData } from '@/api/quizData';
 import useSWR from 'swr';
 import { useExploreStore } from '@/store/useExploreStore';
 import Container from '../Common/Container';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
 
 interface Quiz {
   title: string;

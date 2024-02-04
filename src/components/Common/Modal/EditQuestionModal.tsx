@@ -6,7 +6,8 @@ import Modal from './Modal';
 import CloseButton from '../Buttons/CloseButton';
 import { useQuestionStore } from '@/store/useQuestionStore';
 import { useNotificationStore } from '@/store/useNotificationStore';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
 
 interface EditQuestionModalProps {
   questionId: string;

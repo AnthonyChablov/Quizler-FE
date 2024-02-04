@@ -13,7 +13,9 @@ import LatestQuizzes from '../Dashboard/LatestQuizzes/LatestQuizzes';
 import SpeedDialTooltipOpen from '../Common/Buttons/SpeedDialButton';
 import EditDirectoryModal from '../Common/Modal/DirectoryModals/EditDirectoryModal';
 import { useModalStore } from '@/store/useModalStore';
-import { API_BASE_URL } from '@/api/baseApiUrl';
+// import { API_BASE_URL } from '@/api/baseApiUrl';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_LOCAL;
+import { readDirectory } from '@/api/directoryData';
 
 const DirectoryLayout = () => {
   const router = useRouter();
@@ -29,14 +31,18 @@ const DirectoryLayout = () => {
     data: directoryData,
     error: directoryError,
     isLoading: directoryLoading,
-  } = useSWR(`${API_BASE_URL}/directory/${directoryId}`, fetchData, {
+  } = useSWR(directoryId, readDirectory, {
     revalidateOnFocus: false,
-    refreshInterval: 300000,
+    refreshInterval: 700000,
   });
 
   useEffect(() => {
     console.log(directoryData);
   }, [directoryData]);
+
+  if (!directoryData) {
+    return null; // Render nothing until data is available
+  }
 
   if (directoryLoading) {
     return <LoadingLayout />;
@@ -46,15 +52,12 @@ const DirectoryLayout = () => {
     return <div>Error loading directory: {directoryError.message}</div>;
   }
 
-  if (!directoryData) {
-    return null; // Render nothing until data is available
-  }
-
   return (
     <div className="h-full min-h-screen bg-slate-200 ">
       <Container>
         <QuizHeader
-          headerText={directoryData.directory.name}
+          // headerText={directoryData.directory.name}
+          headerText={'subdirectory name'}
           mode={'end'}
           displayImg={true}
           displayScore={false}

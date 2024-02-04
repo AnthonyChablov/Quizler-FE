@@ -5,7 +5,8 @@ import Container from '@/components/Common/Container';
 import Hero from '../Common/Hero/Hero';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
-import { registerUser } from '@/api/userData'; // Adjust the path as per your project structure
+import { registerUser, loginUser } from '@/api/userData'; // Adjust the path as per your project structure
+import { useRouter } from 'next/navigation';
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
@@ -13,6 +14,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const router = useRouter();
   // const handleRegister = (e: React.FormEvent) => {
   //   e.preventDefault();
   //   // Handle registration logic here
@@ -38,7 +40,10 @@ const RegisterPage = () => {
         password2: confirmPassword, // Send confirmPassword as password2
       });
       console.log('Registration successful:', response);
-      setMessage('Registration successful! Please log in.'); // Set success message
+      const loginResponse = await loginUser({ email: email, password });
+      localStorage.setItem('token', loginResponse.token);
+      router.push('/dashboard'); // Redirect to dashboard or another page
+      setMessage(response); // Set success message
     } catch (error) {
       console.error('Registration failed:', error);
       setMessage('Registration failed: ' + error); // Set error message
@@ -56,12 +61,14 @@ const RegisterPage = () => {
             <Input
               placeholder="Username"
               value={username}
+              type="username"
               onChange={(e) => setUsername(e.target.value)}
               fullWidth
             />
             <Input
               placeholder="Email"
               value={email}
+              type="email"
               onChange={(e) => setEmail(e.target.value)}
               fullWidth
             />

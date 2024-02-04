@@ -117,7 +117,7 @@ export default function SpeedDialTooltipOpen({
   if (isAddQuiz) {
     actions.push({
       icon: <Icons type="add" size={25} color="#7861f3" />,
-      name: 'Add Quiz',
+      name: 'Add Quizq',
       onclick: handleAddQuizClick,
     });
   }
